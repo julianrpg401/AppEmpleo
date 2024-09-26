@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AppEmpleo</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="~/css/layout.css" rel="stylesheet" />
+</head>
+<body>
+    <header class="cabeza">
+        <nav class="cabeza__menu">
+            <div class="menu__perfil">
+                <picture class="perfil__caja">
+                    <source media="(min-width: 465px)" srcset="~/img/logo.png" class="caja__avatar" />
+                    <source media="(min-width: 650px)" srcset="~/img/logo.png" class="caja__avatar" />
+                    <img src="~/img/logo.png" alt="perfil.png" class="caja__avatar" />
+                </picture>
+                <div class="perfil__texto perfil__texto--color">
+                    <span class="perfil__nombre">Julian Garcia</span>
+                    <span class="perfil__profesion">Desarrollador web</span>
+                </div>
+            </div>
+            <i class='bx bx-chevron-right toggle'></i>
+            <div class="menu">
+                <div class="menu__buscador">
+                    <i class='bx bx-search buscador__icon icon'></i>
+                    <input type="search" name="name" class="buscador" placeholder="Buscar..." />
+                </div>
+                <ul class="menu__lista">
+                    <li class="lista__opcion">
+                        <a href="" class="opcion__link">
+                            <i class='bx bx-home-alt link__icon icon'></i>
+                            <span class="link__texto">Inicio</span>
+                        </a>
+                    </li>
+                    <li class="lista__opcion">
+                        <a href="" class="opcion__link">
+                            <i class='bx bx-briefcase link__icon icon'></i>
+                            <span class="link__texto">Empleo</span>
+                        </a>
+                    </li>
+                    <li class="lista__opcion">
+                        <a href="" class="opcion__link">
+                            <i class='bx bx-spreadsheet link__icon icon'></i>
+                            <span class="link__texto">Evaluaciones</span>
+                        </a>
+                    </li>
+                    <li class="lista__opcion">
+                        <a href="" class="opcion__link">
+                            <i class='bx bx-bell link__icon icon'></i>
+                            <span class="link__texto">Notificaciones</span>
+                        </a>
+                    </li>
+                    <li class="lista__opcion">
+                        <a href="" class="opcion__link">
+                            <i class='bx bx-slider-alt link__icon icon'></i>
+                            <span class="link__texto">Configuracion</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="menu__boton">
+                    <div class="boton__salir">
+                        <a href="#" class="salir__link">
+                            <i class="bx bx-log-out boton__icon icon"></i>
+                            <span class="salir__texto">Cerrar sesión</span>
+                        </a>
+                    </div>
+                    <div class="boton__modo">
+                        <i class="bx bx-moon boton__icon boton__icon--modo icon"></i>
+                        <i class="bx bx-sun boton__icon boton__icon--modo icon"></i>
+                        <span class="modo__texto">Modo oscuro</span>
+                        <div class="modo__switch">
+                            <span class="switch"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+    </footer>
+
+    <script src="~/js/layout.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
