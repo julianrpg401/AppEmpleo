@@ -7,19 +7,24 @@
 <div class="container">
     <form action="/" method="post">
         <div class="form-group">
-            <label asp-for="Usuario.NombreUsuario" class="control-label"></label>
-            <input asp-for="Usuario.NombreUsuario" class="form-control" />
-            <span asp-validation-for="Usuario.NombreUsuario" class="text-danger"></span>
+            <label asp-for="Usuario.NombreUsuario" class="control-label">Nombre</label>
+            <input asp-for="Usuario.NombreUsuario" class="form-control" /><br />
+            <label asp-for="Usuario.ApellidoUsuario" class="control-label">Apellido</label>
+            <input asp-for="Usuario.ApellidoUsuario" class="form-control"/>
         </div>
         <div class="form-group">
-            <label asp-for="Usuario.EmailUsuario" class="control-label"></label>
+            <label asp-for="Usuario.EmailUsuario" class="control-label">Email</label>
             <input asp-for="Usuario.EmailUsuario" class="form-control" />
-            <span asp-validation-for="Usuario.EmailUsuario" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Usuario.ClaveUsuario" class="control-label"></label>
+            <label asp-for="Usuario.Telefono" class="control-label">Cel</label>
+            <input asp-for="Usuario.Telefono" class="form-control" /><br />
+            <label asp-for="Usuario.FechaNacimiento" class="control-label">Fecha de nacimiento</label>
+            <input asp-for="Usuario.FechaNacimiento" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Usuario.ClaveUsuario" class="control-label">Contraseña</label>
             <input asp-for="Usuario.ClaveUsuario" class="form-control" />
-            <span asp-validation-for="Usuario.ClaveUsuario" class="text-danger"></span>
         </div>
 
         <button type="submit" class="btn btn-primary">Crear Cuenta</button>
