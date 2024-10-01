@@ -1,4 +1,4 @@
-using AppEmpleo.Modelos;
+using AppEmpleo.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppEmpleo
@@ -9,11 +9,16 @@ namespace AppEmpleo
         {
             var builder = WebApplication.CreateBuilder(args);
 
+
+            //Agregar consola
+            builder.Logging.ClearProviders();
+            builder.Logging.AddConsole();
+
             // Add services to the container.
             builder.Services.AddRazorPages();
 
-            builder.Services.AddDbContext<AppEmpleoContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection")));
+
+            builder.Services.AddDbContext<AppEmpleoContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection")));
 
             var app = builder.Build();
 

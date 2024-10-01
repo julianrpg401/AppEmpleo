@@ -156,8 +156,31 @@
     <script src="~/assetsLandingPage/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
     <script src="~/assetsLandingPage/vendor/isotope-layout/isotope.pkgd.min.js"></script>
     <script src="~/assetsLandingPage/vendor/swiper/swiper-bundle.min.js"></script>
-    <!-- Main JS File -->
-    <script src="~/assetsLandingPage/js/main.js"></script>
+    <script src="~/assetslandingpage/js/main.js"></script>
 
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var reloadButton = document.getElementById('reloadButton');
+            var showSavedCopyButton = document.getElementById('showSavedCopyButton');
+            var downloadButton = document.getElementById('downloadButton');
+            var diagnoseButton = document.getElementById('diagnoseButton');
+            var detailsButton = document.getElementById('detailsButton');
+
+            if (reloadButton && showSavedCopyButton && downloadButton && diagnoseButton && detailsButton) {
+                if (reloadButton.style.display === 'none' &&
+                    showSavedCopyButton.style.display === 'none' &&
+                    downloadButton.style.display === 'none' &&
+                    diagnoseButton.style.display === 'none') {
+                        detailsButton.classList.add('singular');
+                }
+            }
+        });
+    </script>
 </body>
 </html>
