@@ -9,7 +9,6 @@ namespace AppEmpleo
         {
             var builder = WebApplication.CreateBuilder(args);
 
-
             //Agregar consola
             builder.Logging.ClearProviders();
             builder.Logging.AddConsole();
