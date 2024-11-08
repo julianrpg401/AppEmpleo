@@ -37,15 +37,15 @@ namespace AppEmpleo
 
             app.MapRazorPages();
 
-            app.MapGet("/", async context =>
-            {
-                context.Response.Redirect("/LandingPage/Home");
-            });
-
             //app.MapGet("/", async context =>
             //{
-            //    context.Response.Redirect("/Register/Register");
+            //    context.Response.Redirect("/LandingPage/Home");
             //});
+
+            app.MapGet("/", async context =>
+            {
+                context.Response.Redirect("/Register/Register");
+            });
 
             app.Run();
         }
