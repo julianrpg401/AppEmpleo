@@ -2,6 +2,7 @@ using AppEmpleo.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace AppEmpleo.Pages.Register
@@ -10,8 +11,12 @@ namespace AppEmpleo.Pages.Register
     {
         private readonly AppEmpleoContext _appEmpleoContext;
         private Usuario usuario;
+        private string? clave;
 
         public Usuario Usuario { get => usuario; set => usuario = value; }
+
+        [DisplayName("Contraseña")]
+        public string? Clave { get => clave; set => clave = value; }
 
         public RegisterModel(AppEmpleoContext appEmpleoContext)
         {
@@ -22,7 +27,7 @@ namespace AppEmpleo.Pages.Register
         {
         }
 
-        public async Task<IActionResult> OnPostAsync(Usuario usuario)
+        public async Task<IActionResult> OnPostAsync(Usuario usuario, string clave)
         {
             if (!ModelState.IsValid)
             {

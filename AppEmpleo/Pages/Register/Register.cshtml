@@ -5,30 +5,26 @@
 }
 
 <div class="register__form">
-    <form method="post" asp-page="Register">
+    <form method="post" asp-page="Register" class="form">
         <div class="form__group">
             <label asp-for="Usuario.Nombre" class="label"></label>
-            <input asp-for="Usuario.Nombre" value="" />
+            <input asp-for="Usuario.Nombre" value="" class="register__input" />
         </div>
         <div class="form__group">
             <label asp-for="Usuario.Apellido" class="label"></label>
-            <input asp-for="Usuario.Apellido" value="" />
+            <input asp-for="Usuario.Apellido" value="" class="register__input" />
         </div>
         <div class="form__group">
             <label asp-for="Usuario.Email" class="label"></label>
-            <input asp-for="Usuario.Email" value="" />
+            <input asp-for="Usuario.Email" value="" class="register__input" />
         </div>
         <div class="form__group">
-            <label asp-for="Usuario.ContraseñaHash" class="label"></label>
-            <input asp-for="Usuario.ContraseñaHash" value="" />
-        </div>
-        <div class="form__group">
-            <label asp-for="Usuario.FechaRegistro" class="label"></label>
-            <input asp-for="Usuario.FechaRegistro" value="" />
+            <label asp-for="Clave" class="label"></label>
+            <input asp-for="Clave" value="" class="register__input" />
         </div>
         <div class="form__group">
             <label asp-for="Usuario.Rol" class="label"></label>
-            <input asp-for="Usuario.Rol" value="" />
+            <input asp-for="Usuario.Rol" value="" class="register__input" />
         </div>
 
         <button type="submit" class="btn btn-primary">Crear Cuenta</button>

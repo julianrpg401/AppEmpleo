@@ -1,0 +1,96 @@
+﻿:root {
+    --blanco: white;
+    /*Paleta rosa*/
+    --rosado: #ffb3c8;
+    --rosado-luz: #ffc6d5;
+    --rosado-extra-luz: #ffd9e3;
+    --rosado-palido: #ffecf1;
+    --rosado-blanco: #fff8fa;
+    /*Paleta gris*/
+    --gris: #b6b6b6;
+    --gris-luz: #c8c8c8;
+    --gris-extra-luz: #dbdbdb;
+    --gris-palido: #ededed;
+    --gris-blanco: #f7f7f7;
+    /*Paleta gris-azul*/
+    --gris-azul: #6c788e;
+    --gris-azul-luz: #a6aec1;
+    --gris-azul-extra-luz: #cfd5e1;
+    --gris-azul-palido: #ededf2;
+    /*Paleta negro-gris*/
+    --negro-gris: #4d4d4d;
+    --negro-gris-luz: #757575;
+    --negro-gris-extra-luz: #cfd5e1;
+    --negro-gris-palido: #c5c5c5;
+    /*Paleta complementaria*/
+    --azul-industrial: #44749d;
+    --gris-industrial: #c6d4e1;
+    --cafe-grisaceo: #bdb8ad;
+    --cafe-grisaceo-luz: #ebe7e0;
+    --cafe-grisaceo-blanco: #f4f1ed;
+    /*Transiciones*/
+    --tran-02: all 0.2s ease;
+    --tran-03: all 0.3s ease;
+    --tran-04: all 0.4s ease;
+    --tran-05: all 0.5s ease;
+}
+
+body{
+    background: var(--rosado-palido);
+    box-sizing: border-box;
+}
+
+.register__form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+    margin-top: 6rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 6rem;
+    border: solid 1px;
+    border-radius: .5rem;
+    border-color: var(--negro-gris-palido);
+    box-shadow: 0 0 1rem rgba(0, 0, 0, .2);
+    background-color: var(--blanco);
+}
+
+.form{
+    padding: 2rem;
+}
+
+.form, .form__group{
+    width: 100%;
+}
+
+.form__group {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.label{
+    font-family: Montserrat;
+    font-weight: 500;
+    color: var(--negro-gris-luz);
+}
+
+.register__input {
+    all: initial;
+    display: block;
+    width: max-content;
+    height: 2rem;
+    padding-left: .8rem;
+    border-radius: .2rem;
+    border: solid 1px;
+    border-color: var(--negro-gris-palido);
+    background-color: var(--gris-azul-palido);
+}
+
+.register__input:active{
+    border-color: var(--rosado);
+}
+
+.btn{
+    margin-top: 2rem;
+}
