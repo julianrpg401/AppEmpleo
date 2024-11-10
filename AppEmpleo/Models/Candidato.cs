@@ -13,7 +13,7 @@ public partial class Candidato
 
     public string? Telefono { get; set; }
 
-    public virtual ICollection<Curriculum> Curricula { get; set; } = new List<Curriculum>();
+    public virtual ICollection<Curriculum> Curriculums { get; set; } = new List<Curriculum>();
 
     public virtual Usuario IdNavigation { get; set; } = null!;
 

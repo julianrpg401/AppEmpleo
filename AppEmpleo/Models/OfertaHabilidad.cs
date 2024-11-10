@@ -11,7 +11,7 @@ public partial class OfertaHabilidad
 
     public int HabilidadId { get; set; }
 
-    public virtual Habilidad Habilidades { get; set; } = null!;
+    public virtual Habilidad Habilidad { get; set; } = null!;
 
     public virtual Oferta OfertaEmpleo { get; set; } = null!;
 }

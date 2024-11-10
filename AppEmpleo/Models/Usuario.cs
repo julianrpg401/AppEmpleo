@@ -13,11 +13,13 @@ public partial class Usuario
 
     public string Email { get; set; } = null!;
 
-    public string ContraseñaHash { get; set; } = null!;
+    public string ClaveHash { get; set; } = null!;
 
     public string Rol { get; set; } = null!;
 
     public DateTime FechaRegistro { get; set; }
+
+    public DateOnly FechaNacimiento { get; set; }
 
     public virtual Candidato? Candidato { get; set; }
 

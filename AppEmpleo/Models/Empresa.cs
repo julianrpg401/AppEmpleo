@@ -13,7 +13,7 @@ public partial class Empresa
 
     public string? SitioWeb { get; set; }
 
-    public string? Teléfono { get; set; }
+    public string? Telefono { get; set; }
 
     public virtual ICollection<Empleador> Empleadores { get; set; } = new List<Empleador>();
 }
