@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace AppEmpleo.Models;
 
@@ -13,6 +14,7 @@ public partial class Usuario
 
     public string Email { get; set; } = null!;
 
+    [DisplayName("Contraseña")]
     public string ClaveHash { get; set; } = null!;
 
     public string Rol { get; set; } = null!;

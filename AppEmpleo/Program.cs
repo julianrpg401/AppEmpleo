@@ -44,7 +44,7 @@ namespace AppEmpleo
 
             app.MapGet("/", async context =>
             {
-                context.Response.Redirect("/Register/Register");
+                context.Response.Redirect("/Register/CreateAccount");
             });
 
             app.Run();

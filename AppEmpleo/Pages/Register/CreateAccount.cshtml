@@ -1,5 +1,5 @@
 ﻿@page
-@model AppEmpleo.Pages.Register.RegisterModel
+@model AppEmpleo.Pages.CreateAccount.CreateAccountModel
 @{
     Layout = "~/Pages/Shared/_AltLayout.cshtml";
 }
@@ -19,12 +19,21 @@
             <input asp-for="Usuario.Email" value="" class="register__input" />
         </div>
         <div class="form__group">
-            <label asp-for="Clave" class="label"></label>
-            <input asp-for="Clave" value="" class="register__input" />
+            <label asp-for="Usuario.ClaveHash" class="label"></label>
+            <input asp-for="Usuario.ClaveHash" value="" class="register__input" />
         </div>
         <div class="form__group">
-            <label asp-for="Usuario.Rol" class="label"></label>
-            <input asp-for="Usuario.Rol" value="" class="register__input" />
+            <label for="Rol" class="label">Rol</label>
+            <div class="form__group--radio">
+                <div class="radio__button">
+                    <label asp-for="Usuario.Rol" class="label label__radio">Candidato</label>
+                    <input asp-for="Usuario.Rol" type="radio" value="candidato" class="input__radio" id="candidato" checked />
+                </div>
+                <div class="radio__button">
+                    <label asp-for="Usuario.Rol" class="label label__radio">Empleador</label>
+                    <input asp-for="Usuario.Rol" type="radio" value="empleador" class="input__radio" id="empleador" />
+                </div>
+            </div>
         </div>
 
         <button type="submit" class="btn btn-primary">Crear Cuenta</button>
