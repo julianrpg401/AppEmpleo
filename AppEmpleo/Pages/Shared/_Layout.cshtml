@@ -1,93 +1,152 @@
 ﻿<!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - AppEmpleo</title>
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link href="~/css/layout.css" rel="stylesheet" />
+
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Index - eNno Bootstrap Template</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+
+    <!-- Favicons -->
+    <link href="~/assetsLandingPage/img/favicon.png" rel="icon">
+    <link href="~/assetsLandingPage/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <!-- Vendor CSS Files -->
+    <link href="~/assetsLandingPage/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/assetsLandingPage/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/assetsLandingPage/vendor/aos/aos.css" rel="stylesheet">
+    <link href="~/assetsLandingPage/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="~/assetsLandingPage/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <!-- Main CSS File -->
+    <link href="~/assetsLandingPage/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/register-login.css">
+
 </head>
-<body>
-    <header class="cabeza">
-        <nav class="cabeza__menu">
-            <div class="menu__perfil">
-                <picture class="perfil__caja">
-                    <source media="(min-width: 465px)" srcset="~/img/logo.png" class="caja__avatar" />
-                    <source media="(min-width: 650px)" srcset="~/img/logo.png" class="caja__avatar" />
-                    <img src="~/img/logo.png" alt="perfil.png" class="caja__avatar" />
-                </picture>
-                <div class="perfil__texto perfil__texto--color">
-                    <span class="perfil__nombre">Julian Garcia</span>
-                    <span class="perfil__profesion">Desarrollador web</span>
-                </div>
-            </div>
-            <i class='bx bx-chevron-right toggle'></i>
-            <div class="menu">
-                <div class="menu__buscador">
-                    <i class='bx bx-search buscador__icon icon'></i>
-                    <input type="search" name="name" class="buscador" placeholder="Buscar..." />
-                </div>
-                <ul class="menu__lista">
-                    <li class="lista__opcion">
-                        <a href="" class="opcion__link">
-                            <i class='bx bx-home-alt link__icon icon'></i>
-                            <span class="link__texto">Inicio</span>
-                        </a>
-                    </li>
-                    <li class="lista__opcion">
-                        <a href="" class="opcion__link">
-                            <i class='bx bx-briefcase link__icon icon'></i>
-                            <span class="link__texto">Empleo</span>
-                        </a>
-                    </li>
-                    <li class="lista__opcion">
-                        <a href="" class="opcion__link">
-                            <i class='bx bx-spreadsheet link__icon icon'></i>
-                            <span class="link__texto">Evaluaciones</span>
-                        </a>
-                    </li>
-                    <li class="lista__opcion">
-                        <a href="" class="opcion__link">
-                            <i class='bx bx-bell link__icon icon'></i>
-                            <span class="link__texto">Notificaciones</span>
-                        </a>
-                    </li>
-                    <li class="lista__opcion">
-                        <a href="" class="opcion__link">
-                            <i class='bx bx-slider-alt link__icon icon'></i>
-                            <span class="link__texto">Configuracion</span>
-                        </a>
+<body class="index-page">
+
+    <header id="header" class="header d-flex align-items-center sticky-top">
+        <div class="container-fluid container-xl position-relative d-flex align-items-center">
+
+            <a href="index.html" class="logo d-flex align-items-center me-auto">
+                <!-- Uncomment the line below if you also wish to use an image logo -->
+                <!-- <img src="assets/img/logo.png" alt=""> -->
+                <h1 class="sitename">eNno</h1>
+            </a>
+
+            <nav id="navmenu" class="navmenu">
+                <ul>
+                    <li><a href="#hero" class="active">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#portfolio">Portfolio</a></li>
+                    <li><a href="#team">Team</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li class="register">
+                        <a asp-page="/Register/CreateAccount">CREAR CUENTA</a>
                     </li>
                 </ul>
-                <div class="menu__boton">
-                    <div class="boton__salir">
-                        <a href="#" class="salir__link">
-                            <i class="bx bx-log-out boton__icon icon"></i>
-                            <span class="salir__texto">Cerrar sesión</span>
-                        </a>
-                    </div>
-                    <div class="boton__modo">
-                        <i class="bx bx-moon boton__icon boton__icon--modo icon"></i>
-                        <i class="bx bx-sun boton__icon boton__icon--modo icon"></i>
-                        <span class="modo__texto">Modo oscuro</span>
-                        <div class="modo__switch">
-                            <span class="switch"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </nav>
+                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+            </nav>
+
+            <a href="../Pages/Shared/_Layout.cshtml">Ir a inicio</a>
+
+            <input type="submit" class="btn-getstarted" href="../Index.cshtml" value="Get Started" />
+
+        </div>
     </header>
+
     <div class="container">
-        <main role="main" class="pb-3">
+        <main class="main" role="main">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer id="footer" class="footer">
+
+        <div class="container footer-top">
+            <div class="row gy-4">
+                <div class="col-lg-4 col-md-6 footer-about">
+                    <a href="index.html" class="d-flex align-items-center">
+                        <span class="sitename">eNno</span>
+                    </a>
+                    <div class="footer-contact pt-3">
+                        <p>A108 Adam Street</p>
+                        <p>New York, NY 535022</p>
+                        <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
+                        <p><strong>Email:</strong> <span>info@example.com</span></p>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-3 footer-links">
+                    <h4>Useful Links</h4>
+                    <ul>
+                        <li><i class="bi bi-chevron-right"></i> <a href="#">Home</a></li>
+                        <li><i class="bi bi-chevron-right"></i> <a href="#">About us</a></li>
+                        <li><i class="bi bi-chevron-right"></i> <a href="#">Services</a></li>
+                        <li><i class="bi bi-chevron-right"></i> <a href="#">Terms of service</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-2 col-md-3 footer-links">
+                    <h4>Our Services</h4>
+                    <ul>
+                        <li><i class="bi bi-chevron-right"></i> <a href="#">Web Design</a></li>
+                        <li><i class="bi bi-chevron-right"></i> <a href="#">Web Development</a></li>
+                        <li><i class="bi bi-chevron-right"></i> <a href="#">Product Management</a></li>
+                        <li><i class="bi bi-chevron-right"></i> <a href="#">Marketing</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-4 col-md-12">
+                    <h4>Follow Us</h4>
+                    <p>Cras fermentum odio eu feugiat lide par naso tierra videa magna derita valies</p>
+                    <div class="social-links d-flex">
+                        <a href=""><i class="bi bi-twitter-x"></i></a>
+                        <a href=""><i class="bi bi-facebook"></i></a>
+                        <a href=""><i class="bi bi-instagram"></i></a>
+                        <a href=""><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="container copyright text-center mt-4">
+            <p>© <span>Copyright</span> <strong class="px-1 sitename">eNno</strong> <span>All Rights Reserved</span></p>
+            <div class="credits">
+                <!-- All the links in the footer should remain intact. -->
+                <!-- You can delete the links only if you've purchased the pro version. -->
+                <!-- Licensing information: https://bootstrapmade.com/license/ -->
+                <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+            </div>
+        </div>
+
     </footer>
 
-    <script src="~/js/layout.js"></script>
+    <!-- Scroll Top -->
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Preloader -->
+    <div id="preloader"></div>
+
+    <!-- Vendor JS Files -->
+    <script src="~/assetsLandingPage/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assetsLandingPage/vendor/php-email-form/validate.js"></script>
+    <script src="~/assetsLandingPage/vendor/aos/aos.js"></script>
+    <script src="~/assetsLandingPage/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="~/assetsLandingPage/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="~/assetsLandingPage/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+    <script src="~/assetsLandingPage/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="~/assetsLandingPage/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="~/assetslandingpage/js/main.js"></script>
+
+    <!-- styles JS -->
+    <script src="~/js/styles.js"></script>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
