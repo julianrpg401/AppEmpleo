@@ -52,7 +52,7 @@ namespace AppEmpleo.Pages.Login
                 return Page();
             }
 
-            return RedirectToPage("/Index");
+            return RedirectToPage("/Aplication/Home");
         }
     }
 }

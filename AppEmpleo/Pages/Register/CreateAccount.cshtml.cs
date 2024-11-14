@@ -13,6 +13,7 @@ namespace AppEmpleo.Pages.CreateAccount
     {
         private readonly AppEmpleoContext _appEmpleoContext;
 
+        [BindProperty]
         public Usuario Usuario { get; set; }
 
         public CreateAccountModel(AppEmpleoContext appEmpleoContext)
