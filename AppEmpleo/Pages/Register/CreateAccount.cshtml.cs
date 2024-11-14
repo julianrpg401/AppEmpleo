@@ -12,9 +12,8 @@ namespace AppEmpleo.Pages.CreateAccount
     public class CreateAccountModel : PageModel
     {
         private readonly AppEmpleoContext _appEmpleoContext;
-        private Usuario usuario;
 
-        public Usuario Usuario { get => usuario; set => usuario = value; }
+        public Usuario Usuario { get; set; }
 
         public CreateAccountModel(AppEmpleoContext appEmpleoContext)
         {

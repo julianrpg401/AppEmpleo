@@ -42,10 +42,10 @@ namespace AppEmpleo
             //    context.Response.Redirect("/LandingPage/Home");
             //});
 
-            app.MapGet("/", async context =>
-            {
-                context.Response.Redirect("/Register/CreateAccount");
-            });
+            //app.MapGet("/", async context =>
+            //{
+            //    context.Response.Redirect("/Register/CreateAccount");
+            //});
 
             app.Run();
         }
