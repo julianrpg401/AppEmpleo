@@ -21,6 +21,7 @@ public partial class Usuario
 
     public DateTime FechaRegistro { get; set; }
 
+    [DisplayName("Fecha de nacimiento")]
     public DateOnly FechaNacimiento { get; set; }
 
     public virtual Candidato? Candidato { get; set; }
