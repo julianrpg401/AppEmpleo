@@ -1,5 +1,21 @@
 ﻿@page
 @model AppEmpleo.Pages.Login.LoginModel
-@{
+@* @{
     Layout = "~/Pages/Shared/_AltLayout.cshtml";
-}
+} *@
+
+<div class="register__form">
+    <form method="post" asp-page="Login" class="form">
+        <div class="form__group">
+            <label asp-for="Email" class="label"></label>
+            <input asp-for="Email" type="email" class="register__input" />
+        </div>
+        <div class="form__group">
+            <label asp-for="Clave" class="label"></label>
+            <input asp-for="Clave" type="password" class="register__input" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+
+    </form>
+</div>
