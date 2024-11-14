@@ -1,3 +1,4 @@
+using AppEmpleo.Class;
 using AppEmpleo.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -34,8 +35,12 @@ namespace AppEmpleo.Pages.CreateAccount
 
             usuario.Nombre = usuario.Nombre.ToUpper();
             usuario.Apellido = usuario.Apellido.ToUpper();
+            usuario.Email = usuario.Email.ToLower();
+            usuario.Rol = usuario.Rol.ToUpper();
 
             Console.WriteLine(usuario.Nombre);
+            Console.WriteLine(usuario.Apellido);
+            Console.WriteLine(usuario.Rol);
 
             var existingUser = await _appEmpleoContext.Usuarios.FirstOrDefaultAsync
                 (u => u.Email == usuario.Email);
@@ -47,6 +52,7 @@ namespace AppEmpleo.Pages.CreateAccount
                 return Page();
             }
 
+            usuario.ClaveHash = Encrypt.GetSHA256(usuario.ClaveHash);
             usuario.FechaRegistro = DateTime.Now;
 
             await _appEmpleoContext.Usuarios.AddAsync(usuario);
