@@ -4,6 +4,10 @@
     Layout = "~/Pages/Shared/_AltLayout.cshtml";
 } *@
 
+@{
+    ViewData["BodyClass"] = "bg__pink"; 
+}
+
 <div class="register__form">
     <form method="post" asp-page="Login" class="form">
         <div class="form__group">
@@ -15,7 +19,8 @@
             <input asp-for="Clave" type="password" class="register__input" />
         </div>
 
-        <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+        <button type="submit" class="button button__submit">Iniciar Sesión</button>
+        <p class="form__text"><a class="text__link" href="#">¿Olvidate tu contraseña?</a></p>
 
     </form>
 </div>

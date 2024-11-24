@@ -16,7 +16,8 @@ namespace AppEmpleo
             // Add services to the container.
             builder.Services.AddRazorPages();
 
-            builder.Services.AddDbContext<AppEmpleoContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection")));
+            builder.Services.AddDbContext<AppEmpleoContext>(options
+                => options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection")));
 
             var app = builder.Build();
 

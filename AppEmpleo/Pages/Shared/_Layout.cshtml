@@ -1,60 +1,71 @@
 ﻿<!DOCTYPE html>
 <html lang="es">
 <head>
-
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Index - eNno Bootstrap Template</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobTI</title>
     <meta name="description" content="">
     <meta name="keywords" content="">
 
     <!-- Favicons -->
     <link href="~/assetsLandingPage/img/favicon.png" rel="icon">
     <link href="~/assetsLandingPage/img/apple-touch-icon.png" rel="apple-touch-icon">
+    
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com" rel="preconnect">
-    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
-    <!-- Vendor CSS Files -->
-    <link href="~/assetsLandingPage/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="~/assetsLandingPage/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="~/assetsLandingPage/vendor/aos/aos.css" rel="stylesheet">
-    <link href="~/assetsLandingPage/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-    <link href="~/assetsLandingPage/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-    <!-- Main CSS File -->
-    <link href="~/assetsLandingPage/css/main.css" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/register-login.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="~/assetsLandingPage/css/Index.css">
+    <link href="~/css/register-login.css" rel="stylesheet" />
 </head>
-<body class="index-page">
+<body class="@ViewData["BodyClass"]">
+    <header id="header" class="header">
+        <div class="header__container">
 
-    <header id="header" class="header d-flex align-items-center sticky-top">
-        <div class="container-fluid container-xl position-relative d-flex align-items-center">
-
-            <a href="index.html" class="logo d-flex align-items-center me-auto">
+            <!-- Logo -->
+            <a href="index.html" class="container__logo">
                 <!-- Uncomment the line below if you also wish to use an image logo -->
                 <!-- <img src="assets/img/logo.png" alt=""> -->
-                <h1 class="sitename">eNno</h1>
+                <h1 class="sitename title">JobTI</h1>
             </a>
 
-            <nav id="navmenu" class="navmenu">
-                <ul>
-                    <li><a href="#hero" class="active">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#portfolio">Portfolio</a></li>
-                    <li><a href="#team">Team</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                    <li class="register">
-                        <a asp-page="/Register/CreateAccount">CREAR CUENTA</a>
-                    </li>
-                </ul>
-                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+            <label for="menu-bar" class="fa-solid fa-bars cabeza__barra"></label>
+            <input type="checkbox" id="menu-bar" class="cabeza__input">
+
+            <!-- Menu -->
+            <nav id="menu" class="menu">
+                <div class="menu__container">
+                    <ul class="menu__list">
+                        <li class="list__option"><a href="" class="option">Inicio</a></li>
+                        <li class="list__option"><a href="" class="option">Candidatos</a></li>
+                        <li class="list__option"><a href="" class="option">Empleadores</a></li>
+                        <li class="list__option"><a href="" class="option">Ayuda</a></li>
+                    </ul>
+
+                    <!-- Buttons -->
+                    <div class="buttons">
+                        <a asp-page="/Login/Login" type="button" title="Iniciar sesión" class="button">
+                            <i class="material-icons button__icon">login</i>
+                            Iniciar sesión
+                        </a>
+                        <a asp-page="/Register/CreateAccount" type="button" title="Crear cuenta" class="button">
+                            <i class="material-icons button__icon">account_circle</i>
+                            Crear cuenta
+                        </a>
+                    </div>
+                </div>
             </nav>
-
-            <a href="../Pages/Shared/_Layout.cshtml">Ir a inicio</a>
-
-            <input type="submit" class="btn-getstarted" href="../Index.cshtml" value="Get Started" />
 
         </div>
     </header>
@@ -115,17 +126,6 @@
             </div>
         </div>
 
-        <div class="container copyright text-center mt-4">
-            <p>© <span>Copyright</span> <strong class="px-1 sitename">eNno</strong> <span>All Rights Reserved</span></p>
-            <div class="credits">
-                <!-- All the links in the footer should remain intact. -->
-                <!-- You can delete the links only if you've purchased the pro version. -->
-                <!-- Licensing information: https://bootstrapmade.com/license/ -->
-                <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-            </div>
-        </div>
-
     </footer>
 
     <!-- Scroll Top -->
@@ -134,23 +134,9 @@
     <!-- Preloader -->
     <div id="preloader"></div>
 
-    <!-- Vendor JS Files -->
-    <script src="~/assetsLandingPage/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="~/assetsLandingPage/vendor/php-email-form/validate.js"></script>
-    <script src="~/assetsLandingPage/vendor/aos/aos.js"></script>
-    <script src="~/assetsLandingPage/vendor/glightbox/js/glightbox.min.js"></script>
-    <script src="~/assetsLandingPage/vendor/purecounter/purecounter_vanilla.js"></script>
-    <script src="~/assetsLandingPage/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
-    <script src="~/assetsLandingPage/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-    <script src="~/assetsLandingPage/vendor/swiper/swiper-bundle.min.js"></script>
-    <script src="~/assetslandingpage/js/main.js"></script>
-
-    <!-- styles JS -->
+    <!-- StylesJS -->
     <script src="~/js/styles.js"></script>
-
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/layout.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
