@@ -21,6 +21,16 @@ namespace AppEmpleo.Class
             return existingUser;
         }
 
+        // Validar si el correo electrónico ya está registrado (sobrecarga)
+        public async Task<Usuario?> ValidateExistingUserAsync(string email, string claveHash)
+        {
+            var existingUser = await _appEmpleoContext.Usuarios.FirstOrDefaultAsync
+                (u => u.Email == email && u.ClaveHash == claveHash);
+
+            return existingUser;
+        }
+
+        // Agregar el usuario a la BD
         public async Task AddUserAsync(Usuario usuario)
         {
             await _appEmpleoContext.Usuarios.AddAsync(usuario);
