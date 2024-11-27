@@ -10,7 +10,7 @@
     --background-color: #ffffff;
     --default-color: #444444;
     --heading-color: #5f687b;
-    --accent-color: #8f475b;
+    --accent-color: #813c50;
     --surface-color: #ffffff;
     --contrast-color: #ffffff;
 }
@@ -74,6 +74,7 @@ body {
     background-color: var(--background-color);
     box-shadow: 0px 0 18px rgba(0, 0, 0, 0.1);
     transition: all 0.5s;
+    z-index: 2;
 }
 
 .header__container {
@@ -259,4 +260,8 @@ a {
 .button__register:hover {
     color: var(--contrast-color);
     background-color: color-mix(in srgb, var(--accent-color), transparent 20%);
+}
+
+.footer {
+    background-color: var(--background-color);
 }

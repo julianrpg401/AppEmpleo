@@ -1,7 +1,7 @@
 ﻿:root {
     --blanco: white;
     /*Paleta rosa*/
-    --rosado: #8f475b;
+    --rosado: #813c50;
     --rosado-luz: #ffc6d5;
     --rosado-extra-luz: #ffd9e3;
     --rosado-palido: #ffecf1;
@@ -82,6 +82,16 @@ body {
     font-family: Montserrat;
     font-weight: 600;
     color: var(--negro-gris-luz);
+}
+
+.text__danger {
+    position: absolute;
+    z-index: 0;
+    color: var(--azul-industrial);
+    font-weight: bold;
+    margin-left: 4px;
+    font-size: 1.2rem;
+    vertical-align: middle;
 }
 
 .register__input {
