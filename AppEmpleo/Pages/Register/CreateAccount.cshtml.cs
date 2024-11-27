@@ -3,6 +3,7 @@ using AppEmpleo.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -12,20 +13,22 @@ namespace AppEmpleo.Pages.CreateAccount
     public class CreateAccountModel : PageModel
     {
         private readonly AppEmpleoContext _appEmpleoContext;
+        private UserRepository _userRepository;
 
         [BindProperty]
-        public Usuario Usuario { get; set; }
+        public Usuario Usuario { get; set; } = null!;
 
         public CreateAccountModel(AppEmpleoContext appEmpleoContext)
         {
             _appEmpleoContext = appEmpleoContext;
+            _userRepository = new UserRepository(_appEmpleoContext);
         }
 
         public void OnGet()
         {
         }
 
-        public async Task<IActionResult> OnPostAsync(Usuario usuario)
+        public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
@@ -33,30 +36,17 @@ namespace AppEmpleo.Pages.CreateAccount
                 return Page();
             }
 
-            usuario.Nombre = usuario.Nombre.ToUpper();
-            usuario.Apellido = usuario.Apellido.ToUpper();
-            usuario.Email = usuario.Email.ToLower();
-            usuario.Rol = usuario.Rol.ToUpper();
+            var existingUser = await _userRepository.ValidateExistingUserAsync(Usuario);
 
-            Console.WriteLine(usuario.Nombre);
-            Console.WriteLine(usuario.Apellido);
-            Console.WriteLine(usuario.Rol);
-
-            var existingUser = await _appEmpleoContext.Usuarios.FirstOrDefaultAsync
-                (u => u.Email == usuario.Email);
-
+            // Valida si el correo electrónico ya existe
             if (existingUser != null)
             {
-                ModelState.AddModelError("usuario.Email", "El correo electrónico ya está registrado.");
-                Console.WriteLine("usuario.Email", "El correo electrónico ya está registrado.");
+                Console.WriteLine("El correo electrónico ya está registrado");
                 return Page();
             }
 
-            usuario.ClaveHash = Encrypt.GetSHA256(usuario.ClaveHash);
-            usuario.FechaRegistro = DateTime.Now;
-
-            await _appEmpleoContext.Usuarios.AddAsync(usuario);
-            await _appEmpleoContext.SaveChangesAsync();
+            Usuario = Data.UserFormat(Usuario);
+            await _userRepository.AddUserAsync(Usuario);
 
             return RedirectToPage("/Register/RegisterSuccess");
         }
