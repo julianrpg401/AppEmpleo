@@ -10,18 +10,19 @@ namespace AppEmpleo.Pages.Login
     public class LoginModel : PageModel
     {
         private readonly AppEmpleoContext _appEmpleoContext;
-        private Usuario usuario;
+        private UserRepository _userRepository;
 
         [BindProperty]
-        public string Email { get; set; }
+        public string Email { get; set; } = null!;
 
         [BindProperty]
         [DisplayName("Contraseña")]
-        public string Clave { get; set; }
+        public string Clave { get; set; } = null!;
 
         public LoginModel(AppEmpleoContext appEmpleoContext)
         {
             _appEmpleoContext = appEmpleoContext;
+            _userRepository = new UserRepository(_appEmpleoContext);
         }
 
         public void OnGet()
@@ -33,22 +34,16 @@ namespace AppEmpleo.Pages.Login
             if (!ModelState.IsValid)
             {
                 Console.WriteLine("Estado del modelo no válido");
-                Console.WriteLine(Email);
-                Console.WriteLine(Clave);
-
                 return Page();
             }
 
-            Console.WriteLine(Clave);
+            Clave = Encrypt.GetSHA256(Clave);
 
-            string claveHash = Encrypt.GetSHA256(Clave);
-
-            var existingUser = await _appEmpleoContext.Usuarios
-                .FirstOrDefaultAsync(u => u.Email == Email && u.ClaveHash == claveHash);
+            var existingUser = await _userRepository.ValidateExistingUserAsync(Email, Clave);
 
             if (existingUser == null)
             {
-                ModelState.AddModelError("Usuario.Email", "El correo electrónico no existe o no está registrado.");
+                Console.WriteLine("El correo electrónico no está registrado");
                 return Page();
             }
 
