@@ -19,7 +19,30 @@ namespace AppEmpleo.Class
                 FechaNacimiento = usuario.FechaNacimiento
             };
 
+            UserTypeFormat(userFormatted);
+
             return userFormatted;
+        }
+
+        public static void UserTypeFormat(Usuario usuario)
+        {
+            switch (usuario.Rol)
+            {
+                case "CANDIDATO":
+                    usuario.Candidato = new Candidato()
+                    {
+                        CandidatoId = usuario.UsuarioId,
+                        UsuarioId = usuario.UsuarioId
+                    };
+                    break;
+                case "EMPLEADOR":
+                    usuario.Empleador = new Empleador()
+                    {
+                        EmpleadorId = usuario.UsuarioId,
+                        UsuarioId = usuario.UsuarioId
+                    };
+                    break;
+            }
         }
     }
 }
