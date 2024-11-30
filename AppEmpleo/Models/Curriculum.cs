@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppEmpleo.Models;
 
 public partial class Curriculum
 {
-    public int Id { get; set; }
+    [Key]
+    public int CurriculumId { get; set; }
 
+    [ForeignKey("Candidato")]
     public int CandidatoId { get; set; }
 
     public string NombreArchivo { get; set; } = null!;
 
     public string RutaArchivo { get; set; } = null!;
 
-    public DateTime FechaCarga { get; set; }
+    public DateOnly FechaCarga { get; set; }
 
     public bool EsPreferido { get; set; }
 

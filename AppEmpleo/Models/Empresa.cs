@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace AppEmpleo.Models;
 
 public partial class Empresa
 {
-    public int Id { get; set; }
+    [Key]
+    public int EmpresaId { get; set; }
 
     public string Nombre { get; set; } = null!;
 
-    public string? Dirección { get; set; }
+    public string? Direccion { get; set; }
 
     public string? SitioWeb { get; set; }
 

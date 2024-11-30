@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace AppEmpleo.Models;
 
 public partial class Categoria
 {
-    public string Codigo { get; set; } = null!;
+    [Key]
+    public int CategoriaId { get; set; }
 
     public string Nombre { get; set; } = null!;
 

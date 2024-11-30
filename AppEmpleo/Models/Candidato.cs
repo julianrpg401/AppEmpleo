@@ -1,21 +1,27 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppEmpleo.Models;
 
 public partial class Candidato
 {
-    public int Id { get; set; }
+    [Key]
+    public int CandidatoId { get; set; }
 
-    public string? Curp { get; set; }
+    [ForeignKey("Usuario")]
+    public int UsuarioId { get; set; }
 
-    public string? Dirección { get; set; }
+    public virtual Usuario Usuario { get; set; } = null!;
 
+    public string? Direccion { get; set; }
+
+    [Phone(ErrorMessage = "El teléfono no tiene un formato válido")]
     public string? Telefono { get; set; }
 
     public virtual ICollection<Curriculum> Curriculums { get; set; } = new List<Curriculum>();
-
-    public virtual Usuario IdNavigation { get; set; } = null!;
 
     public virtual ICollection<Postulacion> Postulaciones { get; set; } = new List<Postulacion>();
 }

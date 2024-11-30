@@ -15,7 +15,7 @@ namespace AppEmpleo.Class
                 Email = usuario.Email.ToUpper(),
                 ClaveHash = Encrypt.GetSHA256(usuario.ClaveHash),
                 Rol = usuario.Rol.ToUpper(),
-                FechaRegistro = DateTime.Now,
+                FechaRegistro = DateOnly.FromDateTime(DateTime.Now),
                 FechaNacimiento = usuario.FechaNacimiento
             };
 

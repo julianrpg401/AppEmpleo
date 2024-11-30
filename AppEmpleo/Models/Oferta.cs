@@ -1,33 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppEmpleo.Models;
 
 public partial class Oferta
 {
-    public int Id { get; set; }
+    [Key]
+    public int OfertaId { get; set; }
 
+    [ForeignKey("Empleador")]
     public int EmpleadorId { get; set; }
 
+    public virtual Empleador Empleador { get; set; } = null!;
+
+    [ForeignKey("Categoria")]
+    public int CategoriaId { get; set; }
+
+    public virtual Categoria Categoria { get; set; } = null!;
+
+    [Required]
+    [MaxLength(100)]
     public string NombreOferta { get; set; } = null!;
 
+    [Required]
     public string Descripcion { get; set; } = null!;
 
     public DateOnly FechaInicio { get; set; }
 
     public DateOnly FechaCierre { get; set; }
 
+    [Range(0, 1000000)]
+    [Column(TypeName = "decimal(10, 2)")]
     public decimal Salario { get; set; }
 
     public string ModalidadTrabajo { get; set; } = null!;
 
     public string UbicacionTrabajo { get; set; } = null!;
-
-    public string CategoriaCodigo { get; set; } = null!;
-
-    public virtual Categoria CategoriaCodigoNavigation { get; set; } = null!;
-
-    public virtual Empleador Empleador { get; set; } = null!;
 
     public virtual ICollection<OfertaHabilidad> OfertaHabilidades { get; set; } = new List<OfertaHabilidad>();
 
