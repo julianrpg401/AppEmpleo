@@ -37,13 +37,19 @@ namespace AppEmpleo.Pages.Login
                 return Page();
             }
 
-            Clave = Encrypt.GetSHA256(Clave);
-
-            var existingUser = await _userRepository.ValidateExistingUserAsync(Email, Clave);
+            var existingUser = await _userRepository.ValidateExistingUserAsync(Email);
 
             if (existingUser == null)
             {
                 Console.WriteLine("El correo electrónico no está registrado");
+                return Page();
+            }
+
+            Clave = Encrypt.GetSHA256(Clave);
+
+            if (existingUser.ClaveHash != Clave)
+            {
+                Console.WriteLine("Contraseña incorrecta");
                 return Page();
             }
 
