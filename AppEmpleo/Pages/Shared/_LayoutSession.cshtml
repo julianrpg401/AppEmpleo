@@ -1,4 +1,13 @@
-﻿<!DOCTYPE html>
+﻿@inject IHttpContextAccessor HttpContextAccessor
+@using AppEmpleo.Models
+@using System.Text.Json
+@{
+    var currentUserJson = HttpContextAccessor.HttpContext?.Session.GetString("CurrentUser") ?? TempData["CurrentUser"] as string;
+    Usuario? currentUser = currentUserJson != null
+        ? JsonSerializer.Deserialize<Usuario>(currentUserJson)
+        : null;
+}
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="utf-8" />
@@ -17,7 +26,7 @@
                     <img src="~/img/logo.png" alt="perfil.png" class="caja__avatar" />
                 </picture>
                 <div class="perfil__texto perfil__texto--color">
-                    <span class="perfil__nombre">Julian Garcia</span>
+                    <span class="perfil__nombre">@currentUser.Nombre</span>
                     <span class="perfil__profesion">Desarrollador web</span>
                 </div>
             </div>
