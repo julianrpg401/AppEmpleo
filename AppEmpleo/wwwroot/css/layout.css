@@ -116,6 +116,7 @@ body.dark {
 }
 
 .perfil__nombre {
+    display: block;
     font-weight: 700;
 }
 
