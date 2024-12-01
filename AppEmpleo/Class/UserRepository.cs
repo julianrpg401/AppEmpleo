@@ -1,5 +1,6 @@
 ﻿using AppEmpleo.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace AppEmpleo.Class
 {
@@ -15,19 +16,37 @@ namespace AppEmpleo.Class
         // Validar si el correo electrónico ya está registrado
         public async Task<Usuario?> ValidateExistingUserAsync(Usuario usuario)
         {
-            var existingUser = await _appEmpleoContext.Usuarios.FirstOrDefaultAsync
-                (u => u.Email == usuario.Email);
+            try
+            {
+                var existingUser = await _appEmpleoContext.Usuarios.FirstOrDefaultAsync
+                    (u => u.Email == usuario.Email);
 
-            return existingUser;
+                return existingUser;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            throw new ArgumentException("Error al validar el email");
         }
 
         // Validar si el correo electrónico ya está registrado (sobrecarga)
-        public async Task<Usuario?> ValidateExistingUserAsync(string email, string claveHash)
+        public async Task<Usuario?> ValidateExistingUserAsync(string email)
         {
-            var existingUser = await _appEmpleoContext.Usuarios.FirstOrDefaultAsync
-                (u => u.Email == email && u.ClaveHash == claveHash);
+            try
+            {
+                var existingUser = await _appEmpleoContext.Usuarios.FirstOrDefaultAsync
+                    (u => u.Email == email);
+                
+                return existingUser;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
-            return existingUser;
+            throw new ArgumentException("Error al validar el email");
         }
 
         // Agregar el usuario a la BD
