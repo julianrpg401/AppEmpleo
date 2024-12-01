@@ -16,6 +16,18 @@ namespace AppEmpleo
             // Add services to the container.
             builder.Services.AddRazorPages();
 
+            // Registrar IHttpContextAccessor
+            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            // Agregar servicio
+            builder.Services.AddDistributedMemoryCache(); // Para manejar sesiones en memoria
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30); // Tiempo de expiración de la sesión
+                options.Cookie.HttpOnly = true; // Protección contra scripts maliciosos
+                options.Cookie.IsEssential = true; // Requerido para políticas de consentimiento
+            });
+
             builder.Services.AddDbContext<AppEmpleoContext>(options
                 => options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection")));
 
@@ -30,10 +42,13 @@ namespace AppEmpleo
             }
 
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
 
             app.UseRouting();
 
+            app.UseSession();
+            
             app.UseAuthorization();
 
             app.MapRazorPages();
