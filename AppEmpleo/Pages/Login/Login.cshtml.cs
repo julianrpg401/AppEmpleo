@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
+using System.Text.Json;
 
 namespace AppEmpleo.Pages.Login
 {
@@ -53,7 +54,9 @@ namespace AppEmpleo.Pages.Login
                 return Page();
             }
 
-            return RedirectToPage("/Aplication/Home");
+            TempData["CurrentUser"] = JsonSerializer.Serialize(existingUser);
+
+            return RedirectToPage("/Application/Home");
         }
     }
 }
