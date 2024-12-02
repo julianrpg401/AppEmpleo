@@ -12,16 +12,14 @@ namespace AppEmpleo.Pages.CreateAccount
 {
     public class CreateAccountModel : PageModel
     {
-        private readonly AppEmpleoContext _appEmpleoContext;
-        private UserRepository _userRepository;
+        private readonly UserRepository _userRepository;
 
         [BindProperty]
         public Usuario Usuario { get; set; } = null!;
 
-        public CreateAccountModel(AppEmpleoContext appEmpleoContext)
+        public CreateAccountModel(UserRepository userRepository)
         {
-            _appEmpleoContext = appEmpleoContext;
-            _userRepository = new UserRepository(_appEmpleoContext);
+            _userRepository = userRepository;
         }
 
         public void OnGet()
