@@ -3,9 +3,7 @@
 @using System.Text.Json
 @{
     var currentUserJson = HttpContextAccessor.HttpContext?.Session.GetString("CurrentUser") ?? TempData["CurrentUser"] as string;
-    Usuario? currentUser = currentUserJson != null
-        ? JsonSerializer.Deserialize<Usuario>(currentUserJson)
-        : null;
+    Usuario? currentUser = currentUserJson != null ? JsonSerializer.Deserialize<Usuario>(currentUserJson) : null;
 }
 <!DOCTYPE html>
 <html lang="es">
