@@ -1,3 +1,4 @@
+using AppEmpleo.Class;
 using AppEmpleo.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,7 +10,7 @@ namespace AppEmpleo
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            //Agregar consola
+            // Agregar consola
             builder.Logging.ClearProviders();
             builder.Logging.AddConsole();
 
@@ -28,8 +29,14 @@ namespace AppEmpleo
                 options.Cookie.IsEssential = true; // Requerido para políticas de consentimiento
             });
 
+            // Agregar la cadena de conexión (configuración de EF)
             builder.Services.AddDbContext<AppEmpleoContext>(options
                 => options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection")));
+
+            // Registrar repositorios y servicios
+            builder.Services.AddScoped<UserRepository>();
+            builder.Services.AddScoped<OfferRepository>();
+
 
             var app = builder.Build();
 
