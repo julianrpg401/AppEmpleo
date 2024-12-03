@@ -36,9 +36,9 @@ namespace AppEmpleo.Class
                     };
                     break;
                 case "EMPLEADOR":
-                    usuario.Empleador = new Empleador()
+                    usuario.Reclutador = new Reclutador()
                     {
-                        EmpleadorId = usuario.UsuarioId,
+                        ReclutadorId = usuario.UsuarioId,
                         UsuarioId = usuario.UsuarioId
                     };
                     break;
