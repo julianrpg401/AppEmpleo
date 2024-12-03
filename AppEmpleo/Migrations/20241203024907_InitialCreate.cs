@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AppEmpleo.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -22,22 +22,6 @@ namespace AppEmpleo.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categorias", x => x.CategoriaId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Empresas",
-                columns: table => new
-                {
-                    EmpresaId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Direccion = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SitioWeb = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Telefono = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Empresas", x => x.EmpresaId);
                 });
 
             migrationBuilder.CreateTable(
@@ -94,25 +78,18 @@ namespace AppEmpleo.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Empleadores",
+                name: "Reclutadores",
                 columns: table => new
                 {
-                    EmpleadorId = table.Column<int>(type: "int", nullable: false)
+                    ReclutadorId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UsuarioId = table.Column<int>(type: "int", nullable: false),
-                    EmpresaId = table.Column<int>(type: "int", nullable: false)
+                    UsuarioId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Empleadores", x => x.EmpleadorId);
+                    table.PrimaryKey("PK_Reclutadores", x => x.ReclutadorId);
                     table.ForeignKey(
-                        name: "FK_Empleadores_Empresas_EmpresaId",
-                        column: x => x.EmpresaId,
-                        principalTable: "Empresas",
-                        principalColumn: "EmpresaId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Empleadores_Usuarios_UsuarioId",
+                        name: "FK_Reclutadores_Usuarios_UsuarioId",
                         column: x => x.UsuarioId,
                         principalTable: "Usuarios",
                         principalColumn: "UsuarioId",
@@ -148,7 +125,7 @@ namespace AppEmpleo.Migrations
                 {
                     OfertaId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    EmpleadorId = table.Column<int>(type: "int", nullable: false),
+                    ReclutadorId = table.Column<int>(type: "int", nullable: false),
                     CategoriaId = table.Column<int>(type: "int", nullable: false),
                     NombreOferta = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -168,10 +145,10 @@ namespace AppEmpleo.Migrations
                         principalColumn: "CategoriaId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Ofertas_Empleadores_EmpleadorId",
-                        column: x => x.EmpleadorId,
-                        principalTable: "Empleadores",
-                        principalColumn: "EmpleadorId",
+                        name: "FK_Ofertas_Reclutadores_ReclutadorId",
+                        column: x => x.ReclutadorId,
+                        principalTable: "Reclutadores",
+                        principalColumn: "ReclutadorId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -244,17 +221,6 @@ namespace AppEmpleo.Migrations
                 column: "CandidatoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Empleadores_EmpresaId",
-                table: "Empleadores",
-                column: "EmpresaId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Empleadores_UsuarioId",
-                table: "Empleadores",
-                column: "UsuarioId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_OfertaHabilidades_HabilidadId",
                 table: "OfertaHabilidades",
                 column: "HabilidadId");
@@ -270,9 +236,9 @@ namespace AppEmpleo.Migrations
                 column: "CategoriaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ofertas_EmpleadorId",
+                name: "IX_Ofertas_ReclutadorId",
                 table: "Ofertas",
-                column: "EmpleadorId");
+                column: "ReclutadorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Postulaciones_CandidatoId",
@@ -288,6 +254,12 @@ namespace AppEmpleo.Migrations
                 name: "IX_Postulaciones_OfertaEmpleoId",
                 table: "Postulaciones",
                 column: "OfertaEmpleoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reclutadores_UsuarioId",
+                table: "Reclutadores",
+                column: "UsuarioId",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -315,10 +287,7 @@ namespace AppEmpleo.Migrations
                 name: "Categorias");
 
             migrationBuilder.DropTable(
-                name: "Empleadores");
-
-            migrationBuilder.DropTable(
-                name: "Empresas");
+                name: "Reclutadores");
 
             migrationBuilder.DropTable(
                 name: "Usuarios");

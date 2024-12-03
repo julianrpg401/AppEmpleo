@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppEmpleo.Migrations
 {
     [DbContext(typeof(AppEmpleoContext))]
-    [Migration("20241130025941_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20241203024907_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.4")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -99,56 +99,6 @@ namespace AppEmpleo.Migrations
                     b.ToTable("Curriculums");
                 });
 
-            modelBuilder.Entity("AppEmpleo.Models.Empleador", b =>
-                {
-                    b.Property<int>("EmpleadorId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmpleadorId"));
-
-                    b.Property<int>("EmpresaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
-
-                    b.HasKey("EmpleadorId");
-
-                    b.HasIndex("EmpresaId");
-
-                    b.HasIndex("UsuarioId")
-                        .IsUnique();
-
-                    b.ToTable("Empleadores");
-                });
-
-            modelBuilder.Entity("AppEmpleo.Models.Empresa", b =>
-                {
-                    b.Property<int>("EmpresaId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmpresaId"));
-
-                    b.Property<string>("Direccion")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SitioWeb")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Telefono")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("EmpresaId");
-
-                    b.ToTable("Empresas");
-                });
-
             modelBuilder.Entity("AppEmpleo.Models.Habilidad", b =>
                 {
                     b.Property<int>("HabilidadId")
@@ -181,9 +131,6 @@ namespace AppEmpleo.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("EmpleadorId")
-                        .HasColumnType("int");
-
                     b.Property<DateOnly>("FechaCierre")
                         .HasColumnType("date");
 
@@ -199,6 +146,9 @@ namespace AppEmpleo.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int>("ReclutadorId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Salario")
                         .HasColumnType("decimal(10, 2)");
 
@@ -210,7 +160,7 @@ namespace AppEmpleo.Migrations
 
                     b.HasIndex("CategoriaId");
 
-                    b.HasIndex("EmpleadorId");
+                    b.HasIndex("ReclutadorId");
 
                     b.ToTable("Ofertas");
                 });
@@ -267,6 +217,25 @@ namespace AppEmpleo.Migrations
                     b.HasIndex("OfertaEmpleoId");
 
                     b.ToTable("Postulaciones");
+                });
+
+            modelBuilder.Entity("AppEmpleo.Models.Reclutador", b =>
+                {
+                    b.Property<int>("ReclutadorId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReclutadorId"));
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ReclutadorId");
+
+                    b.HasIndex("UsuarioId")
+                        .IsUnique();
+
+                    b.ToTable("Reclutadores");
                 });
 
             modelBuilder.Entity("AppEmpleo.Models.Usuario", b =>
@@ -333,25 +302,6 @@ namespace AppEmpleo.Migrations
                     b.Navigation("Candidato");
                 });
 
-            modelBuilder.Entity("AppEmpleo.Models.Empleador", b =>
-                {
-                    b.HasOne("AppEmpleo.Models.Empresa", "Empresa")
-                        .WithMany("Empleadores")
-                        .HasForeignKey("EmpresaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AppEmpleo.Models.Usuario", "Usuario")
-                        .WithOne("Empleador")
-                        .HasForeignKey("AppEmpleo.Models.Empleador", "UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Empresa");
-
-                    b.Navigation("Usuario");
-                });
-
             modelBuilder.Entity("AppEmpleo.Models.Oferta", b =>
                 {
                     b.HasOne("AppEmpleo.Models.Categoria", "Categoria")
@@ -360,15 +310,15 @@ namespace AppEmpleo.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AppEmpleo.Models.Empleador", "Empleador")
+                    b.HasOne("AppEmpleo.Models.Reclutador", "Reclutador")
                         .WithMany("Ofertas")
-                        .HasForeignKey("EmpleadorId")
+                        .HasForeignKey("ReclutadorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Categoria");
 
-                    b.Navigation("Empleador");
+                    b.Navigation("Reclutador");
                 });
 
             modelBuilder.Entity("AppEmpleo.Models.OfertaHabilidad", b =>
@@ -417,6 +367,17 @@ namespace AppEmpleo.Migrations
                     b.Navigation("OfertaEmpleo");
                 });
 
+            modelBuilder.Entity("AppEmpleo.Models.Reclutador", b =>
+                {
+                    b.HasOne("AppEmpleo.Models.Usuario", "Usuario")
+                        .WithOne("Reclutador")
+                        .HasForeignKey("AppEmpleo.Models.Reclutador", "UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("AppEmpleo.Models.Candidato", b =>
                 {
                     b.Navigation("Curriculums");
@@ -434,16 +395,6 @@ namespace AppEmpleo.Migrations
                     b.Navigation("Postulaciones");
                 });
 
-            modelBuilder.Entity("AppEmpleo.Models.Empleador", b =>
-                {
-                    b.Navigation("Ofertas");
-                });
-
-            modelBuilder.Entity("AppEmpleo.Models.Empresa", b =>
-                {
-                    b.Navigation("Empleadores");
-                });
-
             modelBuilder.Entity("AppEmpleo.Models.Habilidad", b =>
                 {
                     b.Navigation("OfertaHabilidades");
@@ -456,11 +407,16 @@ namespace AppEmpleo.Migrations
                     b.Navigation("Postulaciones");
                 });
 
+            modelBuilder.Entity("AppEmpleo.Models.Reclutador", b =>
+                {
+                    b.Navigation("Ofertas");
+                });
+
             modelBuilder.Entity("AppEmpleo.Models.Usuario", b =>
                 {
                     b.Navigation("Candidato");
 
-                    b.Navigation("Empleador");
+                    b.Navigation("Reclutador");
                 });
 #pragma warning restore 612, 618
         }
