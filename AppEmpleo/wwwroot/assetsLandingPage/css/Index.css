@@ -7,44 +7,46 @@
 
 /* Global colors */
 :root {
-    --background-color: #ffffff;
-    --default-color: #444444;
-    --heading-color: #5f687b;
-    --accent-color: #813c50;
-    --surface-color: #ffffff;
-    --contrast-color: #ffffff;
-}
-
-/* Nav menu colors */
-:root {
-    --nav-color: #5f687b;
-    --nav-hover-color: #10bc69;
-    --nav-mobile-background-color: #ffffff;
-    --nav-dropdown-background-color: #ffffff;
-    --nav-dropdown-color: #5f687b;
-    --nav-dropdown-hover-color: #10bc69;
-}
-
-/* Color presets */
-.light-background {
-    --background-color: #f9f9f9;
-    --surface-color: #ffffff;
-}
-
-.dark-background {
-    --background-color: #060606;
-    --default-color: #ffffff;
-    --heading-color: #ffffff;
-    --surface-color: #252525;
-    --contrast-color: #ffffff;
-}
-
-.accent-background {
-    --background-color: #10bc69;
-    --default-color: #ffffff;
-    --heading-color: #ffffff;
-    --surface-color: #14eb83;
-    --contrast-color: #ffffff;
+    --blanco: #fff;
+    --negro: #000;
+    /*Paleta vino tinto*/
+    --vino-tinto: #813c50;
+    --vino-tinto-medio: #875065;
+    --vino-tinto-luz: #d397ae;
+    --vino-tinto-extra-luz: #f4c3d7;
+    /*Paleta rosa*/
+    --rosado: #ffb3c8;
+    --rosado-luz: #ffc6d5;
+    --rosado-extra-luz: #ffd9e3;
+    --rosado-palido: #ffecf1;
+    --rosado-blanco: #fff8fa;
+    /*Paleta gris*/
+    --gris: #b6b6b6;
+    --gris-luz: #c8c8c8;
+    --gris-extra-luz: #dbdbdb;
+    --gris-palido: #ededed;
+    --gris-blanco: #f7f7f7;
+    /*Paleta gris-azul*/
+    --gris-azul: #586272;
+    --gris-azul-luz: #a6aec1;
+    --gris-azul-extra-luz: #cfd5e1;
+    --gris-azul-palido: #ededf2;
+    /*Paleta negro-gris*/
+    --negro-gris: #4d4d4d;
+    --negro-gris-luz: #757575;
+    --negro-gris-extra-luz: #cfd5e1;
+    --negro-gris-palido: #c5c5c5;
+    /*Paleta complementaria*/
+    --azul-industrial: #44749d;
+    --gris-industrial: #c6d4e1;
+    --cafe-grisaceo: #bdb8ad;
+    --cafe-grisaceo-luz: #ebe7e0;
+    --cafe-grisaceo-blanco: #f4f1ed;
+    /*Transiciones*/
+    --tran-02: all 0.2s ease;
+    --tran-03: all 0.3s ease;
+    --tran-04: all 0.4s ease;
+    --tran-05: all 0.5s ease;
 }
 
 /* Smooth scroll */
@@ -59,10 +61,11 @@ body {
     box-sizing: border-box;
     color: var(--default-color);
     font-family: var(--default-font);
+    color: var(--gris-azul);
 }
 
 .bg__white {
-    background-color: var(--background-color);
+    background-color: #fff;
 }
 
 .header {
@@ -71,8 +74,8 @@ body {
     width: 100%;
     height: min-content;
     font-family: var(--heading-font);
-    background-color: var(--background-color);
-    box-shadow: 0px 0 18px rgba(0, 0, 0, 0.1);
+    background-color: var(--blanco);
+    box-shadow: 0px 0 18px rgba(0, 0, 0, 0.2);
     transition: all 0.5s;
     z-index: 2;
 }
@@ -83,7 +86,7 @@ body {
     justify-content: space-between;
     height: 4rem;
     padding: 0 8%;
-    color: var(--heading-color);
+    color: var(--gris-azul);
 }
 
 .menu, .cabeza__input {
@@ -100,7 +103,7 @@ body {
 
 a {
     text-decoration: none;
-    color: var(--heading-color);
+    color: var(--gris-azul);
 }
 
 .cabeza__barra:active {
@@ -131,7 +134,6 @@ a {
     margin: 6rem 2rem;
     padding: 3rem 2rem;
     box-shadow: 0 0 4rem 3rem rgba(44, 2, 27, 0.2);
-    background-color: var(--contrast-color);
     border-radius: 1rem;
     font-weight: 600;
 }
@@ -163,8 +165,8 @@ a {
     padding: 1rem 2rem;
     border-radius: 2rem;
     box-shadow: 0 0 2rem 1rem rgba(44, 2, 27, .05);
-    background-color: var(--accent-color);
-    color: var(--contrast-color);
+    background-color: var(--vino-tinto);
+    color: var(--rosado-blanco);
     transition: .5s;
 }
 
@@ -173,7 +175,7 @@ a {
 }
 
 .button:hover {
-    color: var(--heading-color);
+    background-color: var(--vino-tinto-medio);
     transition: .5s;
 }
 
@@ -229,13 +231,13 @@ a {
 
 .container__text {
     padding: 0 1.5rem;
-    color: var(--heading-color);
 }
 
 .text__title {
     margin-bottom: .4rem;
     font-size: 2rem;
     line-height: 36px;
+    color: color-mix(in srgb, var(--negro-gris), transparent 20%);
 }
 
 .text__paragraph {
@@ -243,7 +245,7 @@ a {
     margin-bottom: 2rem;
     font-size: 1.2rem;
     font-weight: 400;
-    color: color-mix(in srgb, var(--default-color), transparent 30%);
+    color: color-mix(in srgb, var(--negro-gris), transparent 30%);
 }
 
 .button__register {
@@ -258,8 +260,7 @@ a {
 }
 
 .button__register:hover {
-    color: var(--contrast-color);
-    background-color: color-mix(in srgb, var(--accent-color), transparent 20%);
+    background-color: var(--vino-tinto-medio)
 }
 
 .footer {
