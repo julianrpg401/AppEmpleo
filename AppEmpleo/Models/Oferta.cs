@@ -10,10 +10,10 @@ public partial class Oferta
     [Key]
     public int OfertaId { get; set; }
 
-    [ForeignKey("Empleador")]
-    public int EmpleadorId { get; set; }
+    [ForeignKey("Reclutador")]
+    public int ReclutadorId { get; set; }
 
-    public virtual Empleador Empleador { get; set; } = null!;
+    public virtual Reclutador Reclutador { get; set; } = null!;
 
     [ForeignKey("Categoria")]
     public int CategoriaId { get; set; }

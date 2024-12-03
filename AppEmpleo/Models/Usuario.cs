@@ -37,7 +37,7 @@ public partial class Usuario
     public DateOnly FechaRegistro { get; set; }
 
     [ForeignKey("UsuarioId")]
-    public virtual Empleador? Empleador { get; set; }
+    public virtual Reclutador? Reclutador { get; set; }
 
     [ForeignKey("UsuarioId")]
     public virtual Candidato? Candidato { get; set; }

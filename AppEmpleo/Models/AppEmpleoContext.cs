@@ -16,8 +16,7 @@ public partial class AppEmpleoContext : DbContext
     }
 
     public DbSet<Usuario> Usuarios { get; set; }
-    public DbSet<Empresa> Empresas { get; set; }
-    public DbSet<Empleador> Empleadores { get; set; }
+    public DbSet<Reclutador> Reclutadores { get; set; }
     public DbSet<Candidato> Candidatos { get; set; }
     public DbSet<Curriculum> Curriculums { get; set; }
     public DbSet<Categoria> Categorias { get; set; }
