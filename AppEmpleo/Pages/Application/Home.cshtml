@@ -1,8 +1,44 @@
 ﻿@page
 @model AppEmpleo.Pages.LandingPage.HomeModel
+@inject IHttpContextAccessor HttpContextAccessor
+@using AppEmpleo.Models
+@using System.Text.Json
 @{
+    ViewData["Title"] = "Ofertas de empleo";
     Layout = "~/Pages/Shared/_LayoutSession.cshtml";
+
+    var currentUserJson = HttpContextAccessor.HttpContext?.Session.GetString("CurrentUser") ?? TempData["CurrentUser"] as string;
+    Usuario? currentUser = currentUserJson != null ? JsonSerializer.Deserialize<Usuario>(currentUserJson) : null;
 }
 
-
-<div class="text-center">Plataforma de empleo IT (Sesión abierta)</div>
+<div class="role">
+    @if(currentUser.Rol == "CANDIDATO")
+    {
+        <p class="p_prueba">Eres candidato</p>
+        <div class="search__container">
+            <h1>Resultados de búsqueda</h1>
+            <ul class="list__offers">
+                @if (Model.Ofertas.Count <= 0)
+                {
+                    <li>No hay ofertas para mostrar</li>
+                }
+                else
+                {
+                    foreach (var oferta in Model.Ofertas)
+                    {
+                        <li class="offer">
+                            <h2 class="offer__title">@oferta.NombreOferta</h2>
+                            <ul class="offer__skills">
+                                @* @foreach (var habilidad in Model.Ofertas.) *@
+                            </ul>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    }
+    else
+    {
+        <p class="p_prueba">Eres reclutador</p>
+    }
+</div>
