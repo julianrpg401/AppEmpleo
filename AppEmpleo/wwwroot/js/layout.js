@@ -5,6 +5,11 @@ const body = document.querySelector("body"),
     modoSwitch = body.querySelector(".modo__switch"),
     modoTexto = body.querySelector(".modo__texto");
 
+toggle.addEventListener("click", () => {
+    cabeza.classList.toggle("close");
+    console.log(cabeza.classList);
+});
+
 modoSwitch.addEventListener("click", () => {
     body.classList.toggle("dark");
 });
