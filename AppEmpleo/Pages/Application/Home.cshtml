@@ -40,5 +40,56 @@
     else
     {
         <p class="p_prueba">Eres reclutador</p>
+
+        <div class="default__form">
+            <form method="post" asp-page="Home" class="form">
+
+                <div class="form__group">
+                    <label asp-for="Oferta.NombreOferta" class="label"></label>
+                    <input asp-for="Oferta.NombreOferta" type="text" value="" class="form__input" />
+                    @* <span asp-validation-for="Usuario.Nombre" class="text__danger"></span> *@
+                </div>
+                <div class="form__group">
+                    <label asp-for="Oferta.Descripcion" class="label"></label>
+                    <input asp-for="Oferta.Descripcion" type="text" value="" class="form__input" />
+                    @* <span asp-validation-for="Usuario.Apellido" class="text__danger"></span> *@
+                </div>
+                <div class="form__group">
+                    <label asp-for="Oferta.FechaInicio" class="label"></label>
+                    <input asp-for="Oferta.FechaInicio" type="date" value="" class="form__input" />
+                    @* <span asp-validation-for="Usuario.Email" class="text__danger"></span> *@
+                </div>
+                <div class="form__group">
+                    <label asp-for="Oferta.FechaCierre" class="label"></label>
+                    <input asp-for="Oferta.FechaCierre" type="date" value="" class="form__input" />
+                    @* <span asp-validation-for="Usuario.FechaNacimiento" class="text__danger"></span> *@
+                </div>
+                <div class="form__group">
+                    <label asp-for="Oferta.UbicacionTrabajo" class="label"></label>
+                    <input asp-for="Oferta.UbicacionTrabajo" type="text" value="" class="form__input" />
+                    @* <span asp-validation-for="Usuario.ClaveHash" class="text__danger"></span> *@
+                </div>
+                <div class="form__group">
+                    <label for="Modalidad" class="label">Modalidad</label>
+                    <div class="form__group--radio">
+                        <div class="radio__button">
+                            <label asp-for="Oferta.ModalidadTrabajo" class="label label__radio">Presencial</label>
+                            <input asp-for="Oferta.ModalidadTrabajo" type="radio" value="presencial" class="input__radio" id="candidato" checked />
+                        </div>
+                        <div class="radio__button">
+                            <label asp-for="Oferta.ModalidadTrabajo" class="label label__radio">Remoto</label>
+                            <input asp-for="Oferta.ModalidadTrabajo" type="radio" value="remoto" class="input__radio" id="reclutador" />
+                        </div>
+                        <div class="radio__button">
+                            <label asp-for="Oferta.ModalidadTrabajo" class="label label__radio">Híbrido</label>
+                            <input asp-for="Oferta.ModalidadTrabajo" type="radio" value="hibrido" class="input__radio" id="reclutador" />
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="button button__submit">Publicar oferta</button>
+
+            </form>
+        </div>
     }
 </div>
