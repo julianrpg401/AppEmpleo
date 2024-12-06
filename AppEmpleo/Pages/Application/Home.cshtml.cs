@@ -12,6 +12,9 @@ namespace AppEmpleo.Pages.LandingPage
         private readonly OfferRepository _offerRepository;
 
         [BindProperty]
+        public Oferta Oferta { get; set; }
+
+        [BindProperty]
         public List<Oferta> Ofertas { get; set; } = new List<Oferta>();
 
         public HomeModel(OfferRepository offerRepository)
