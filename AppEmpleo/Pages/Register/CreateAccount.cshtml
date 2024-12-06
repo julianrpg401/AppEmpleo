@@ -5,32 +5,32 @@
     ViewData["BodyClass"] = "bg__pink"; // Define la clase del fondo
 }
 
-<div class="register__form">
+<div class="default__form">
     <form method="post" asp-page="Register" class="form">
 
         <div class="form__group">
             <label asp-for="Usuario.Nombre" class="label"></label>
-            <input asp-for="Usuario.Nombre" type="text" value="" class="register__input" />
+            <input asp-for="Usuario.Nombre" type="text" value="" class="form__input" />
             <span asp-validation-for="Usuario.Nombre" class="text__danger"></span>
         </div>
         <div class="form__group">
             <label asp-for="Usuario.Apellido" class="label"></label>
-            <input asp-for="Usuario.Apellido" type="text" value="" class="register__input" />
+            <input asp-for="Usuario.Apellido" type="text" value="" class="form__input" />
             <span asp-validation-for="Usuario.Apellido" class="text__danger"></span>
         </div>
         <div class="form__group">
             <label asp-for="Usuario.Email" class="label"></label>
-            <input asp-for="Usuario.Email" type="email" value="" class="register__input" />
+            <input asp-for="Usuario.Email" type="email" value="" class="form__input" />
             <span asp-validation-for="Usuario.Email" class="text__danger"></span>
         </div>
         <div class="form__group">
             <label asp-for="Usuario.FechaNacimiento" class="label"></label>
-            <input asp-for="Usuario.FechaNacimiento" type="date" value="" class="register__input" />
+            <input asp-for="Usuario.FechaNacimiento" type="date" value="" class="form__input" />
             <span asp-validation-for="Usuario.FechaNacimiento" class="text__danger"></span>
         </div>
         <div class="form__group">
             <label asp-for="Usuario.ClaveHash" class="label"></label>
-            <input asp-for="Usuario.ClaveHash" type="password" value="" class="register__input" />
+            <input asp-for="Usuario.ClaveHash" type="password" value="" class="form__input" />
             <span asp-validation-for="Usuario.ClaveHash" class="text__danger"></span>
         </div>
         <div class="form__group">

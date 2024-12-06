@@ -5,16 +5,16 @@
     ViewData["BodyClass"] = "bg__pink"; 
 }
 
-<div class="register__form">
+<div class="default__form">
     <form method="post" asp-page="Login" class="form">
 
         <div class="form__group">
             <label asp-for="Email" class="label"></label>
-            <input asp-for="Email" type="email" class="register__input" />
+            <input asp-for="Email" type="email" class="form__input" />
         </div>
         <div class="form__group">
             <label asp-for="Clave" class="label"></label>
-            <input asp-for="Clave" type="password" class="register__input" />
+            <input asp-for="Clave" type="password" class="form__input" />
         </div>
 
         <button type="submit" class="button button__submit">Iniciar Sesión</button>
