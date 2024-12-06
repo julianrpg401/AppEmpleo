@@ -32,10 +32,11 @@
 
     <!-- CSS -->
     <link href="~/css/layout.css" rel="stylesheet" />
+    <link href="~/css/forms.css" rel="stylesheet" />
     <link href="~/css/home.css" rel="stylesheet" />
 </head>
 <body>
-    <header class="cabeza">
+    <header class="cabeza close">
         <nav class="cabeza__menu">
             <div class="menu__perfil">
                 <picture class="perfil__caja">
@@ -114,11 +115,10 @@
     <footer class="border-top footer text-muted">
     </footer>
 
-    <script src="~/js/layout.js"></script>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <!-- StylesJS -->
+    <script src="~/js/layout.js"></script>
+    <script src="~/js/styles.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
