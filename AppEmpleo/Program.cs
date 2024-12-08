@@ -10,33 +10,29 @@ namespace AppEmpleo
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Agregar consola
+            // Agregar consola para depurar código
             builder.Logging.ClearProviders();
             builder.Logging.AddConsole();
 
             // Add services to the container.
             builder.Services.AddRazorPages();
 
-            // Registrar IHttpContextAccessor
-            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-            // Agregar servicio
-            builder.Services.AddDistributedMemoryCache(); // Para manejar sesiones en memoria
-            builder.Services.AddSession(options =>
-            {
-                options.IdleTimeout = TimeSpan.FromMinutes(30); // Tiempo de expiración de la sesión
-                options.Cookie.HttpOnly = true; // Protección contra scripts maliciosos
-                options.Cookie.IsEssential = true; // Requerido para políticas de consentimiento
-            });
-
             // Agregar la cadena de conexión (configuración de EF)
             builder.Services.AddDbContext<AppEmpleoContext>(options
                 => options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection")));
 
+            // Autenticación con claims
+            builder.Services.AddAuthentication("CookieAuth")
+                .AddCookie("CookieAuth", options =>
+                {
+                    options.LoginPath = "/Login"; // Página de login
+                    options.AccessDeniedPath = "/AccessDenied"; // Página para usuarios sin acceso
+                });
+
             // Registrar repositorios y servicios
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<UserRepository>();
             builder.Services.AddScoped<OfferRepository>();
-
 
             var app = builder.Build();
 
@@ -53,22 +49,10 @@ namespace AppEmpleo
             app.UseStaticFiles();
 
             app.UseRouting();
-
-            app.UseSession();
             
             app.UseAuthorization();
 
             app.MapRazorPages();
-
-            //app.MapGet("/", async context =>
-            //{
-            //    context.Response.Redirect("/LandingPage/Home");
-            //});
-
-            //app.MapGet("/", async context =>
-            //{
-            //    context.Response.Redirect("/Register/CreateAccount");
-            //});
 
             app.Run();
         }
