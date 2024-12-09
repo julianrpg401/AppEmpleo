@@ -1,16 +1,10 @@
 ﻿@page
 @model AppEmpleo.Pages.LandingPage.HomeModel
-@inject IHttpContextAccessor HttpContextAccessor
-@using AppEmpleo.Models
-@using System.Text.Json
 @{
     ViewData["Title"] = "Ofertas de empleo";
     Layout = "~/Pages/Shared/_LayoutSession.cshtml";
-
-    var currentUserJson = HttpContextAccessor.HttpContext?.Session.GetString("CurrentUser") ?? TempData["CurrentUser"] as string;
-    Usuario? currentUser = currentUserJson != null ? JsonSerializer.Deserialize<Usuario>(currentUserJson) : null;
 }
 
 <div class="role">
-    
+    <p>@Model.Usuario.Nombre</p>
 </div>
