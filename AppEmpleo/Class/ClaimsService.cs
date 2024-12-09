@@ -35,20 +35,18 @@ namespace AppEmpleo.Class
         }
 
         public bool AuthenticatedUser()
-        {
-            return _contextAccessor.HttpContext?.User.Identity?.IsAuthenticated ?? false;
-        }
+            => _contextAccessor.HttpContext?.User.Identity?.IsAuthenticated ?? false;
 
         public string GetClaim(string claimType)
             => _contextAccessor.HttpContext?.User.FindFirst(claimType)?.Value ?? string.Empty;
 
-        public string ObtenerNombre()
+        public string GetName()
             => GetClaim(ClaimTypes.Name);
 
-        public string ObtenerEmail()
+        public string GetEmail()
             => GetClaim(ClaimTypes.Email);
 
-        public string ObtenerRol()
+        public string GetRole()
             => GetClaim(ClaimTypes.Role);
     }
 }

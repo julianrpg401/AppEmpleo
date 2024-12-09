@@ -12,14 +12,14 @@ namespace AppEmpleo.Class
             _appEmpleoContext = appEmpleoContext;
         }
 
-        public async Task<List<Oferta>> GetListAsync(List<Oferta> listaOfertas)
+        public async Task<List<Oferta>> GetListAsync(List<Oferta> listOffers)
         {
             try
             {
-                listaOfertas = await _appEmpleoContext.Ofertas.ToListAsync();
-                listaOfertas.OrderByDescending(u => u.FechaInicio);
+                listOffers = await _appEmpleoContext.Ofertas.ToListAsync();
+                listOffers.OrderByDescending(u => u.FechaInicio);
 
-                return listaOfertas;
+                return listOffers;
             }
             catch (Exception ex)
             {

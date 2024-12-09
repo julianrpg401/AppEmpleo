@@ -5,18 +5,18 @@ namespace AppEmpleo.Class
 {
     public class Data
     {
-        // Procesa los datos para presentarlos en un formato adecuado en la BD
-        public static Usuario UserFormat(Usuario usuario)
+        // Procesa los datos del usuario para presentarlos en un formato adecuado en la BD
+        public static Usuario UserFormat(Usuario user)
         {
             Usuario userFormatted = new Usuario()
             {
-                Nombre = usuario.Nombre.ToUpper(),
-                Apellido = usuario.Apellido.ToUpper(),
-                Email = usuario.Email.ToUpper(),
-                ClaveHash = Encrypt.GetSHA256(usuario.ClaveHash),
-                Rol = usuario.Rol.ToUpper(),
+                Nombre = user.Nombre.ToUpper(),
+                Apellido = user.Apellido.ToUpper(),
+                Email = user.Email.ToUpper(),
+                ClaveHash = Encrypt.GetSHA256(user.ClaveHash),
+                Rol = user.Rol.ToUpper(),
                 FechaRegistro = DateOnly.FromDateTime(DateTime.Now),
-                FechaNacimiento = usuario.FechaNacimiento
+                FechaNacimiento = user.FechaNacimiento
             };
 
             UserTypeFormat(userFormatted);
@@ -24,22 +24,22 @@ namespace AppEmpleo.Class
             return userFormatted;
         }
 
-        public static void UserTypeFormat(Usuario usuario)
+        public static void UserTypeFormat(Usuario user)
         {
-            switch (usuario.Rol)
+            switch (user.Rol)
             {
                 case "CANDIDATO":
-                    usuario.Candidato = new Candidato()
+                    user.Candidato = new Candidato()
                     {
-                        CandidatoId = usuario.UsuarioId,
-                        UsuarioId = usuario.UsuarioId
+                        CandidatoId = user.UsuarioId,
+                        UsuarioId = user.UsuarioId
                     };
                     break;
                 case "RECLUTADOR":
-                    usuario.Reclutador = new Reclutador()
+                    user.Reclutador = new Reclutador()
                     {
-                        ReclutadorId = usuario.UsuarioId,
-                        UsuarioId = usuario.UsuarioId
+                        ReclutadorId = user.UsuarioId,
+                        UsuarioId = user.UsuarioId
                     };
                     break;
             }
