@@ -14,12 +14,12 @@ namespace AppEmpleo.Class
         }
 
         // Validar si el correo electrónico ya está registrado
-        public async Task<Usuario?> ValidateExistingUserAsync(Usuario usuario)
+        public async Task<Usuario?> ValidateExistingUserAsync(Usuario user)
         {
             try
             {
                 var existingUser = await _appEmpleoContext.Usuarios.FirstOrDefaultAsync
-                    (u => u.Email == usuario.Email);
+                    (u => u.Email == user.Email);
 
                 return existingUser;
             }
@@ -38,7 +38,7 @@ namespace AppEmpleo.Class
             {
                 var existingUser = await _appEmpleoContext.Usuarios.FirstOrDefaultAsync
                     (u => u.Email == email);
-                
+
                 return existingUser;
             }
             catch (Exception ex)
@@ -50,9 +50,9 @@ namespace AppEmpleo.Class
         }
 
         // Agregar el usuario a la BD
-        public async Task AddUserAsync(Usuario usuario)
+        public async Task AddUserAsync(Usuario user)
         {
-            await _appEmpleoContext.Usuarios.AddAsync(usuario);
+            await _appEmpleoContext.Usuarios.AddAsync(user);
             await _appEmpleoContext.SaveChangesAsync();
         }
     }
