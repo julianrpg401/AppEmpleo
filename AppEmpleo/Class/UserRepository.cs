@@ -8,6 +8,7 @@ namespace AppEmpleo.Class
     {
         private readonly AppEmpleoContext _appEmpleoContext;
 
+        // Inyectar la base de datos
         public UserRepository(AppEmpleoContext appEmpleoContext)
         {
             _appEmpleoContext = appEmpleoContext;
