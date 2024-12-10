@@ -91,9 +91,9 @@ body.dark {
     position: fixed;
     top: 0;
     left: 0;
-    height: 100%;
-    width: 330px;
-    padding: 1rem 1rem;
+    height: 100vh;
+    width: 310px;
+    padding: .6rem .6rem;
     border-radius: .4rem;
     box-shadow: .5rem 0 5rem rgba(0, 0, 0, .2);
     background: var(--blanco);
@@ -102,7 +102,7 @@ body.dark {
 }
 
 .cabeza.close {
-    width: 96px;
+    width: 84px;
 }
 
 .cabeza.close .perfil__texto,
@@ -148,13 +148,12 @@ body.dark {
 .toggle {
     position: absolute;
     top: 2rem;
-    right: -3.2rem;
+    right: -3rem;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 30px;
     height: 30px;
-    padding-bottom: 1px;
     border-radius: 50%;
     box-shadow: 0 0 1rem rgba(0, 0, 0, .2);
     font-size: 1.5rem;
