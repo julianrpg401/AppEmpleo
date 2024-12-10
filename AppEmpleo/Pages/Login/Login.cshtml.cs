@@ -1,29 +1,31 @@
 using AppEmpleo.Class;
 using AppEmpleo.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
+using System.Security.Claims;
 using System.Text.Json;
 
 namespace AppEmpleo.Pages.Login
 {
     public class LoginModel : PageModel
     {
-        private readonly AppEmpleoContext _appEmpleoContext;
         private UserRepository _userRepository;
+        private readonly ClaimsService _claimsService;
 
         [BindProperty]
         public string Email { get; set; } = null!;
 
         [BindProperty]
         [DisplayName("Contraseña")]
-        public string Clave { get; set; } = null!;
+        public string Password { get; set; } = null!;
 
-        public LoginModel(AppEmpleoContext appEmpleoContext)
+        public LoginModel(UserRepository userRepository, ClaimsService claimsService)
         {
-            _appEmpleoContext = appEmpleoContext;
-            _userRepository = new UserRepository(_appEmpleoContext);
+            _userRepository = userRepository;
+            _claimsService = claimsService;
         }
 
         public void OnGet()
@@ -46,15 +48,20 @@ namespace AppEmpleo.Pages.Login
                 return Page();
             }
 
-            Clave = Encrypt.GetSHA256(Clave);
+            Password = Encrypt.GetSHA256(Password);
 
-            if (existingUser.ClaveHash != Clave)
+            if (existingUser.ClaveHash != Password)
             {
                 Console.WriteLine("Contraseña incorrecta");
                 return Page();
             }
 
-            TempData["CurrentUser"] = JsonSerializer.Serialize(existingUser);
+            var claims = _claimsService.CreateClaims(existingUser);
+
+            var identity = new ClaimsIdentity(claims, "CookieAuth");
+            var principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync("CookieAuth", principal);
 
             return RedirectToPage("/Application/Home");
         }
