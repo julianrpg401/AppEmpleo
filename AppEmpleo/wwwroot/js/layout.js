@@ -7,7 +7,6 @@ const body = document.querySelector("body"),
 
 toggle.addEventListener("click", () => {
     cabeza.classList.toggle("close");
-    console.log(cabeza.classList);
 });
 
 modoSwitch.addEventListener("click", () => {
