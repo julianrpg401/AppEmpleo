@@ -9,40 +9,40 @@
     <form method="post" asp-page="Register" class="form">
 
         <div class="form__group">
-            <label asp-for="Usuario.Nombre" class="label"></label>
-            <input asp-for="Usuario.Nombre" type="text" value="" class="form__input" />
-            <span asp-validation-for="Usuario.Nombre" class="text__danger"></span>
+            <label asp-for="User.Nombre" class="label"></label>
+            <input asp-for="User.Nombre" type="text" value="" class="form__input" />
+            <span asp-validation-for="User.Nombre" class="text__danger"></span>
         </div>
         <div class="form__group">
-            <label asp-for="Usuario.Apellido" class="label"></label>
-            <input asp-for="Usuario.Apellido" type="text" value="" class="form__input" />
-            <span asp-validation-for="Usuario.Apellido" class="text__danger"></span>
+            <label asp-for="User.Apellido" class="label"></label>
+            <input asp-for="User.Apellido" type="text" value="" class="form__input" />
+            <span asp-validation-for="User.Apellido" class="text__danger"></span>
         </div>
         <div class="form__group">
-            <label asp-for="Usuario.Email" class="label"></label>
-            <input asp-for="Usuario.Email" type="email" value="" class="form__input" />
-            <span asp-validation-for="Usuario.Email" class="text__danger"></span>
+            <label asp-for="User.Email" class="label"></label>
+            <input asp-for="User.Email" type="email" value="" class="form__input" />
+            <span asp-validation-for="User.Email" class="text__danger"></span>
         </div>
         <div class="form__group">
-            <label asp-for="Usuario.FechaNacimiento" class="label"></label>
-            <input asp-for="Usuario.FechaNacimiento" type="date" value="" class="form__input" />
-            <span asp-validation-for="Usuario.FechaNacimiento" class="text__danger"></span>
+            <label asp-for="User.FechaNacimiento" class="label"></label>
+            <input asp-for="User.FechaNacimiento" type="date" value="" class="form__input" />
+            <span asp-validation-for="User.FechaNacimiento" class="text__danger"></span>
         </div>
         <div class="form__group">
-            <label asp-for="Usuario.ClaveHash" class="label"></label>
-            <input asp-for="Usuario.ClaveHash" type="password" value="" class="form__input" />
-            <span asp-validation-for="Usuario.ClaveHash" class="text__danger"></span>
+            <label asp-for="User.ClaveHash" class="label"></label>
+            <input asp-for="User.ClaveHash" type="password" value="" class="form__input" />
+            <span asp-validation-for="User.ClaveHash" class="text__danger"></span>
         </div>
         <div class="form__group">
             <label for="Rol" class="label">Rol</label>
             <div class="form__group--radio">
                 <div class="radio__button">
-                    <label asp-for="Usuario.Rol" class="label label__radio">Candidato</label>
-                    <input asp-for="Usuario.Rol" type="radio" value="candidato" class="input__radio" id="candidato" checked />
+                    <label asp-for="User.Rol" class="label label__radio">Candidato</label>
+                    <input asp-for="User.Rol" type="radio" value="candidato" class="input__radio" id="candidato" checked />
                 </div>
                 <div class="radio__button">
-                    <label asp-for="Usuario.Rol" class="label label__radio">Reclutador</label>
-                    <input asp-for="Usuario.Rol" type="radio" value="reclutador" class="input__radio" id="reclutador" />
+                    <label asp-for="User.Rol" class="label label__radio">Reclutador</label>
+                    <input asp-for="User.Rol" type="radio" value="reclutador" class="input__radio" id="reclutador" />
                 </div>
             </div>
         </div>
