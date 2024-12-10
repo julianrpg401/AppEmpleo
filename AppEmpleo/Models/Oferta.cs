@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -22,21 +21,27 @@ public partial class Oferta
 
     [Required]
     [MaxLength(100)]
+    [DisplayName("Nombre de la oferta")]
     public string NombreOferta { get; set; } = null!;
 
     [Required]
+    [DisplayName("Descripción")]
     public string Descripcion { get; set; } = null!;
 
+    [DisplayName("Fecha de inicio")]
     public DateOnly FechaInicio { get; set; }
 
+    [DisplayName("Fecha de cierre")]
     public DateOnly FechaCierre { get; set; }
 
     [Range(0, 1000000)]
     [Column(TypeName = "decimal(10, 2)")]
     public decimal Salario { get; set; }
 
+    [DisplayName("Modalidad")]
     public string ModalidadTrabajo { get; set; } = null!;
 
+    [DisplayName("Ubicación de trabajo")]
     public string UbicacionTrabajo { get; set; } = null!;
 
     public virtual ICollection<OfertaHabilidad> OfertaHabilidades { get; set; } = new List<OfertaHabilidad>();
