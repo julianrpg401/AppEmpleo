@@ -1,12 +1,7 @@
 using AppEmpleo.Class;
 using AppEmpleo.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
 namespace AppEmpleo.Pages.CreateAccount
 {

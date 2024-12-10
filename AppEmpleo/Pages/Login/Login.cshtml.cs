@@ -1,12 +1,9 @@
 using AppEmpleo.Class;
-using AppEmpleo.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 using System.Security.Claims;
-using System.Text.Json;
 
 namespace AppEmpleo.Pages.Login
 {
