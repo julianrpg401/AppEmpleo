@@ -160,6 +160,19 @@ input.form__input--active {
     border: 5px solid var(--vino-tinto);
 }
 
+.button {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: auto;
+    padding: 1rem 2rem;
+    border-radius: 2rem;
+    box-shadow: 0 0 2rem 1rem rgba(44, 2, 27, .05);
+    background-color: var(--vino-tinto);
+    color: var(--blanco);
+    transition: .5s;
+}
+
 .button__submit {
     display: flex;
     margin-top: 1rem;
