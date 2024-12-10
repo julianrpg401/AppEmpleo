@@ -15,7 +15,7 @@ namespace AppEmpleo.Pages.CreateAccount
         private readonly UserRepository _userRepository;
 
         [BindProperty]
-        public Usuario Usuario { get; set; } = null!;
+        public new Usuario User { get; set; } = null!;
 
         public CreateAccountModel(UserRepository userRepository)
         {
@@ -34,7 +34,7 @@ namespace AppEmpleo.Pages.CreateAccount
                 return Page();
             }
 
-            var existingUser = await _userRepository.ValidateExistingUserAsync(Usuario);
+            var existingUser = await _userRepository.ValidateExistingUserAsync(User);
 
             // Valida si el correo electrónico ya existe
             if (existingUser != null)
@@ -43,8 +43,8 @@ namespace AppEmpleo.Pages.CreateAccount
                 return Page();
             }
 
-            Usuario = Data.UserFormat(Usuario);
-            await _userRepository.AddUserAsync(Usuario);
+            User = Data.UserFormat(User);
+            await _userRepository.AddUserAsync(User);
 
             return RedirectToPage("/Register/RegisterSuccess");
         }
