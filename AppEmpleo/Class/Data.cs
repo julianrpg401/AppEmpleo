@@ -24,6 +24,7 @@ namespace AppEmpleo.Class
             return userFormatted;
         }
 
+        // Agrega el usuario a la tabla candidato o reclutador según su rol
         public static void UserTypeFormat(Usuario user)
         {
             switch (user.Rol)
