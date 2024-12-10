@@ -12,7 +12,7 @@ namespace AppEmpleo.Class
             _appEmpleoContext = appEmpleoContext;
         }
 
-        public async Task<List<Oferta>> GetListAsync(List<Oferta> listOffers)
+        public async Task<List<Oferta>> GetListAsync(List<Oferta>? listOffers)
         {
             try
             {

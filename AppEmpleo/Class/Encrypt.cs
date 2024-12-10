@@ -10,7 +10,7 @@ namespace AppEmpleo.Class
             SHA256 sha256 = SHA256.Create();
             ASCIIEncoding encoding = new ASCIIEncoding();
 
-            byte[] stream = null;
+            byte[]? stream = null;
 
             StringBuilder sb = new StringBuilder();
 
