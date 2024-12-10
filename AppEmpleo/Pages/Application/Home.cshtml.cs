@@ -16,13 +16,13 @@ namespace AppEmpleo.Pages.LandingPage
         private readonly OfferRepository _offerRepository;
         private readonly ClaimsService _claimsService;
 
-        public Usuario Usuario { get; set; }
+        public new Usuario User { get; set; }
 
         [BindProperty]
-        public Oferta Oferta { get; set; }
+        public Oferta Offer { get; set; }
 
         [BindProperty]
-        public List<Oferta> Ofertas { get; set; } = new List<Oferta>();
+        public List<Oferta> Offers { get; set; } = new List<Oferta>();
 
         public HomeModel(OfferRepository offerRepository, ClaimsService claimsService)
         {
@@ -34,7 +34,7 @@ namespace AppEmpleo.Pages.LandingPage
         {
             GetAuthenticatedUser();
 
-            Ofertas = await _offerRepository.GetListAsync(Ofertas);
+            Offers = await _offerRepository.GetListAsync(Offers);
         }
 
         private void GetAuthenticatedUser()
@@ -44,11 +44,11 @@ namespace AppEmpleo.Pages.LandingPage
                 RedirectToPage("/Login");
             }
 
-            Usuario = new Usuario()
+            User = new Usuario()
             {
-                Nombre = _claimsService.ObtenerNombre(),
-                Email = _claimsService.ObtenerEmail(),
-                Rol = _claimsService.ObtenerRol(),
+                Nombre = _claimsService.GetName(),
+                Email = _claimsService.GetEmail(),
+                Rol = _claimsService.GetRole(),
             };
         }
 
