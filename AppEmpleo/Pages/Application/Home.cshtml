@@ -6,5 +6,82 @@
 }
 
 <div class="role">
-    <p>@Model.User.Nombre</p>
+    @if (Model.User.Rol == "CANDIDATO")
+    {
+        <p class="p_prueba">Eres candidato</p>
+        <div class="search__container">
+            <h1>Resultados de búsqueda</h1>
+            <ul class="list__offers">
+                @if (Model.Offers?.Count <= 0)
+                {
+                    <li>No hay ofertas para mostrar</li>
+                }
+                else
+                {
+                    foreach (var offer in Model.Offers)
+                    {
+                        <li class="offer">
+                            <h2 class="offer__title">@offer.NombreOferta</h2>
+                            <ul class="offer__skills">
+                            </ul>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    }
+    else
+    {
+        <div class="default__form form__offer">
+            <form method="post" asp-page="Home" class="form">
+
+                <div class="form__group">
+                    <label asp-for="Offer.NombreOferta" class="label"></label>
+                    <input asp-for="Offer.NombreOferta" type="text" value="" class="form__input" />
+                    @* <span asp-validation-for="Usuario.Nombre" class="text__danger"></span> *@
+                </div>
+                <div class="form__group">
+                    <label asp-for="Offer.Descripcion" class="label"></label>
+                    <input asp-for="Offer.Descripcion" type="text" value="" class="form__input" />
+                    @* <span asp-validation-for="Usuario.Apellido" class="text__danger"></span> *@
+                </div>
+                <div class="form__group">
+                    <label asp-for="Offer.FechaInicio" class="label"></label>
+                    <input asp-for="Offer.FechaInicio" type="date" value="" class="form__input" />
+                    @* <span asp-validation-for="Usuario.Email" class="text__danger"></span> *@
+                </div>
+                <div class="form__group">
+                    <label asp-for="Offer.FechaCierre" class="label"></label>
+                    <input asp-for="Offer.FechaCierre" type="date" value="" class="form__input" />
+                    @* <span asp-validation-for="Usuario.FechaNacimiento" class="text__danger"></span> *@
+                </div>
+                <div class="form__group">
+                    <label asp-for="Offer.UbicacionTrabajo" class="label"></label>
+                    <input asp-for="Offer.UbicacionTrabajo" type="text" value="" class="form__input" />
+                    @* <span asp-validation-for="Usuario.ClaveHash" class="text__danger"></span> *@
+                </div>
+                <div class="form__group">
+                    <label asp-for="Offer.ModalidadTrabajo" class="label">Modalidad</label>
+                    <div class="form__group--radio">
+                        <div class="radio__button">
+                            <label asp-for="Offer.ModalidadTrabajo" class="label label__radio">Presencial</label>
+                            <input asp-for="Offer.ModalidadTrabajo" type="radio" value="presencial" class="input__radio" checked />
+                        </div>
+                        <div class="radio__button">
+                            <label asp-for="Offer.ModalidadTrabajo" class="label label__radio">Remoto</label>
+                            <input asp-for="Offer.ModalidadTrabajo" type="radio" value="remoto" class="input__radio" />
+                        </div>
+                        <div class="radio__button">
+                            <label asp-for="Offer.ModalidadTrabajo" class="label label__radio">Híbrido</label>
+                            <input asp-for="Offer.ModalidadTrabajo" type="radio" value="hibrido" class="input__radio" />
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="button button__submit button__mobile">Publicar oferta</button>
+                <button type="button" class="button button__submit button__mobile button__mobile--cancel">Cancelar</button>
+
+            </form>
+        </div>
+    }
 </div>

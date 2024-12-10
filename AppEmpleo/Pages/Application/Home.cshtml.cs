@@ -1,13 +1,8 @@
 using AppEmpleo.Class;
 using AppEmpleo.Models;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Security.Claims;
-using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace AppEmpleo.Pages.LandingPage
 {
@@ -16,13 +11,14 @@ namespace AppEmpleo.Pages.LandingPage
         private readonly OfferRepository _offerRepository;
         private readonly ClaimsService _claimsService;
 
+        [Required]
         public new Usuario User { get; set; }
 
         [BindProperty]
-        public Oferta Offer { get; set; }
+        public Oferta? Offer { get; set; }
 
         [BindProperty]
-        public List<Oferta> Offers { get; set; } = new List<Oferta>();
+        public List<Oferta>? Offers { get; set; } = new List<Oferta>();
 
         public HomeModel(OfferRepository offerRepository, ClaimsService claimsService)
         {
@@ -30,11 +26,10 @@ namespace AppEmpleo.Pages.LandingPage
             _claimsService = claimsService;
         }
 
-        public async void OnGetAsync()
+        public void OnGet()
         {
             GetAuthenticatedUser();
-
-            Offers = await _offerRepository.GetListAsync(Offers);
+            GetOffersAsync();
         }
 
         private void GetAuthenticatedUser()
@@ -50,6 +45,11 @@ namespace AppEmpleo.Pages.LandingPage
                 Email = _claimsService.GetEmail(),
                 Rol = _claimsService.GetRole(),
             };
+        }
+
+        private async void GetOffersAsync()
+        {
+            Offers = await _offerRepository.GetListAsync(Offers);
         }
 
         public async Task<IActionResult> OnPostAsync()
