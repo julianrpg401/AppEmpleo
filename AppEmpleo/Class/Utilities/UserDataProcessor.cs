@@ -1,9 +1,10 @@
-﻿using AppEmpleo.Models;
+﻿using AppEmpleo.Class.Services;
+using AppEmpleo.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace AppEmpleo.Class
+namespace AppEmpleo.Class.Utilities
 {
-    public class Data
+    public class UserDataProcessor
     {
         // Procesa los datos del usuario para presentarlos en un formato adecuado en la BD
         public static Usuario UserFormat(Usuario user)
@@ -13,7 +14,7 @@ namespace AppEmpleo.Class
                 Nombre = user.Nombre.ToUpper(),
                 Apellido = user.Apellido.ToUpper(),
                 Email = user.Email.ToUpper(),
-                ClaveHash = Encrypt.GetSHA256(user.ClaveHash),
+                ClaveHash = EncryptService.GetSHA256(user.ClaveHash),
                 Rol = user.Rol.ToUpper(),
                 FechaRegistro = DateOnly.FromDateTime(DateTime.Now),
                 FechaNacimiento = user.FechaNacimiento

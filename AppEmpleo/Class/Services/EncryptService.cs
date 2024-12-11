@@ -1,9 +1,9 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace AppEmpleo.Class
+namespace AppEmpleo.Class.Services
 {
-    public class Encrypt
+    public class EncryptService
     {
         public static string GetSHA256(string str)
         {
@@ -15,6 +15,7 @@ namespace AppEmpleo.Class
             StringBuilder sb = new StringBuilder();
 
             stream = sha256.ComputeHash(encoding.GetBytes(str));
+
             for (int i = 0; i < stream.Length; i++)
                 sb.AppendFormat("{0:x2}", stream[i]);
 

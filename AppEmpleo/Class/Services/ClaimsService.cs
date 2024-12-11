@@ -1,7 +1,7 @@
 ﻿using AppEmpleo.Models;
 using System.Security.Claims;
 
-namespace AppEmpleo.Class
+namespace AppEmpleo.Class.Services
 {
     public class ClaimsService
     {

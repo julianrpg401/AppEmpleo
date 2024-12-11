@@ -1,7 +1,7 @@
 ﻿using AppEmpleo.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace AppEmpleo.Class
+namespace AppEmpleo.Class.DataAccess
 {
     public class OfferRepository
     {

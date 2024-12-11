@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
-namespace AppEmpleo.Class
+namespace AppEmpleo.Class.DataAccess
 {
     public class UserRepository
     {
