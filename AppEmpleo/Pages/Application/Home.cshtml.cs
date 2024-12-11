@@ -1,4 +1,5 @@
-using AppEmpleo.Class;
+using AppEmpleo.Class.DataAccess;
+using AppEmpleo.Class.Services;
 using AppEmpleo.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

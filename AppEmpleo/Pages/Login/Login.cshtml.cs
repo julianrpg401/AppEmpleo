@@ -1,4 +1,5 @@
-using AppEmpleo.Class;
+using AppEmpleo.Class.DataAccess;
+using AppEmpleo.Class.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -45,7 +46,7 @@ namespace AppEmpleo.Pages.Login
                 return Page();
             }
 
-            Password = Encrypt.GetSHA256(Password);
+            Password = EncryptService.GetSHA256(Password);
 
             if (existingUser.ClaveHash != Password)
             {

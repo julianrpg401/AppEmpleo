@@ -1,4 +1,5 @@
-using AppEmpleo.Class;
+using AppEmpleo.Class.DataAccess;
+using AppEmpleo.Class.Utilities;
 using AppEmpleo.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -38,7 +39,7 @@ namespace AppEmpleo.Pages.CreateAccount
                 return Page();
             }
 
-            User = Data.UserFormat(User);
+            User = UserDataProcessor.UserFormat(User);
             await _userRepository.AddUserAsync(User);
 
             return RedirectToPage("/Register/RegisterSuccess");
