@@ -34,9 +34,13 @@ public partial class Oferta
     [DisplayName("Fecha de cierre")]
     public DateOnly FechaCierre { get; set; }
 
-    [Range(0, 1000000)]
+    [Required]
+    [EnumDataType(typeof(MonedaLatinoamerica), ErrorMessage = "La moneda no es válida.")]
+    public string? Moneda { get; set; }
+
+    [Range(0, double.MaxValue)]
     [Column(TypeName = "decimal(10, 2)")]
-    public decimal Salario { get; set; }
+    public decimal? Salario { get; set; }
 
     [DisplayName("Modalidad")]
     public string ModalidadTrabajo { get; set; } = null!;
@@ -47,4 +51,9 @@ public partial class Oferta
     public virtual ICollection<OfertaHabilidad> OfertaHabilidades { get; set; } = new List<OfertaHabilidad>();
 
     public virtual ICollection<Postulacion> Postulaciones { get; set; } = new List<Postulacion>();
+}
+
+public enum MonedaLatinoamerica
+{
+    MXN, COP, ARS, BRL, PEN, CLP, UYU, VES, PYG, BOB, CRC, DOP, GTQ, HNL, USD, PAB
 }
