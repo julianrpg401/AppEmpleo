@@ -92,7 +92,7 @@ body.dark {
     top: 0;
     left: 0;
     height: 100vh;
-    width: 310px;
+    width: 84px;
     padding: .6rem .6rem;
     border-radius: .4rem;
     box-shadow: .5rem 0 5rem rgba(0, 0, 0, .2);
@@ -102,17 +102,19 @@ body.dark {
 }
 
 .cabeza.close {
-    width: 84px;
+    width: 5px;
+    padding: .6rem 0;
+    box-shadow: .5rem 0 5rem rgba(0, 0, 0, .2);
 }
 
-.cabeza.close .perfil__texto,
-.cabeza.close .link__texto,
-.cabeza.close .modo__texto,
-.cabeza.close .salir__texto,
-.cabeza.close .modo__switch,
-.cabeza.close .buscador{
+.cabeza.close .menu__perfil,
+.cabeza.close .menu {
     display: none;
     opacity: 0;
+}
+
+.cabeza.close .toggle {
+    right: -2.5rem;
 }
 
 .cabeza__menu {
@@ -133,16 +135,7 @@ body.dark {
 }
 
 .perfil__texto {
-    font-size: 1.1rem;
-}
-
-.perfil__nombre {
-    display: block;
-    font-weight: 700;
-}
-
-.perfil__profesion {
-    font-weight: 400;
+    display: none;
 }
 
 .toggle {
@@ -178,12 +171,12 @@ body.dark {
     transition: var(--tran-04);
 }
 
-.menu__buscador:hover{
+.menu__buscador:hover {
     background-color: var(--rosado-luz);
 }
 
-.buscador:hover::placeholder {
-    color: var(--negro-gris);
+.buscador {
+    display: none;
 }
 
 .buscador__icon, .link__icon, .boton__icon {
@@ -196,15 +189,6 @@ body.dark {
 
 .icon {
     font-size: 1.6rem;
-}
-
-.buscador {
-    width: 100%;
-    height: 100%;
-    border-style: none;
-    background: none;
-    outline: none;
-    transition: var(--tran-04);
 }
 
 .menu {
@@ -248,12 +232,11 @@ body.dark {
     color: var(--blanco);
 }
 
-.link__texto, .salir__texto {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    font-weight: 500;
+.link__texto,
+.salir__texto,
+.modo__texto,
+.modo__switch {
+    display: none;
 }
 
 .boton__modo {
@@ -275,7 +258,7 @@ body.dark {
     left: 1.2rem;
 }
 
-.bx-sun{
+.bx-sun {
     opacity: 0;
 }
 
@@ -283,7 +266,49 @@ body.dark {
     color: var(--blanco);
 }
 
-.modo__texto {
+body.dark .switch::before {
+    left: 1.6rem;
+}
+
+.hidden {
+    display: none;
+}
+
+/*.perfil__texto {
+    font-size: 1.1rem;
+}
+
+.perfil__nombre {
+    display: block;
+    font-weight: 700;
+}
+
+.perfil__profesion {
+    font-weight: 400;
+}*/
+
+/*.buscador:hover::placeholder {
+    color: var(--negro-gris);
+}*/
+
+/*.buscador {
+    width: 100%;
+    height: 100%;
+    border-style: none;
+    background: none;
+    outline: none;
+    transition: var(--tran-04);
+}*/
+
+/*.link__texto, .salir__texto {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    font-weight: 500;
+}*/
+
+/*.modo__texto {
     padding-left: 4rem;
     font-weight: 500;
 }
@@ -316,12 +341,4 @@ body.dark {
     border-radius: 100%;
     background: var(--gris-blanco);
     transition: var(--tran-03);
-}
-
-body.dark .switch::before {
-    left: 1.6rem;
-}
-
-.hidden {
-    display: none;
-}
+}*/
