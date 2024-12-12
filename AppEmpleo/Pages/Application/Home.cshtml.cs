@@ -16,7 +16,7 @@ namespace AppEmpleo.Pages.LandingPage
         public new Usuario User { get; set; }
 
         [BindProperty]
-        public Oferta? Offer { get; set; }
+        public Oferta Offer { get; set; }
 
         [BindProperty]
         public List<Oferta>? Offers { get; set; } = new List<Oferta>();
