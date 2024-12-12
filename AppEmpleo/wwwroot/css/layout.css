@@ -157,6 +157,7 @@ body.dark {
 
 .cabeza.close .toggle::before {
     padding: 0;
+    padding-top: 1.5px;
     transform: rotate(0deg);
     transition: var(--tran-03);
 }
