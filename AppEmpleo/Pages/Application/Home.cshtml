@@ -1,8 +1,11 @@
 ﻿@page
 @model AppEmpleo.Pages.LandingPage.HomeModel
+@using AppEmpleo.Models
 @{
     ViewData["Title"] = "Ofertas de empleo";
     Layout = "~/Pages/Shared/_LayoutSession.cshtml";
+
+    var monedas = Enum.GetValues(typeof(MonedaLatinoamerica));
 }
 
 <div class="role">
@@ -59,6 +62,16 @@
                     <label asp-for="Offer.UbicacionTrabajo" class="label"></label>
                     <input asp-for="Offer.UbicacionTrabajo" type="text" value="" class="form__input" />
                     @* <span asp-validation-for="Usuario.ClaveHash" class="text__danger"></span> *@
+                </div>
+                <div class="form__group">
+                    <label asp-for="Offer.Moneda" class="label"></label>
+                    <input type="list" list="moneda" value="" />
+                    <datalist id="moneda">
+                        @foreach (var moneda in monedas)
+                        {
+                            <option value="@moneda"></option>
+                        }
+                    </datalist>
                 </div>
                 <div class="form__group">
                     <label asp-for="Offer.ModalidadTrabajo" class="label">Modalidad</label>
