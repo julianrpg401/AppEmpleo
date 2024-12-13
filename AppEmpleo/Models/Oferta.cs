@@ -35,7 +35,7 @@ public partial class Oferta
     public DateOnly FechaCierre { get; set; }
 
     [Required]
-    [EnumDataType(typeof(MonedaLatinoamerica), ErrorMessage = "La moneda no es válida.")]
+    [EnumDataType(typeof(CurrencyType), ErrorMessage = "La moneda no es válida.")]
     public string? Moneda { get; set; }
 
     [Range(0, double.MaxValue)]
@@ -53,7 +53,7 @@ public partial class Oferta
     public virtual ICollection<Postulacion> Postulaciones { get; set; } = new List<Postulacion>();
 }
 
-public enum MonedaLatinoamerica
+public enum CurrencyType
 {
-    MXN, COP, ARS, BRL, PEN, CLP, UYU, VES, PYG, BOB, CRC, DOP, GTQ, HNL, USD, PAB
+    USD, MXN, COP, ARS, BRL, PEN, CLP, UYU, VES, PYG, BOB, CRC, DOP, GTQ, HNL, PAB
 }
