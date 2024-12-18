@@ -209,3 +209,32 @@ input.form__input--active {
     font-weight: 600;
     text-decoration: underline;
 }
+
+.form__group--date {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.form__group--column {
+    width: 48%;
+}
+
+.form__input--option {
+    display: block;
+}
+
+.form__group--salary {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+}
+
+.form__group--currency {
+    width: 28%;
+}
+
+.form__group--value {
+    width: 100%;
+}
