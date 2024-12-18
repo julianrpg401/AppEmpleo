@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 
-namespace AppEmpleo.Pages.LandingPage
+namespace AppEmpleo.Pages.Application
 {
     public class HomeModel : PageModel
     {

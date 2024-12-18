@@ -1,11 +1,12 @@
 ﻿@page
-@model AppEmpleo.Pages.LandingPage.HomeModel
+@model AppEmpleo.Pages.Application.HomeModel 
 @using AppEmpleo.Models
 @using AppEmpleo.Class.Utilities
 @{
     ViewData["Title"] = "Ofertas de empleo";
     Layout = "~/Pages/Shared/_LayoutSession.cshtml";
 
+    var countries = CountryHelper.CountryName;
     var currencies = CurrencyHelper.CurrencyName;
 }
 
@@ -42,37 +43,46 @@
                 <div class="form__group">
                     <label asp-for="Offer.NombreOferta" class="label"></label>
                     <input asp-for="Offer.NombreOferta" type="text" value="" class="form__input" />
-                    @* <span asp-validation-for="Usuario.Nombre" class="text__danger"></span> *@
+                </div>
+                <div class="form__group form__group--date">
+                    <div class="form__group--column">
+                        <label asp-for="Offer.FechaInicio" class="label"></label>
+                        <input asp-for="Offer.FechaInicio" type="date" value="" class="form__input" />
+                    </div>
+                    <div class="form__group--column">
+                        <label asp-for="Offer.FechaCierre" class="label"></label>
+                        <input asp-for="Offer.FechaCierre" type="date" value="" class="form__input" />
+                    </div>
+                </div>
+                <div class="form__group">
+                    <label asp-for="Offer.Pais" class="label"></label>
+                    <input asp-for="Offer.Pais" type="list" value="" class="form__input" list="pais" />
+                    <datalist id="pais">
+                        @foreach (var country in countries)
+                        {
+                            <option value="@country.Key">@country.Value</option>
+                        }
+                    </datalist>
+                </div>
+                <div class="form__group form__group--salary">
+                    <div class="form__group--currency">
+                        <label asp-for="Offer.Moneda" class="label label__currency"></label>
+                        <input asp-for="Offer.Moneda" type="list" class="form__input form__input--currency" list="moneda" value="" />
+                        <datalist id="moneda">
+                            @foreach (var currency in currencies)
+                            {
+                                <option value="@currency.Key">@currency.Value</option>
+                            }
+                        </datalist>
+                    </div>
+                    <div class="form__group--value">
+                        <label asp-for="Offer.Salario" class="label"></label>
+                        <input asp-for="Offer.Salario" type="number" class="form__input" />
+                    </div>
                 </div>
                 <div class="form__group">
                     <label asp-for="Offer.Descripcion" class="label"></label>
                     <input asp-for="Offer.Descripcion" type="text" value="" class="form__input" />
-                    @* <span asp-validation-for="Usuario.Apellido" class="text__danger"></span> *@
-                </div>
-                <div class="form__group">
-                    <label asp-for="Offer.FechaInicio" class="label"></label>
-                    <input asp-for="Offer.FechaInicio" type="date" value="" class="form__input" />
-                    @* <span asp-validation-for="Usuario.Email" class="text__danger"></span> *@
-                </div>
-                <div class="form__group">
-                    <label asp-for="Offer.FechaCierre" class="label"></label>
-                    <input asp-for="Offer.FechaCierre" type="date" value="" class="form__input" />
-                    @* <span asp-validation-for="Usuario.FechaNacimiento" class="text__danger"></span> *@
-                </div>
-                <div class="form__group">
-                    <label asp-for="Offer.UbicacionTrabajo" class="label"></label>
-                    <input asp-for="Offer.UbicacionTrabajo" type="text" value="" class="form__input" />
-                    @* <span asp-validation-for="Usuario.ClaveHash" class="text__danger"></span> *@
-                </div>
-                <div class="form__group">
-                    <label asp-for="Offer.Moneda" class="label"></label>
-                    <input type="list" list="moneda" value="" />
-                    <datalist id="moneda">
-                        @foreach (var currency in currencies)
-                        {
-                            <option value="@currency.Key" class="form__input">@currency.Value</option>
-                        }
-                    </datalist>
                 </div>
                 <div class="form__group">
                     <label asp-for="Offer.ModalidadTrabajo" class="label">Modalidad</label>
