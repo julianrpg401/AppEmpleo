@@ -28,10 +28,10 @@ public partial class Oferta
     [DisplayName("Descripción")]
     public string Descripcion { get; set; } = null!;
 
-    [DisplayName("Fecha de inicio")]
+    [DisplayName("Inicio")]
     public DateOnly FechaInicio { get; set; }
 
-    [DisplayName("Fecha de cierre")]
+    [DisplayName("Cierre")]
     public DateOnly FechaCierre { get; set; }
 
     [Required]
@@ -45,8 +45,9 @@ public partial class Oferta
     [DisplayName("Modalidad")]
     public string ModalidadTrabajo { get; set; } = null!;
 
-    [DisplayName("Ubicación de trabajo")]
-    public string UbicacionTrabajo { get; set; } = null!;
+    [DisplayName("País")]
+    [EnumDataType(typeof(Country), ErrorMessage = "El país no es válido.")]
+    public string? Pais { get; set; } = null!;
 
     public virtual ICollection<OfertaHabilidad> OfertaHabilidades { get; set; } = new List<OfertaHabilidad>();
 
@@ -56,4 +57,9 @@ public partial class Oferta
 public enum CurrencyType
 {
     USD, MXN, COP, ARS, BRL, PEN, CLP, UYU, VES, PYG, BOB, CRC, DOP, GTQ, HNL, PAB
+}
+
+public enum Country
+{
+    MEX, COL, ARG, BRA, PER, CHL, URY, VEN, PRY, BOL, CRI, DOM, GTM, HND, PAN, NIC, CUB, ECU, SLV
 }
