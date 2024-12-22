@@ -1,4 +1,5 @@
 ﻿using AppEmpleo.Models;
+using Microsoft.VisualBasic;
 using System.Security.Claims;
 
 namespace AppEmpleo.Class.Services
@@ -39,6 +40,13 @@ namespace AppEmpleo.Class.Services
 
         public string GetClaim(string claimType)
             => _contextAccessor.HttpContext?.User.FindFirst(claimType)?.Value ?? string.Empty;
+
+        public int GetId()
+        {
+            var userIdClaim = GetClaim("UserId");
+
+            return int.TryParse(userIdClaim, out int userId) ? userId : throw new InvalidOperationException("El UserId no es válido.");
+        }
 
         public string GetName()
             => GetClaim(ClaimTypes.Name);
