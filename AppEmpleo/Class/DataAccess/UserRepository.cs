@@ -1,6 +1,8 @@
 ﻿using AppEmpleo.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using System.Security.Claims;
+using System.Threading.Tasks.Dataflow;
 
 namespace AppEmpleo.Class.DataAccess
 {
@@ -55,6 +57,28 @@ namespace AppEmpleo.Class.DataAccess
         {
             await _appEmpleoContext.Usuarios.AddAsync(user);
             await _appEmpleoContext.SaveChangesAsync();
+        }
+
+        // Devuelve un usuario con el rol de reclutador y su respectivo id
+        public async Task<Usuario> GetRecruiterAsync(int userId)
+        {
+            try
+            {
+                var user = await _appEmpleoContext.Usuarios
+                    .Include(u => u.Reclutador)
+                    .FirstOrDefaultAsync(u => u.UsuarioId == userId);
+
+                Console.WriteLine(user?.Nombre);
+                Console.WriteLine(user?.Reclutador?.ReclutadorId);
+
+                return user;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            throw new ArgumentException("Error al validar el usuario");
         }
     }
 }
