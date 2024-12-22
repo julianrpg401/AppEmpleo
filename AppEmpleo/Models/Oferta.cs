@@ -12,12 +12,12 @@ public partial class Oferta
     [ForeignKey("Reclutador")]
     public int ReclutadorId { get; set; }
 
-    public virtual Reclutador Reclutador { get; set; } = null!;
+    public virtual Reclutador? Reclutador { get; set; } = null!;
 
     [ForeignKey("Categoria")]
-    public int CategoriaId { get; set; }
+    public int? CategoriaId { get; set; }
 
-    public virtual Categoria Categoria { get; set; } = null!;
+    public virtual Categoria? Categoria { get; set; }
 
     [Required]
     [MaxLength(100)]
@@ -36,7 +36,7 @@ public partial class Oferta
 
     [Required]
     [EnumDataType(typeof(CurrencyType), ErrorMessage = "La moneda no es válida.")]
-    public string? Moneda { get; set; }
+    public required string Moneda { get; set; }
 
     [Range(0, double.MaxValue)]
     [Column(TypeName = "decimal(10, 2)")]
@@ -47,7 +47,7 @@ public partial class Oferta
 
     [DisplayName("País")]
     [EnumDataType(typeof(Country), ErrorMessage = "El país no es válido.")]
-    public string? Pais { get; set; } = null!;
+    public required string Pais { get; set; } = null!;
 
     public virtual ICollection<OfertaHabilidad> OfertaHabilidades { get; set; } = new List<OfertaHabilidad>();
 
