@@ -17,7 +17,7 @@
 			<img src="~/assetsLandingPage/img/hero-img.png" alt="hero-img" class="img">
 		</div>
 	</div>
-	<a href="" type="button" title="Iniciar sesión" class="button button__register">
+	<a asp-page="/Register/CreateAccount" type="button" title="Iniciar sesión" class="button button__register" id="button__register--index">
 		Regístrate
 	</a>
 </section>
@@ -28,22 +28,23 @@
 
 		<!-- Service item -->
 		<div class="container__item">
-			<div class="icon"></div>
-			<h4 class="item__title title">Candidatos</h4>
+            <div class="item__box">
+				<div class="icon">
+					<i class='bx bx-user'></i>
+				</div>
+				<h4 class="item__title title">Candidatos</h4>
+			</div>
 			<p class="item__text"></p>
 		</div>
 
 		<!-- Service item -->
 		<div class="container__item">
-			<div class="icon"></div>
-			<h4 class="item__title title">Empleadores</h4>
-			<p class="item__text"></p>
-		</div>
-
-		<!-- Service item -->
-		<div class="container__item">
-			<div class="icon"></div>
-			<h4 class="item__title title">Ofertas</h4>
+            <div class="item__box">
+				<div class="icon">
+					<i class='bx bx-spreadsheet'></i>
+				</div>
+				<h4 class="item__title title">Reclutadores</h4>
+			</div>
 			<p class="item__text"></p>
 		</div>
 
