@@ -26,21 +26,19 @@ namespace AppEmpleo.Class.Utilities
         }
 
         // Agrega el usuario a la tabla candidato o reclutador según su rol
-        public static void UserTypeFormat(Usuario user)
+        private static void UserTypeFormat(Usuario user)
         {
             switch (user.Rol)
             {
                 case "CANDIDATO":
                     user.Candidato = new Candidato()
                     {
-                        CandidatoId = user.UsuarioId,
                         UsuarioId = user.UsuarioId
                     };
                     break;
                 case "RECLUTADOR":
                     user.Reclutador = new Reclutador()
                     {
-                        ReclutadorId = user.UsuarioId,
                         UsuarioId = user.UsuarioId
                     };
                     break;
