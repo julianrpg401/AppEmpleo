@@ -4,11 +4,11 @@ namespace AppEmpleo.Class.Utilities
 {
     public class OfferDataProcessor
     {
-        public static Oferta OfferFormat(Oferta offer, Usuario recruiter)
+        public static Oferta OfferFormat(Oferta offer, Usuario user)
         {
             Oferta offerFormatted = new Oferta()
             {
-                ReclutadorId = recruiter.Reclutador?.ReclutadorId,
+                ReclutadorId = user.Reclutador?.ReclutadorId,
                 NombreOferta = offer.NombreOferta.ToUpper(),
                 FechaInicio = offer.FechaInicio,
                 FechaCierre = offer.FechaCierre,
