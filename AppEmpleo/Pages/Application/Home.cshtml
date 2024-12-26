@@ -20,6 +20,7 @@
 
     Usuario user = new Usuario()
     {
+        UsuarioId = claimsService.GetId(),
         Nombre = claimsService.GetName(),
         Email = claimsService.GetEmail(),
         Rol = claimsService.GetRole()
@@ -118,7 +119,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="button button__submit button__mobile">Publicar oferta</button>
+                <button type="submit" class="button button__submit button__mobile" id="button__offer">Publicar oferta</button>
                 <button type="button" class="button button__submit button__mobile button__mobile--cancel">Cancelar</button>
 
             </form>
