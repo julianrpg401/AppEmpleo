@@ -38,7 +38,7 @@ namespace AppEmpleo.Pages.Application
             GetAuthenticatedUser();
             await GetUserAsync();
 
-            Offer.ReclutadorId = User.Reclutador?.ReclutadorId;
+            Offer = OfferDataProcessor.OfferFormat(Offer, User);
 
             if (!ModelState.IsValid)
             {
@@ -46,7 +46,6 @@ namespace AppEmpleo.Pages.Application
                 return Page();
             }
 
-            Offer = OfferDataProcessor.OfferFormat(Offer, User);
             await _offerRepository.AddAsync(Offer);
 
             return RedirectToPage();
