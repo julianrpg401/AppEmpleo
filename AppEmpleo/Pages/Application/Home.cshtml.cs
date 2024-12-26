@@ -4,8 +4,6 @@ using AppEmpleo.Class.Utilities;
 using AppEmpleo.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
 
 namespace AppEmpleo.Pages.Application
 {
@@ -15,14 +13,12 @@ namespace AppEmpleo.Pages.Application
         private readonly UserRepository _userRepository;
         private readonly ClaimsService _claimsService;
 
-        public new Usuario User { get; set; }
-
-        public Usuario Recruiter { get; set; }
+        public new Usuario User { get; set; } = null!;
 
         [BindProperty]
-        public Oferta Offer { get; set; }
+        public Oferta Offer { get; set; } = null!;
 
-        public List<Oferta>? Offers { get; set; } = new List<Oferta>();
+        public List<Oferta> Offers { get; set; } = [];
 
         public HomeModel(OfferRepository offerRepository, UserRepository userRepository, ClaimsService claimsService)
         {
@@ -35,6 +31,25 @@ namespace AppEmpleo.Pages.Application
         {
             GetAuthenticatedUser();
             await GetOffersAsync();
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            GetAuthenticatedUser();
+            await GetUserAsync();
+
+            Offer.ReclutadorId = User.Reclutador?.ReclutadorId;
+
+            if (!ModelState.IsValid)
+            {
+                Console.WriteLine("Estado del modelo no válido");
+                return Page();
+            }
+
+            Offer = OfferDataProcessor.OfferFormat(Offer, User);
+            await _offerRepository.AddAsync(Offer);
+
+            return RedirectToPage();
         }
 
         private void GetAuthenticatedUser()
@@ -54,28 +69,9 @@ namespace AppEmpleo.Pages.Application
         }
 
         private async Task GetOffersAsync()
-        {
-            Offers = await _offerRepository.GetOffersAsync();
-        }
+            => Offers = await _offerRepository.GetOffersAsync();
 
-        public async Task<IActionResult> OnPostAsync()
-        {
-            GetAuthenticatedUser();
-
-            Recruiter = await _userRepository.GetRecruiterAsync(User.UsuarioId);
-
-            Offer.ReclutadorId = Recruiter.Reclutador.ReclutadorId;
-
-            if (!ModelState.IsValid)
-            {
-                Console.WriteLine("Estado del modelo no válido");
-                return Page();
-            }
-
-            Offer = OfferDataProcessor.OfferFormat(Offer, Recruiter);
-            await _offerRepository.AddOfferAsync(Offer);
-
-            return RedirectToPage();
-        }
+        private async Task GetUserAsync()
+            => User = await _userRepository.GetUserAsync(User);
     }
 }
