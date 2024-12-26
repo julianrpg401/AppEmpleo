@@ -1,5 +1,7 @@
 ﻿@page
-@model AppEmpleo.Pages.Application.HomeModel 
+@model AppEmpleo.Pages.Application.HomeModel
+@inject ClaimsService claimsService
+@using AppEmpleo.Class.Services
 @using AppEmpleo.Models
 @using AppEmpleo.Class.Utilities
 @{
@@ -8,10 +10,24 @@
 
     var countries = CountryHelper.CountryName;
     var currencies = CurrencyHelper.CurrencyName;
+
+    var authenticatedUser = claimsService.AuthenticatedUser();
+
+    if (!authenticatedUser)
+    {
+        throw new ArgumentException();
+    }
+
+    Usuario user = new Usuario()
+    {
+        Nombre = claimsService.GetName(),
+        Email = claimsService.GetEmail(),
+        Rol = claimsService.GetRole()
+    };
 }
 
 <div class="role">
-    @if (Model.User.Rol == "CANDIDATO")
+    @if (user.Rol == "CANDIDATO")
     {
         <p class="p_prueba">Eres candidato</p>
         <div class="search__container">
