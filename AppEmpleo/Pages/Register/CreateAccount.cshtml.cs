@@ -40,7 +40,7 @@ namespace AppEmpleo.Pages.CreateAccount
             }
 
             User = UserDataProcessor.UserFormat(User);
-            await _userRepository.AddUserAsync(User);
+            await _userRepository.AddAsync(User);
 
             return RedirectToPage("/Register/RegisterSuccess");
         }
