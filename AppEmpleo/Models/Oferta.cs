@@ -10,7 +10,7 @@ public partial class Oferta
     public int OfertaId { get; set; }
 
     [ForeignKey("Reclutador")]
-    public int ReclutadorId { get; set; }
+    public int? ReclutadorId { get; set; }
 
     public virtual Reclutador? Reclutador { get; set; } = null!;
 
