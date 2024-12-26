@@ -1,19 +1,14 @@
-﻿using AppEmpleo.Models;
+﻿using AppEmpleo.Interfaces;
+using AppEmpleo.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
-using System.Security.Claims;
-using System.Threading.Tasks.Dataflow;
 
 namespace AppEmpleo.Class.DataAccess
 {
-    public class UserRepository
+    public class UserRepository : Repository<Usuario>, IValidateUserAsync
     {
-        private readonly AppEmpleoContext _appEmpleoContext;
-
         // Inyectar la base de datos
-        public UserRepository(AppEmpleoContext appEmpleoContext)
+        public UserRepository(AppEmpleoContext appEmpleoContext) : base(appEmpleoContext)
         {
-            _appEmpleoContext = appEmpleoContext;
         }
 
         // Validar si el correo electrónico ya está registrado
@@ -52,26 +47,44 @@ namespace AppEmpleo.Class.DataAccess
             throw new ArgumentException("Error al validar el email");
         }
 
-        // Agregar el usuario a la BD
-        public async Task AddUserAsync(Usuario user)
-        {
-            await _appEmpleoContext.Usuarios.AddAsync(user);
-            await _appEmpleoContext.SaveChangesAsync();
-        }
-
-        // Devuelve un usuario con el rol de reclutador y su respectivo id
-        public async Task<Usuario> GetRecruiterAsync(int userId)
+        // Devuelve un usuario con el rol y su respectivo id
+        public async Task<Usuario> GetUserAsync(Usuario user)
         {
             try
             {
-                var user = await _appEmpleoContext.Usuarios
-                    .Include(u => u.Reclutador)
-                    .FirstOrDefaultAsync(u => u.UsuarioId == userId);
+                Usuario? foundUser;
 
-                Console.WriteLine(user?.Nombre);
-                Console.WriteLine(user?.Reclutador?.ReclutadorId);
+                switch (user.Rol)
+                {
+                    case "RECLUTADOR":
 
-                return user;
+                        foundUser = await _appEmpleoContext.Usuarios
+                            .Include(r => r.Reclutador)
+                            .FirstOrDefaultAsync(r => r.UsuarioId == user.UsuarioId);
+
+                        if (foundUser == null)
+                        {
+                            throw new ArgumentException("No se encontró el reclutador");
+                        }
+
+                        return foundUser;
+
+                    case "CANDIDATO":
+
+                        foundUser = await _appEmpleoContext.Usuarios
+                            .Include(c => c.Candidato)
+                            .FirstOrDefaultAsync(c => c.UsuarioId == user.UsuarioId);
+
+                        if (foundUser == null)
+                        {
+                            throw new ArgumentException("No se encontró el reclutador");
+                        }
+
+                        return foundUser;
+
+                    default:
+                        throw new ArgumentException("Rol no válido");
+                }
             }
             catch (Exception ex)
             {

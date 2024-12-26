@@ -1,20 +1,18 @@
-﻿using AppEmpleo.Models;
+﻿using AppEmpleo.Interfaces;
+using AppEmpleo.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppEmpleo.Class.DataAccess
 {
-    public class OfferRepository
+    public class OfferRepository : Repository<Oferta>
     {
-        private readonly AppEmpleoContext _appEmpleoContext;
-
         // Inyectar la base de datos
-        public OfferRepository(AppEmpleoContext appEmpleoContext)
+        public OfferRepository(AppEmpleoContext appEmpleoContext) : base(appEmpleoContext)
         {
-            _appEmpleoContext = appEmpleoContext;
         }
 
         // Devuelve todas las ofertas de la base de datos
-        public async Task<List<Oferta>?> GetOffersAsync()
+        public async Task<List<Oferta>> GetOffersAsync()
         {
             try
             {
@@ -30,12 +28,6 @@ namespace AppEmpleo.Class.DataAccess
             }
 
             throw new ArgumentException("Error al obtener la lista de ofertas");
-        }
-
-        public async Task AddOfferAsync(Oferta offer)
-        {
-            await _appEmpleoContext.Ofertas.AddAsync(offer);
-            await _appEmpleoContext.SaveChangesAsync();
         }
     }
 }
