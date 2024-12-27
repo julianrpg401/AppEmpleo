@@ -27,12 +27,14 @@ namespace AppEmpleo.Pages.Application
             _claimsService = claimsService;
         }
 
+        // Obtiene las ofertas y el usuario autenticado
         public async Task OnGetAsync()
         {
             GetAuthenticatedUser();
             await GetOffersAsync();
         }
 
+        // Añade una oferta a la base de datos
         public async Task<IActionResult> OnPostAsync()
         {
             GetAuthenticatedUser();
@@ -51,6 +53,7 @@ namespace AppEmpleo.Pages.Application
             return RedirectToPage();
         }
 
+        // Obtiene el usuario autenticado en un objeto Usuario
         private void GetAuthenticatedUser()
         {
             if (!_claimsService.AuthenticatedUser())
@@ -67,9 +70,11 @@ namespace AppEmpleo.Pages.Application
             };
         }
 
+        // Obtiene las ofertas
         private async Task GetOffersAsync()
             => Offers = await _offerRepository.GetOffersAsync();
 
+        // Obtiene el usuario desde la base de datos
         private async Task GetUserAsync()
             => User = await _userRepository.GetUserAsync(User);
     }

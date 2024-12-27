@@ -6,12 +6,12 @@ namespace AppEmpleo.Class.DataAccess
 {
     public class UserRepository : Repository<Usuario>, IUserRepository
     {
-        // Inyectar la base de datos
+        // Pasa el contexto a la clase base
         public UserRepository(AppEmpleoContext appEmpleoContext) : base(appEmpleoContext)
         {
         }
 
-        // Validar si el correo electrónico ya está registrado
+        // Valida si el correo electrónico ya está registrado
         public async Task<Usuario?> ValidateExistingUserAsync(Usuario user)
         {
             try
@@ -29,7 +29,7 @@ namespace AppEmpleo.Class.DataAccess
             throw new ArgumentException("Error al validar el email");
         }
 
-        // Validar si el correo electrónico ya está registrado (sobrecarga)
+        // Valida si el correo electrónico ya está registrado (sobrecarga)
         public async Task<Usuario?> ValidateExistingUserAsync(string email)
         {
             try
@@ -47,7 +47,7 @@ namespace AppEmpleo.Class.DataAccess
             throw new ArgumentException("Error al validar el email");
         }
 
-        // Devuelve un usuario con el rol y su respectivo id
+        // Obtiene un usuario con el rol y su respectivo id
         public async Task<Usuario> GetUserAsync(Usuario user)
         {
             try

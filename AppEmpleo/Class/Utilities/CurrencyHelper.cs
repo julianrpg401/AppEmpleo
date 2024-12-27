@@ -4,6 +4,7 @@ namespace AppEmpleo.Class.Utilities
 {
     public static class CurrencyHelper
     {
+        // Diccionario de nombres de monedas
         public static readonly Dictionary<CurrencyType, string> CurrencyName = new()
         {
             { CurrencyType.USD, "Dólar Estadounidense" },

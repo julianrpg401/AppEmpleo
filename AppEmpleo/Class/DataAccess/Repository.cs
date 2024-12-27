@@ -9,12 +9,14 @@ namespace AppEmpleo.Class.DataAccess
         protected readonly AppEmpleoContext _appEmpleoContext;
         private readonly DbSet<T> _dbSet;
 
+        // Inyecta el contexto de la base de datos y un DbSet (de un modelo)
         public Repository(AppEmpleoContext appEmpleoContext)
         {
             _appEmpleoContext = appEmpleoContext;
             _dbSet = appEmpleoContext.Set<T>();
         }
 
+        // Añade un objeto a la base de datos
         public async Task AddAsync(T entity)
         {
             try

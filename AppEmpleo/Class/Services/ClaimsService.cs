@@ -12,6 +12,7 @@ namespace AppEmpleo.Class.Services
             _contextAccessor = contextAccessor;
         }
 
+        // Crea una lista de claims para el usuario y poder autorizarlo
         public List<Claim> CreateClaims(Usuario user)
         {
             try
@@ -37,9 +38,11 @@ namespace AppEmpleo.Class.Services
         public bool AuthenticatedUser()
             => _contextAccessor.HttpContext?.User.Identity?.IsAuthenticated ?? false;
 
+        // Obtiene un claim específico del usuario
         public string GetClaim(string claimType)
             => _contextAccessor.HttpContext?.User.FindFirst(claimType)?.Value ?? string.Empty;
 
+        // Obtiene el Id del usuario
         public int GetId()
         {
             var userIdClaim = GetClaim("UserId");
@@ -47,12 +50,15 @@ namespace AppEmpleo.Class.Services
             return int.TryParse(userIdClaim, out int userId) ? userId : throw new InvalidOperationException("El UserId no es válido.");
         }
 
+        // Obtiene el nombre del usuario
         public string GetName()
             => GetClaim(ClaimTypes.Name);
 
+        // Obtiene el correo electrónico del usuario
         public string GetEmail()
             => GetClaim(ClaimTypes.Email);
 
+        // Obtiene el rol del usuario
         public string GetRole()
             => GetClaim(ClaimTypes.Role);
     }

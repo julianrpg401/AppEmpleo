@@ -31,6 +31,7 @@ namespace AppEmpleo.Pages.Login
         {
         }
 
+        // Autentica al usuario
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)

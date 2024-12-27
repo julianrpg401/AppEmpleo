@@ -5,6 +5,7 @@ namespace AppEmpleo.Class.Services
 {
     public class EncryptService
     {
+        // Obtiene el hash SHA256 de una cadena
         public static string GetSHA256(string str)
         {
             SHA256 sha256 = SHA256.Create();

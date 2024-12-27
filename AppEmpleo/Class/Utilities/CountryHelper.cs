@@ -4,6 +4,7 @@ namespace AppEmpleo.Class.Utilities
 {
     public static class CountryHelper
     {
+        // Diccionario de códigos de país
         public static readonly Dictionary<Country, string> CountryName = new()
         {
             { Country.MEX, "México" },

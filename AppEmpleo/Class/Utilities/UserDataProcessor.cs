@@ -5,7 +5,7 @@ namespace AppEmpleo.Class.Utilities
 {
     public class UserDataProcessor
     {
-        // Procesa los datos del usuario para presentarlos en un formato adecuado en la BD
+        // Formatea un usuario para ser insertado en la base de datos
         public static Usuario UserFormat(Usuario user)
         {
             Usuario userFormatted = new Usuario()
@@ -24,7 +24,7 @@ namespace AppEmpleo.Class.Utilities
             return userFormatted;
         }
 
-        // Agrega el usuario a la tabla candidato o reclutador según su rol
+        // Agrega el rol del usuario
         private static void UserTypeFormat(Usuario user)
         {
             switch (user.Rol)

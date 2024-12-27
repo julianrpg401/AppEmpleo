@@ -6,12 +6,12 @@ namespace AppEmpleo.Class.DataAccess
 {
     public class OfferRepository : Repository<Oferta>, IOfferRepository
     {
-        // Inyectar la base de datos
+        // Pasa el contexto a la clase base
         public OfferRepository(AppEmpleoContext appEmpleoContext) : base(appEmpleoContext)
         {
         }
 
-        // Devuelve todas las ofertas de la base de datos
+        // Obtiene todas las ofertas de la base de datos
         public async Task<List<Oferta>> GetOffersAsync()
         {
             try

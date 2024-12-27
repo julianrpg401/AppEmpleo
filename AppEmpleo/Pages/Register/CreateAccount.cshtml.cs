@@ -23,6 +23,7 @@ namespace AppEmpleo.Pages.CreateAccount
         {
         }
 
+        // Añade un usuario a la base de datos
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
