@@ -1,5 +1,6 @@
 using AppEmpleo.Class.DataAccess;
 using AppEmpleo.Class.Services;
+using AppEmpleo.Interfaces;
 using AppEmpleo.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,8 +34,8 @@ namespace AppEmpleo
             // Registrar repositorios y servicios
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<ClaimsService>();
-            builder.Services.AddScoped<UserRepository>();
-            builder.Services.AddScoped<OfferRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IOfferRepository ,OfferRepository>();
 
             var app = builder.Build();
 
