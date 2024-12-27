@@ -1,5 +1,6 @@
 using AppEmpleo.Class.DataAccess;
 using AppEmpleo.Class.Services;
+using AppEmpleo.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,7 +11,7 @@ namespace AppEmpleo.Pages.Login
 {
     public class LoginModel : PageModel
     {
-        private UserRepository _userRepository;
+        private IUserRepository _userRepository;
         private readonly ClaimsService _claimsService;
 
         [BindProperty]
@@ -20,7 +21,7 @@ namespace AppEmpleo.Pages.Login
         [DisplayName("Contraseña")]
         public string Password { get; set; } = null!;
 
-        public LoginModel(UserRepository userRepository, ClaimsService claimsService)
+        public LoginModel(IUserRepository userRepository, ClaimsService claimsService)
         {
             _userRepository = userRepository;
             _claimsService = claimsService;

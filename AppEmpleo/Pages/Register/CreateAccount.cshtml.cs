@@ -1,5 +1,6 @@
 using AppEmpleo.Class.DataAccess;
 using AppEmpleo.Class.Utilities;
+using AppEmpleo.Interfaces;
 using AppEmpleo.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -8,12 +9,12 @@ namespace AppEmpleo.Pages.CreateAccount
 {
     public class CreateAccountModel : PageModel
     {
-        private readonly UserRepository _userRepository;
+        private readonly IUserRepository _userRepository;
 
         [BindProperty]
         public new Usuario User { get; set; } = null!;
 
-        public CreateAccountModel(UserRepository userRepository)
+        public CreateAccountModel(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }

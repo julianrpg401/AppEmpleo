@@ -1,6 +1,6 @@
-using AppEmpleo.Class.DataAccess;
 using AppEmpleo.Class.Services;
 using AppEmpleo.Class.Utilities;
+using AppEmpleo.Interfaces;
 using AppEmpleo.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,8 +9,8 @@ namespace AppEmpleo.Pages.Application
 {
     public class HomeModel : PageModel
     {
-        private readonly OfferRepository _offerRepository;
-        private readonly UserRepository _userRepository;
+        private readonly IOfferRepository _offerRepository;
+        private readonly IUserRepository _userRepository;
         private readonly ClaimsService _claimsService;
 
         public new Usuario User { get; set; } = null!;
@@ -20,7 +20,7 @@ namespace AppEmpleo.Pages.Application
 
         public List<Oferta> Offers { get; set; } = [];
 
-        public HomeModel(OfferRepository offerRepository, UserRepository userRepository, ClaimsService claimsService)
+        public HomeModel(IOfferRepository offerRepository, IUserRepository userRepository, ClaimsService claimsService)
         {
             _offerRepository = offerRepository;
             _userRepository = userRepository;
