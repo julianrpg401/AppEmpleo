@@ -1,6 +1,5 @@
 ﻿using AppEmpleo.Class.Services;
 using AppEmpleo.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace AppEmpleo.Class.Utilities
 {
