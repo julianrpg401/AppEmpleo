@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AppEmpleo.Class.DataAccess
 {
-    public class OfferRepository : Repository<Oferta>
+    public class OfferRepository : Repository<Oferta>, IOfferRepository
     {
         // Inyectar la base de datos
         public OfferRepository(AppEmpleoContext appEmpleoContext) : base(appEmpleoContext)

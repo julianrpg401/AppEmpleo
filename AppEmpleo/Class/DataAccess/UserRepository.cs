@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AppEmpleo.Class.DataAccess
 {
-    public class UserRepository : Repository<Usuario>, IValidateUserAsync
+    public class UserRepository : Repository<Usuario>, IUserRepository
     {
         // Inyectar la base de datos
         public UserRepository(AppEmpleoContext appEmpleoContext) : base(appEmpleoContext)
