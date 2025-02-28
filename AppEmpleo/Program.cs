@@ -35,7 +35,7 @@ namespace AppEmpleo
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<ClaimsService>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
-            builder.Services.AddScoped<IOfferRepository ,OfferRepository>();
+            builder.Services.AddScoped<IOfferRepository, OfferRepository>();
 
             var app = builder.Build();
 

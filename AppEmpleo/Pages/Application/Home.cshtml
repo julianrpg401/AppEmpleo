@@ -30,7 +30,6 @@
 <div class="role">
     @if (user.Rol == "CANDIDATO")
     {
-        <p class="p_prueba">Eres candidato</p>
         <div class="search__container">
             <h1>Resultados de búsqueda</h1>
             <ul class="list__offers">
@@ -43,9 +42,32 @@
                     foreach (var offer in Model.Offers)
                     {
                         <li class="offer">
-                            <h2 class="offer__title">@offer.NombreOferta</h2>
-                            <p>@offer.Descripcion</p>
-                            <p>@offer.Salario</p>
+                            <div class="offer__header">
+                                <h2 class="offer__title">@offer.NombreOferta</h2>
+                                <div class="offer__date">
+                                    <div class="start__date">@offer.FechaInicio</div>
+                                    <div class="closing__date">@offer.FechaCierre</div>
+                                </div>
+                            </div>
+                            <div class="offer__country">
+                                @foreach (var country in countries)
+                                {
+                                    if (offer.Pais == country.Key.ToString())
+                                    {
+                                        <p class="country">@country.Value</p>
+                                    }
+                                }
+                            </div>
+                            <div class="offer__modality">
+                                <div class="modality__paragraph">@offer.ModalidadTrabajo</div>
+                            </div>
+                            <div class="offer__end">
+                                <div class="offer__salary">
+                                    <i class='bx bx-wallet'></i>
+                                    <div class="salary">@offer.Moneda @offer.Salario</div>
+                                </div>
+                                <button class="button button__submit button__mobile button__details">Ver detalles</button>
+                            </div>
                         </li>
                     }
                 }
@@ -54,7 +76,7 @@
     }
     else
     {
-        <div class="default__form form__offer">
+        <div class="default__form form__offer" id="form__offer">
             <form method="post" asp-page="Home" class="form">
 
                 <div class="form__group">

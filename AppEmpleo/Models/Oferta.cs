@@ -21,7 +21,7 @@ public partial class Oferta
 
     [Required]
     [MaxLength(100)]
-    [DisplayName("Nombre de la oferta")]
+    [DisplayName("Nombre de la vacante")]
     public string NombreOferta { get; set; } = null!;
 
     [Required]
