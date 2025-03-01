@@ -19,7 +19,6 @@ namespace AppEmpleo.Class.DataAccess
                 var existingUser = await _appEmpleoContext.Usuarios.FirstOrDefaultAsync
                     (u => u.Email == user.Email);
 
-                // El correo electrónico ya está registrado
                 return existingUser;
             }
             catch (Exception ex)
