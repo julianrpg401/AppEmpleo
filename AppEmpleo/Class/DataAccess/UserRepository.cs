@@ -11,7 +11,7 @@ namespace AppEmpleo.Class.DataAccess
         {
         }
 
-        // Valida si el correo electrónico ya está registrado
+        // Valida si el correo electrónico ya está 
         public async Task<Usuario?> ValidateExistingUserAsync(Usuario user)
         {
             try
