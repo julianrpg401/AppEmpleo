@@ -238,3 +238,32 @@ input.form__input--active {
 .form__group--value {
     width: 100%;
 }
+
+#form__offer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form__plus--icon {
+    display: block;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.form__plus--icon::before {
+    font-size: 2.5rem;
+    color: var(--vino-tinto)
+}
+
+#form {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.5s ease, opacity 0.5s ease;
+}
+
+#form.active {
+    max-height: 1000px;
+    opacity: 1;
+}

@@ -9,3 +9,12 @@
         input.classList.remove("form__input--active");
     });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const plusIcon = document.querySelector(".form__plus--icon");
+    const formOffer = document.getElementById("form");
+
+    plusIcon.addEventListener("click", function () {
+        formOffer.classList.toggle("active");
+    });
+});

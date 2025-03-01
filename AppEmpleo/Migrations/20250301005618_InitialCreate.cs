@@ -125,15 +125,16 @@ namespace AppEmpleo.Migrations
                 {
                     OfertaId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ReclutadorId = table.Column<int>(type: "int", nullable: false),
-                    CategoriaId = table.Column<int>(type: "int", nullable: false),
+                    ReclutadorId = table.Column<int>(type: "int", nullable: true),
+                    CategoriaId = table.Column<int>(type: "int", nullable: true),
                     NombreOferta = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FechaInicio = table.Column<DateOnly>(type: "date", nullable: false),
                     FechaCierre = table.Column<DateOnly>(type: "date", nullable: false),
-                    Salario = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    Moneda = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Salario = table.Column<decimal>(type: "decimal(10,2)", nullable: true),
                     ModalidadTrabajo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UbicacionTrabajo = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Pais = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -142,14 +143,12 @@ namespace AppEmpleo.Migrations
                         name: "FK_Ofertas_Categorias_CategoriaId",
                         column: x => x.CategoriaId,
                         principalTable: "Categorias",
-                        principalColumn: "CategoriaId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "CategoriaId");
                     table.ForeignKey(
                         name: "FK_Ofertas_Reclutadores_ReclutadorId",
                         column: x => x.ReclutadorId,
                         principalTable: "Reclutadores",
-                        principalColumn: "ReclutadorId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ReclutadorId");
                 });
 
             migrationBuilder.CreateTable(

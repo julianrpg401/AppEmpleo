@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppEmpleo.Migrations
 {
     [DbContext(typeof(AppEmpleoContext))]
-    [Migration("20241219005143_Beta")]
-    partial class Beta
+    [Migration("20250301005618_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -154,7 +154,7 @@ namespace AppEmpleo.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ReclutadorId")
+                    b.Property<int?>("ReclutadorId")
                         .HasColumnType("int");
 
                     b.Property<decimal?>("Salario")
@@ -314,9 +314,7 @@ namespace AppEmpleo.Migrations
 
                     b.HasOne("AppEmpleo.Models.Reclutador", "Reclutador")
                         .WithMany("Ofertas")
-                        .HasForeignKey("ReclutadorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ReclutadorId");
 
                     b.Navigation("Categoria");
 
