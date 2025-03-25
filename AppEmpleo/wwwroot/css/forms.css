@@ -259,11 +259,13 @@ input.form__input--active {
 #form {
     overflow: hidden;
     max-height: 0;
+    padding: 0;
     opacity: 0;
     transition: max-height 0.5s ease, opacity 0.5s ease;
 }
 
 #form.active {
     max-height: 1000px;
+    padding: 2rem 2.6rem;
     opacity: 1;
 }
