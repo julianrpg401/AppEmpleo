@@ -41,8 +41,8 @@ namespace AppEmpleo.Class.Services
         public async Task UserLogin(Usuario user)
         {
             var claims = CreateClaims(user);
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+            var claimsIdentity = GetClaimsIdentity(claims);
+            var claimsPrincipal = GetClaimsPrincipal(claimsIdentity);
 
             var authProperties = new AuthenticationProperties
             {
@@ -51,6 +51,17 @@ namespace AppEmpleo.Class.Services
 
             await _contextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal, authProperties);
         }
+
+        public async Task UserLogout()
+        {
+            await _contextAccessor.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        }
+
+        private static ClaimsPrincipal GetClaimsPrincipal(ClaimsIdentity claimsIdentity)
+            => new ClaimsPrincipal(claimsIdentity);
+
+        private static ClaimsIdentity GetClaimsIdentity(List<Claim> claims)
+            => new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
         public bool AuthenticatedUser()
             => _contextAccessor.HttpContext?.User?.Identity?.IsAuthenticated ?? false;
