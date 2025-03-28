@@ -2,6 +2,7 @@ using AppEmpleo.Class.DataAccess;
 using AppEmpleo.Class.Services;
 using AppEmpleo.Interfaces;
 using AppEmpleo.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppEmpleo
@@ -24,11 +25,11 @@ namespace AppEmpleo
                 => options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection")));
 
             // Autenticación con claims
-            builder.Services.AddAuthentication("CookieAuth")
-                .AddCookie("CookieAuth", options =>
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
                 {
-                    options.LoginPath = "/Login"; // Página de login
-                    options.AccessDeniedPath = "/AccessDenied"; // Página para usuarios sin acceso
+                    options.LoginPath = "/Login/Login"; // Página de inicio de sesión
+                    options.AccessDeniedPath = "/AccessDenied"; // Página de acceso denegado
                 });
 
             // Registrar repositorios y servicios
@@ -52,8 +53,9 @@ namespace AppEmpleo
             app.UseStaticFiles();
 
             app.UseRouting();
-            
-            app.UseAuthorization();
+
+            app.UseAuthentication(); // Habilita la autenticación
+            app.UseAuthorization(); // Habilita la autorización
 
             app.MapRazorPages();
 
