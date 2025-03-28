@@ -11,10 +11,12 @@
         <div class="form__group">
             <label asp-for="Email" class="label"></label>
             <input asp-for="Email" type="email" class="form__input" />
+            <span asp-validation-for="Email" class="text-danger"></span>
         </div>
         <div class="form__group">
             <label asp-for="Password" class="label"></label>
             <input asp-for="Password" type="password" class="form__input" />
+            <span asp-validation-for="Password" class="text-danger"></span>
         </div>
 
         <button type="submit" class="button button__submit">Iniciar Sesión</button>
