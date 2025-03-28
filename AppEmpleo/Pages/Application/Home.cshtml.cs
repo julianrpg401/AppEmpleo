@@ -2,17 +2,22 @@ using AppEmpleo.Class.Services;
 using AppEmpleo.Class.Utilities;
 using AppEmpleo.Interfaces;
 using AppEmpleo.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace AppEmpleo.Pages.Application
 {
+    [Authorize]
     public class HomeModel : PageModel
     {
         private readonly IOfferRepository _offerRepository;
         private readonly IUserRepository _userRepository;
         private readonly ClaimsService _claimsService;
 
+        [BindProperty]
         public new Usuario User { get; set; } = null!;
 
         [BindProperty]
@@ -28,37 +33,11 @@ namespace AppEmpleo.Pages.Application
         }
 
         // Obtiene las ofertas y el usuario autenticado
-        public async Task OnGetAsync()
-        {
-            GetAuthenticatedUser();
-            await GetOffersAsync();
-        }
-
-        // Añade una oferta a la base de datos
-        public async Task<IActionResult> OnPostAsync()
-        {
-            GetAuthenticatedUser();
-            await GetUserAsync();
-
-            Offer = OfferDataProcessor.OfferFormat(Offer, User);
-
-            if (!ModelState.IsValid)
-            {
-                Console.WriteLine("Estado del modelo no válido");
-                return Page();
-            }
-
-            await _offerRepository.AddAsync(Offer);
-
-            return RedirectToPage();
-        }
-
-        // Obtiene el usuario autenticado en un objeto Usuario
-        private void GetAuthenticatedUser()
+        public async Task<IActionResult> OnGetAsync()
         {
             if (!_claimsService.AuthenticatedUser())
             {
-                RedirectToPage("/Login");
+                return RedirectToPage("/Login/Login");
             }
 
             User = new Usuario()
@@ -68,6 +47,25 @@ namespace AppEmpleo.Pages.Application
                 Email = _claimsService.GetEmail(),
                 Rol = _claimsService.GetRole()
             };
+
+            await GetOffersAsync();
+
+            return Page();
+        }
+
+        // Añade una oferta a la base de datos
+        public async Task<IActionResult> OnPostAsync()
+        {
+            Offer = OfferDataProcessor.OfferFormat(Offer, User);
+
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            await _offerRepository.AddAsync(Offer);
+
+            return RedirectToPage();
         }
 
         // Obtiene las ofertas
