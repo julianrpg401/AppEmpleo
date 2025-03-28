@@ -1,4 +1,7 @@
 ﻿using AppEmpleo.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace AppEmpleo.Class.Services
@@ -35,8 +38,22 @@ namespace AppEmpleo.Class.Services
             throw new ArgumentException();
         }
 
+        public async Task UserLogin(Usuario user)
+        {
+            var claims = CreateClaims(user);
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = false,
+            };
+
+            await _contextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal, authProperties);
+        }
+
         public bool AuthenticatedUser()
-            => _contextAccessor.HttpContext?.User.Identity?.IsAuthenticated ?? false;
+            => _contextAccessor.HttpContext?.User?.Identity?.IsAuthenticated ?? false;
 
         // Obtiene un claim específico del usuario
         public string GetClaim(string claimType)
