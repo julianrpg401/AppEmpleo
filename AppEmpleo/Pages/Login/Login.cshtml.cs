@@ -1,10 +1,12 @@
-using AppEmpleo.Class.DataAccess;
 using AppEmpleo.Class.Services;
 using AppEmpleo.Interfaces;
+using AppEmpleo.Models;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 
 namespace AppEmpleo.Pages.Login
@@ -15,9 +17,12 @@ namespace AppEmpleo.Pages.Login
         private readonly ClaimsService _claimsService;
 
         [BindProperty]
+        [Required(ErrorMessage = "El campo Email no puede estar vacío")]
+        [EmailAddress(ErrorMessage = "El correo electrónico no tiene un formato válido")]
         public string Email { get; set; } = null!;
 
         [BindProperty]
+        [Required(ErrorMessage = "El campo Contraseña no puede estar vacío")]
         [DisplayName("Contraseña")]
         public string Password { get; set; } = null!;
 
@@ -56,12 +61,13 @@ namespace AppEmpleo.Pages.Login
                 return Page();
             }
 
-            var claims = _claimsService.CreateClaims(existingUser);
+            if (existingUser == null | existingUser?.ClaveHash != Password)
+            {
+                Console.WriteLine("Error al autenticar al usuario");
+                return Page();
+            }
 
-            var identity = new ClaimsIdentity(claims, "CookieAuth");
-            var principal = new ClaimsPrincipal(identity);
-
-            await HttpContext.SignInAsync("CookieAuth", principal);
+            await _claimsService.UserLogin(existingUser!);
 
             return RedirectToPage("/Application/Home");
         }
