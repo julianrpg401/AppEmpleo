@@ -1,34 +1,17 @@
 ﻿@page
 @model AppEmpleo.Pages.Application.HomeModel
-@inject ClaimsService claimsService
-@using AppEmpleo.Class.Services
-@using AppEmpleo.Models
 @using AppEmpleo.Class.Utilities
+@using Microsoft.AspNetCore.Authorization
 @{
     ViewData["Title"] = "Ofertas de empleo";
     Layout = "~/Pages/Shared/_LayoutSession.cshtml";
 
     var countries = CountryHelper.CountryName;
     var currencies = CurrencyHelper.CurrencyName;
-
-    var authenticatedUser = claimsService.AuthenticatedUser();
-
-    if (!authenticatedUser)
-    {
-        throw new ArgumentException();
-    }
-
-    Usuario user = new Usuario()
-    {
-        UsuarioId = claimsService.GetId(),
-        Nombre = claimsService.GetName(),
-        Email = claimsService.GetEmail(),
-        Rol = claimsService.GetRole()
-    };
 }
 
 <div class="role">
-    @if (user.Rol == "CANDIDATO")
+    @if (Model.User.Rol == "CANDIDATO")
     {
         <div class="search__container">
             <h1>Resultados de búsqueda</h1>
