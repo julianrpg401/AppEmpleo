@@ -103,10 +103,12 @@
                 </ul>
                 <div class="menu__boton">
                     <div class="boton__salir">
-                        <a href="../Pages/Index.cshtml" class="salir__link">
-                            <i class="bx bx-log-out boton__icon icon"></i>
-                            <span class="salir__texto">Cerrar sesión</span>
-                        </a>
+                        <form asp-controller="Account" asp-action="Logout" method="post">
+                            <button type="submit" class="salir__link">
+                                <i class="bx bx-log-out boton__icon icon"></i>
+                                <span class="salir__texto">Cerrar sesión</span>
+                            </button>
+                        </form>
                     </div>
                     <div class="boton__modo">
                         <i class="bx bx-moon boton__icon boton__icon--modo icon"></i>
