@@ -56,6 +56,11 @@ namespace AppEmpleo.Pages.Application
         // Añade una oferta a la base de datos
         public async Task<IActionResult> OnPostAsync()
         {
+            if (User.Rol != "RECLUTADOR")
+            {
+                return Forbid();
+            }
+
             Offer = OfferDataProcessor.OfferFormat(Offer, User);
 
             if (!ModelState.IsValid)
