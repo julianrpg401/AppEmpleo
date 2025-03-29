@@ -6,12 +6,10 @@ namespace AppEmpleo.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
         private readonly ClaimsService? _claimsService;
 
-        public IndexModel(ILogger<IndexModel> logger, ClaimsService claimsService)
+        public IndexModel(ClaimsService claimsService)
         {
-            _logger = logger;
             _claimsService = claimsService;
 
             if (_claimsService.AuthenticatedUser())
