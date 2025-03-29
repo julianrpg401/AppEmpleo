@@ -4,6 +4,7 @@ using AppEmpleo.Interfaces;
 using AppEmpleo.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Serilog;
 
 namespace AppEmpleo.Pages.CreateAccount
 {
@@ -28,23 +29,31 @@ namespace AppEmpleo.Pages.CreateAccount
         {
             if (!ModelState.IsValid)
             {
-                Console.WriteLine("Estado del modelo no valido");
                 return Page();
             }
 
-            var existingUser = await _userRepository.ValidateExistingUserAsync(User);
-
-            // Valida si el correo electrónico ya existe
-            if (existingUser != null)
+            try
             {
-                Console.WriteLine("El correo electrónico ya está registrado");
+                var existingUser = await _userRepository.ValidateExistingUserAsync(User);
+
+                // Valida si el correo electrónico ya existe
+                if (existingUser != null)
+                {
+                    return Page();
+                }
+
+                User = UserDataProcessor.UserFormat(User);
+                await _userRepository.AddAsync(User);
+
+                return RedirectToPage("/Register/RegisterSuccess");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error al crear la cuenta");
+                ModelState.AddModelError(string.Empty, "Ocurrió un error al crear la cuenta. Por favor, inténtelo de nuevo más tarde.");
+
                 return Page();
             }
-
-            User = UserDataProcessor.UserFormat(User);
-            await _userRepository.AddAsync(User);
-
-            return RedirectToPage("/Register/RegisterSuccess");
         }
     }
 }

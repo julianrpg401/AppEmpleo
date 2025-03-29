@@ -1,6 +1,7 @@
 ﻿using AppEmpleo.Interfaces;
 using AppEmpleo.Models;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace AppEmpleo.Class.DataAccess
 {
@@ -24,10 +25,9 @@ namespace AppEmpleo.Class.DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Error(ex, "Error al obtener la lista de ofertas");
+                throw;
             }
-
-            throw new ArgumentException("Error al obtener la lista de ofertas");
         }
     }
 }

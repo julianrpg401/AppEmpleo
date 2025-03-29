@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Serilog;
 
 namespace AppEmpleo.Pages.Application
 {
@@ -48,7 +49,15 @@ namespace AppEmpleo.Pages.Application
                 Rol = _claimsService.GetRole()
             };
 
-            await GetOffersAsync();
+            try
+            {
+                await GetOffersAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error al obtener las ofertas");
+                ModelState.AddModelError(string.Empty, "Ocurrió un error al obtener la página de inicio. Por favor, inténtelo de nuevo más tarde.");
+            }
 
             return Page();
         }
@@ -61,16 +70,24 @@ namespace AppEmpleo.Pages.Application
                 return Forbid();
             }
 
-            Offer = OfferDataProcessor.OfferFormat(Offer, User);
-
-            if (!ModelState.IsValid)
+            try
             {
-                return Page();
+                Offer = OfferDataProcessor.OfferFormat(Offer, User);
+
+                if (!ModelState.IsValid)
+                {
+                    return Page();
+                }
+
+                await _offerRepository.AddAsync(Offer);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error al crear la oferta");
+                ModelState.AddModelError(string.Empty, "Ocurrió un error al crear la oferta. Por favor, inténtelo de nuevo más tarde.");
             }
 
-            await _offerRepository.AddAsync(Offer);
-
-            return RedirectToPage();
+            return Page();
         }
 
         // Obtiene las ofertas

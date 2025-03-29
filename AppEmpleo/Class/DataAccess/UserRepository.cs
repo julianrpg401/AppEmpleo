@@ -1,6 +1,7 @@
 ﻿using AppEmpleo.Interfaces;
 using AppEmpleo.Models;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace AppEmpleo.Class.DataAccess
 {
@@ -23,10 +24,9 @@ namespace AppEmpleo.Class.DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Error(ex, "Error al validar el email para el usuario {Email}", user.Email);
+                throw new ArgumentException("Error al validar el email", ex);
             }
-
-            throw new ArgumentException("Error al validar el email");
         }
 
         // Valida si el correo electrónico ya está registrado (sobrecarga)
@@ -41,10 +41,9 @@ namespace AppEmpleo.Class.DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Error(ex, "Error al validar el email {Email}", email);
+                throw new ArgumentException("Error al validar el email", ex);
             }
-
-            throw new ArgumentException("Error al validar el email");
         }
 
         // Obtiene un usuario con el rol y su respectivo id
@@ -64,6 +63,7 @@ namespace AppEmpleo.Class.DataAccess
 
                         if (foundUser == null)
                         {
+                            Log.Error("No se encontró el reclutador {UserId}", user.UsuarioId);
                             throw new ArgumentException("No se encontró el reclutador");
                         }
 
@@ -77,21 +77,22 @@ namespace AppEmpleo.Class.DataAccess
 
                         if (foundUser == null)
                         {
+                            Log.Error("No se encontró el candidato {UserId}", user.UsuarioId);
                             throw new ArgumentException("No se encontró el reclutador");
                         }
 
                         return foundUser;
 
                     default:
+                        Log.Error("Rol no válido {Rol}", user.Rol);
                         throw new ArgumentException("Rol no válido");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Error(ex, "Error al obtener el usuario con el rol {Rol} y el id {UsuarioId}", user.Rol, user.UsuarioId);
+                throw new ArgumentException("Error al validar el usuario", ex);
             }
-
-            throw new ArgumentException("Error al validar el usuario");
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AppEmpleo.Interfaces;
 using AppEmpleo.Models;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace AppEmpleo.Class.DataAccess
 {
@@ -26,7 +27,8 @@ namespace AppEmpleo.Class.DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message + "\nError al insertar en la BD");
+                Log.Error(ex, "Error al añadir un objeto a la base de datos");
+                throw;
             }
         }
     }

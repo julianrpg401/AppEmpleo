@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Serilog;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
@@ -41,35 +42,41 @@ namespace AppEmpleo.Pages.Login
         {
             if (!ModelState.IsValid)
             {
-                Console.WriteLine("Estado del modelo no válido");
                 return Page();
             }
 
-            var existingUser = await _userRepository.ValidateExistingUserAsync(Email);
-
-            if (existingUser == null)
+            try
             {
-                Console.WriteLine("El correo electrónico no está registrado");
-                return Page();
+                var existingUser = await _userRepository.ValidateExistingUserAsync(Email);
+
+                if (existingUser == null)
+                {
+                    return Page();
+                }
+
+                Password = EncryptService.GetSHA256(Password);
+
+                if (existingUser.ClaveHash != Password)
+                {
+                    return Page();
+                }
+
+                if (existingUser == null | existingUser?.ClaveHash != Password)
+                {
+                    return Page();
+                }
+
+                await _claimsService.UserLogin(existingUser!);
+
+                return RedirectToPage("/Application/Home");
             }
-
-            Password = EncryptService.GetSHA256(Password);
-
-            if (existingUser.ClaveHash != Password)
+            catch (Exception ex)
             {
-                Console.WriteLine("Contraseña incorrecta");
+                Log.Error(ex, "Error al iniciar sesión");
+                ModelState.AddModelError(string.Empty, "Ocurrió un error al iniciar sesión. Por favor, inténtelo de nuevo más tarde.");
+
                 return Page();
             }
-
-            if (existingUser == null | existingUser?.ClaveHash != Password)
-            {
-                Console.WriteLine("Error al autenticar al usuario");
-                return Page();
-            }
-
-            await _claimsService.UserLogin(existingUser!);
-
-            return RedirectToPage("/Application/Home");
         }
     }
 }
