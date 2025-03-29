@@ -4,6 +4,7 @@ using AppEmpleo.Interfaces;
 using AppEmpleo.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace AppEmpleo
 {
@@ -11,11 +12,13 @@ namespace AppEmpleo
     {
         public static void Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
+            // Configuración de Serilog
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.File(@"C:\Users\Rpg40\source\repos\AppEmpleo\AppEmpleo\Logs\log.txt", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
 
-            // Agregar consola para depurar código
-            builder.Logging.ClearProviders();
-            builder.Logging.AddConsole();
+            var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
             builder.Services.AddRazorPages();
@@ -59,7 +62,19 @@ namespace AppEmpleo
 
             app.MapRazorPages();
 
-            app.Run();
+            try
+            {
+                Log.Information("Starting up the application");
+                app.Run();
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Error al iniciar la aplicación.");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
     }
 }
