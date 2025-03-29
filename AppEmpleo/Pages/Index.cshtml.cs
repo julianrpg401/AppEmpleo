@@ -1,5 +1,4 @@
 using AppEmpleo.Class.Services;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace AppEmpleo.Pages

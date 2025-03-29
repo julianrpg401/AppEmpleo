@@ -1,14 +1,10 @@
 using AppEmpleo.Class.Services;
 using AppEmpleo.Interfaces;
-using AppEmpleo.Models;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Serilog;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Security.Claims;
 
 namespace AppEmpleo.Pages.Login
 {

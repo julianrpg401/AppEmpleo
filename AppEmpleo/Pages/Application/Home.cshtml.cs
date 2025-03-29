@@ -2,8 +2,6 @@ using AppEmpleo.Class.Services;
 using AppEmpleo.Class.Utilities;
 using AppEmpleo.Interfaces;
 using AppEmpleo.Models;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

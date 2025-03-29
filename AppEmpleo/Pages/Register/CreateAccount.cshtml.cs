@@ -1,4 +1,3 @@
-using AppEmpleo.Class.DataAccess;
 using AppEmpleo.Class.Utilities;
 using AppEmpleo.Interfaces;
 using AppEmpleo.Models;
