@@ -8,7 +8,7 @@ namespace AppEmpleo.Class.Services
 {
     public class ClaimsService
     {
-        private readonly IHttpContextAccessor _contextAccessor;
+        private readonly IHttpContextAccessor? _contextAccessor;
 
         public ClaimsService(IHttpContextAccessor contextAccessor)
         {
@@ -50,7 +50,7 @@ namespace AppEmpleo.Class.Services
                     IsPersistent = false,
                 };
 
-                await _contextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal, authProperties);
+                await _contextAccessor!.HttpContext!.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal, authProperties);
             }
             catch (Exception ex)
             {
@@ -63,7 +63,7 @@ namespace AppEmpleo.Class.Services
         {
             try
             {
-                await _contextAccessor.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                await _contextAccessor!.HttpContext!.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             }
             catch (Exception ex)
             {
@@ -76,7 +76,7 @@ namespace AppEmpleo.Class.Services
         {
             try
             {
-                return _contextAccessor.HttpContext?.User?.Identity?.IsAuthenticated ?? false;
+                return _contextAccessor!.HttpContext!?.User?.Identity?.IsAuthenticated ?? false;
             }
             catch (Exception ex)
             {
@@ -90,7 +90,7 @@ namespace AppEmpleo.Class.Services
         {
             try
             {
-                return _contextAccessor.HttpContext?.User.FindFirst(claimType)?.Value ?? string.Empty;
+                return _contextAccessor!.HttpContext!?.User.FindFirst(claimType)?.Value ?? string.Empty;
             }
             catch (Exception ex)
             {
