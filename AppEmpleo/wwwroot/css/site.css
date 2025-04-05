@@ -1,1 +1,6 @@
 ﻿@import "tailwindcss";
+
+:root {
+  --font-primary: 'Inter', sans-serif;
+  --font-secondary: 'Montserrat', sans-serif;
+}

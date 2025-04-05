@@ -33,45 +33,16 @@
     <link href="~/css/output.css" rel="stylesheet" asp-append-version="true" />
 </head>
 <body class="@ViewData["BodyClass"]">
-    <header id="header" class="header">
-        <div class="header__container">
 
-            <!-- Logo -->
-            <a asp-page="/Index" class="container__logo">
-                <!-- Uncomment the line below if you also wish to use an image logo -->
-                <!-- <img src="assets/img/logo.png" alt=""> -->
-                <h1 class="sitename title">JobTI</h1>
-            </a>
-
-            <label for="menu-bar" class="fa-solid fa-bars cabeza__barra"></label>
-            <input type="checkbox" id="menu-bar" class="cabeza__input">
-
-            <!-- Menu -->
-            <nav id="menu" class="menu">
-                <div class="menu__container">
-                    <ul class="menu__list">
-                        <li class="list__option"><a href="" class="option">Inicio</a></li>
-                        <li class="list__option"><a href="" class="option">Candidatos</a></li>
-                        <li class="list__option"><a href="" class="option">Reclutadores</a></li>
-                        <li class="list__option"><a href="" class="option">Ayuda</a></li>
-                    </ul>
-
-                    <!-- Buttons -->
-                    <div class="buttons">
-                        <a asp-page="/Login/Login" type="button" title="Iniciar sesión" class="button">
-                            <i class="material-icons button__icon">login</i>
-                            Iniciar sesión
-                        </a>
-                        <a asp-page="/Register/CreateAccount" type="button" title="Crear cuenta" class="button">
-                            <i class="material-icons button__icon">account_circle</i>
-                            Crear cuenta
-                        </a>
-                    </div>
-                </div>
-            </nav>
-
-        </div>
-    </header>
+    <div class="bg-white">
+        <header class="flex justify-between items-center p-5 font-primary font-semibold">
+            <h1 class="block font-[Montserrat] font-bold text-3xl text-gray-800">JobTI</h1>
+            <div class="flex items-center gap-4">
+                <button class="block px-4 py-2 rounded-md bg-sky-400 text-blue-50">Crear Cuenta</button>
+                <button class="block px-4 py-2 rounded-md bg-sky-400 text-blue-50">Iniciar Sesión</button>
+            </div>
+        </header>
+    </div>
 
     <div class="container">
         <main class="main" role="main">
