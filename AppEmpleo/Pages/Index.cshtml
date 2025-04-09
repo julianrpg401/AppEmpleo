@@ -7,17 +7,17 @@
 }
 
 <!-- Hero section -->
-<section id="hero" class="hero">
-	<div class="hero__container">
-		<div class="container__text">
-			<h1 class="text__title">Encuentra el empleo que siempre soñaste</h1>
-			<p class="text__paragraph">Unete a la mejor plataforma de empleo para TI de Latinoamérica</p>
+<section id="hero" class="hero min-h-full">
+	<div class="flex flex-col">
+		<div class="container__text order-2 mb-8">
+			<h1 class="text-4xl font-bold text-gray-600">Encuentra el empleo que siempre soñaste</h1>
+			<p class="text-xl text-gray-600">Unete a la mejor plataforma de empleo para TI de Latinoamérica</p>
 		</div>
-		<div class="container__img">
+		<div class="size-10/12 mx-auto mb-8">
 			<img src="~/assetsLandingPage/img/hero-img.png" alt="hero-img" class="img">
 		</div>
 	</div>
-	<a asp-page="/Register/CreateAccount" type="button" title="Iniciar sesión" class="button button__register" id="button__register--index">
+	<a asp-page="/Register/CreateAccount" type="button" title="Iniciar sesión" class="block w-min px-4 py-2 rounded-md bg-rose-900/80 text-blue-50 font-bold" id="button__register--index">
 		Regístrate
 	</a>
 </section>
