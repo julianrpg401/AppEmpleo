@@ -9,7 +9,7 @@ namespace AppEmpleo.Class.Utilities
         {
             Oferta offerFormatted = new Oferta()
             {
-                ReclutadorId = user.Reclutador?.ReclutadorId,
+                ReclutadorId = user.UsuarioId,
                 NombreOferta = offer.NombreOferta.ToUpper(),
                 FechaInicio = offer.FechaInicio,
                 FechaCierre = offer.FechaCierre,

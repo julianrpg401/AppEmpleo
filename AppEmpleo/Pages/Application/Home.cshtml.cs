@@ -63,19 +63,40 @@ namespace AppEmpleo.Pages.Application
         // Añade una oferta a la base de datos
         public async Task<IActionResult> OnPostAsync()
         {
-            if (User.Rol != "RECLUTADOR")
+            if (!_claimsService.AuthenticatedUser())
             {
-                return Forbid();
+                return RedirectToPage("/Login/Login");
             }
 
             try
             {
+                User = new Usuario()
+                {
+                    UsuarioId = _claimsService.GetId(),
+                    Nombre = _claimsService.GetName(),
+                    Email = _claimsService.GetEmail(),
+                    Rol = _claimsService.GetRole()
+                };
+
                 Offer = OfferDataProcessor.OfferFormat(Offer, User);
 
-                if (!ModelState.IsValid)
-                {
-                    return Page();
-                }
+                //if (!ModelState.IsValid)
+                //{
+                //    var errores = ModelState
+                //        .Where(kvp => kvp.Value!.Errors.Any())
+                //        .Select(kvp => new
+                //        {
+                //            Campo = kvp.Key,
+                //            Errores = kvp.Value!.Errors.Select(e => e.ErrorMessage + " / " + e.Exception?.Message)
+                //        });
+                //    // Aquí podrías hacer un Log.Information(...) o depurar en el IDE
+                //    foreach (var err in errores)
+                //    {
+                //        Console.WriteLine($"Campo: {err.Campo} -> {string.Join(", ", err.Errores)}");
+                //    }
+
+                //    return Page();
+                //}
 
                 await _offerRepository.AddAsync(Offer);
             }

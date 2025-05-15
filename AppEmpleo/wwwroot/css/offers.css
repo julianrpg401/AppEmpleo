@@ -41,11 +41,15 @@
     --tran-05: all 0.5s ease;
 }
 
+.search__container {
+  padding-top: 3rem;
+}
+
 .list__offers {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
 }
 
 .offer {

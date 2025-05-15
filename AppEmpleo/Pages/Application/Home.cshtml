@@ -1,6 +1,7 @@
 ﻿@page
 @model AppEmpleo.Pages.Application.HomeModel
 @using AppEmpleo.Class.Utilities
+@using AppEmpleo.Models
 @using Microsoft.AspNetCore.Authorization
 @{
     ViewData["Title"] = "Ofertas de empleo";
@@ -14,7 +15,6 @@
     @if (Model.User.Rol == "CANDIDATO")
     {
         <div class="search__container">
-            <h1>Resultados de búsqueda</h1>
             <ul class="list__offers">
                 @if (Model.Offers.Count <= 0)
                 {
