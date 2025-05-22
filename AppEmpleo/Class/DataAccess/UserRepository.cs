@@ -94,5 +94,11 @@ namespace AppEmpleo.Class.DataAccess
                 throw new ArgumentException("Error al validar el usuario", ex);
             }
         }
+
+        public async Task<Candidato?> GetCandidatoByUsuarioIdAsync(int usuarioId)
+        {
+            return await _appEmpleoContext.Candidatos
+                .FirstOrDefaultAsync(c => c.UsuarioId == usuarioId);
+        }
     }
 }

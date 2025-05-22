@@ -51,6 +51,16 @@
                                 </div>
                                 <button class="button button__submit button__mobile button__details">Ver detalles</button>
                             </div>
+
+                            <form asp-page-handler="Apply"
+                                  method="post"
+                                  enctype="multipart/form-data"
+                                  class="mt-2">
+                                <input type="hidden" name="OfertaEmpleoId" value="@offer.OfertaId" />
+                                <input type="file" name="CVFile" accept=".pdf" required />
+                                <button type="submit" class="button button__submit">Postular</button>
+                            </form>
+
                         </li>
                     }
                 }
@@ -132,5 +142,36 @@
 
             </form>
         </div>
+
+        <h3>Postulaciones recibidas</h3>
+
+        @if (Model.TodasPostulaciones == null || !Model.TodasPostulaciones.Any())
+        {
+            <p>No hay postulaciones aún.</p>
+        }
+        else
+        {
+            <table class="w-full text-left">
+                <thead>
+                    <tr>
+                        <th>Candidato</th>
+                        <th>Oferta</th>
+                        <th>Fecha</th>
+                        <th>CV</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var post in Model.TodasPostulaciones)
+                    {
+                        <tr>
+                            <td>@post.Candidato.Usuario.Nombre @post.Candidato.Usuario.Apellido</td>
+                            <td>@post.OfertaEmpleo.NombreOferta</td>
+                            <td>@post.FechaPostulacion.ToString("dd/MM/yyyy")</td>
+                            <a asp-page-handler="DescargarCV" asp-route-curriculumId="@post.CurriculumId">Descargar CV</a>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
     }
 </div>

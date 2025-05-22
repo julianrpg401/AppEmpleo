@@ -12,9 +12,20 @@ namespace AppEmpleo.Pages.Application
     [Authorize]
     public class HomeModel : PageModel
     {
+        private readonly IWebHostEnvironment _env;
+        private readonly IApplicationRepository _appRepo;
+
         private readonly IOfferRepository _offerRepository;
         private readonly IUserRepository _userRepository;
         private readonly ClaimsService _claimsService;
+
+        public List<Postulacion> TodasPostulaciones { get; set; } = new();
+
+        [BindProperty]
+        public IFormFile? CVFile { get; set; }
+
+        [BindProperty]
+        public int OfertaEmpleoId { get; set; }
 
         [BindProperty]
         public new Usuario User { get; set; } = null!;
@@ -24,8 +35,11 @@ namespace AppEmpleo.Pages.Application
 
         public List<Oferta> Offers { get; set; } = [];
 
-        public HomeModel(IOfferRepository offerRepository, IUserRepository userRepository, ClaimsService claimsService)
+        public HomeModel(IWebHostEnvironment env, IApplicationRepository appRepo,IOfferRepository offerRepository, IUserRepository userRepository, ClaimsService claimsService)
         {
+            _env = env;
+            _appRepo = appRepo;
+
             _offerRepository = offerRepository;
             _userRepository = userRepository;
             _claimsService = claimsService;
@@ -50,6 +64,7 @@ namespace AppEmpleo.Pages.Application
             try
             {
                 await GetOffersAsync();
+                await OnGetPostulacionesAsync();
             }
             catch (Exception ex)
             {
@@ -80,24 +95,6 @@ namespace AppEmpleo.Pages.Application
 
                 Offer = OfferDataProcessor.OfferFormat(Offer, User);
 
-                //if (!ModelState.IsValid)
-                //{
-                //    var errores = ModelState
-                //        .Where(kvp => kvp.Value!.Errors.Any())
-                //        .Select(kvp => new
-                //        {
-                //            Campo = kvp.Key,
-                //            Errores = kvp.Value!.Errors.Select(e => e.ErrorMessage + " / " + e.Exception?.Message)
-                //        });
-                //    // Aquí podrías hacer un Log.Information(...) o depurar en el IDE
-                //    foreach (var err in errores)
-                //    {
-                //        Console.WriteLine($"Campo: {err.Campo} -> {string.Join(", ", err.Errores)}");
-                //    }
-
-                //    return Page();
-                //}
-
                 await _offerRepository.AddAsync(Offer);
             }
             catch (Exception ex)
@@ -113,8 +110,102 @@ namespace AppEmpleo.Pages.Application
         private async Task GetOffersAsync()
             => Offers = await _offerRepository.GetOffersAsync();
 
+        public async Task<IActionResult> OnGetPostulacionesAsync()
+        {
+            if (!_claimsService.AuthenticatedUser())
+                return RedirectToPage("/Login/Login");
+
+            try
+            {
+                TodasPostulaciones = await _appRepo.GetAllPostulacionesAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error al obtener las postulaciones");
+                ModelState.AddModelError(string.Empty, "No se pudieron cargar las postulaciones.");
+            }
+
+            return Page();
+        }
+
+        public async Task<IActionResult> OnGetDescargarCVAsync(int curriculumId)
+        {
+            var curriculum = await _appRepo.GetCurriculumByIdAsync(curriculumId);
+            if (curriculum == null)
+                return NotFound();
+
+            var filePath = Path.Combine(_env.WebRootPath, curriculum.RutaArchivo.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
+            if (!System.IO.File.Exists(filePath))
+                return NotFound();
+
+            var contentType = "application/octet-stream";
+            var fileName = curriculum.NombreArchivo;
+
+            var fileBytes = await System.IO.File.ReadAllBytesAsync(filePath);
+            return File(fileBytes, contentType, fileName);
+        }
+
         // Obtiene el usuario desde la base de datos
         private async Task GetUserAsync()
             => User = await _userRepository.GetUserAsync(User);
+
+        public async Task<IActionResult> OnPostApplyAsync()
+        {
+            if (!_claimsService.AuthenticatedUser())
+            {
+                return RedirectToPage("/Login/Login");
+            }
+
+            if (CVFile == null || CVFile.Length == 0)
+            {
+                ModelState.AddModelError("", "Debe seleccionar un archivo.");
+                await OnGetAsync(); // recarga ofertas
+                return Page();
+            }
+
+            int usuarioId = _claimsService.GetId();
+
+            // Obtén el candidato asociado a ese usuario
+            var candidato = await _userRepository.GetCandidatoByUsuarioIdAsync(usuarioId);
+            if (candidato == null)
+            {
+                ModelState.AddModelError("", "No se encontró el candidato asociado al usuario.");
+                await OnGetAsync();
+                return Page();
+            }
+
+            // 1. Guardar archivo en wwwroot/curriculums
+            var folder = Path.Combine(_env.WebRootPath, "curriculums");
+            Directory.CreateDirectory(folder);
+
+            var uniqueName = $"{Guid.NewGuid()}{Path.GetExtension(CVFile.FileName)}";
+            var savePath = Path.Combine(folder, uniqueName);
+
+            using var stream = new FileStream(savePath, FileMode.Create);
+            await CVFile.CopyToAsync(stream);
+
+            // 2. Crear Curriculum
+            var curriculum = new Curriculum
+            {
+                CandidatoId = candidato.CandidatoId,
+                NombreArchivo = CVFile.FileName,
+                RutaArchivo = $"/curriculums/{uniqueName}",
+                FechaCarga = DateOnly.FromDateTime(DateTime.UtcNow),
+                EsPreferido = false
+            };
+            await _appRepo.AddCurriculumAsync(curriculum);
+
+            // 3. Crear Postulacion
+            var postulacion = new Postulacion
+            {
+                OfertaEmpleoId = OfertaEmpleoId,
+                CandidatoId = candidato.CandidatoId,
+                CurriculumId = curriculum.CurriculumId,
+                FechaPostulacion = DateTime.UtcNow
+            };
+            await _appRepo.AddPostulacionAsync(postulacion);
+
+            return RedirectToPage(); // recarga y mostrará mensaje si agregas TempData
+        }
     }
 }

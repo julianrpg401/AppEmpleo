@@ -17,7 +17,7 @@ public partial class Curriculum
 
     public DateOnly FechaCarga { get; set; }
 
-    public bool EsPreferido { get; set; }
+    public bool? EsPreferido { get; set; }
 
     public virtual Candidato Candidato { get; set; } = null!;
 
