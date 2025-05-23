@@ -75,7 +75,7 @@ namespace AppEmpleo.Migrations
                     b.Property<int>("CandidatoId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("EsPreferido")
+                    b.Property<bool?>("EsPreferido")
                         .HasColumnType("bit");
 
                     b.Property<DateOnly>("FechaCarga")

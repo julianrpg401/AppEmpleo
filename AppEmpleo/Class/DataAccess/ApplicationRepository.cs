@@ -17,10 +17,16 @@ namespace AppEmpleo.Class.DataAccess
         public async Task<List<Postulacion>> GetAllPostulacionesAsync()
         {
             return await _context.Postulaciones
-                .Include(p => p.Curriculum)
-                    .ThenInclude(c => c.Candidato)
-                .Include(p => p.OfertaEmpleo)
-                .ToListAsync();
+             .Include(p => p.Candidato)
+             .ThenInclude(c => c.Usuario)
+             .Include(p => p.OfertaEmpleo)
+             .ToListAsync();
+
+            //return await _context.Postulaciones
+            //    .Include(p => p.Curriculum)
+            //    .ThenInclude(c => c.Candidato)
+            //    .Include(p => p.OfertaEmpleo)
+            //    .ToListAsync();
         }
 
         public async Task<Curriculum?> GetCurriculumByIdAsync(int curriculumId)

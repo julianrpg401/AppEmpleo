@@ -106,7 +106,7 @@ namespace AppEmpleo.Migrations
                     NombreArchivo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RutaArchivo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FechaCarga = table.Column<DateOnly>(type: "date", nullable: false),
-                    EsPreferido = table.Column<bool>(type: "bit", nullable: false)
+                    EsPreferido = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {

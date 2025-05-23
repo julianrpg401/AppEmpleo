@@ -19,7 +19,7 @@ namespace AppEmpleo.Pages.Application
         private readonly IUserRepository _userRepository;
         private readonly ClaimsService _claimsService;
 
-        public List<Postulacion> TodasPostulaciones { get; set; } = new();
+        public List<Postulacion> TodasPostulaciones { get; set; } = [];
 
         [BindProperty]
         public IFormFile? CVFile { get; set; }

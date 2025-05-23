@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppEmpleo.Migrations
 {
     [DbContext(typeof(AppEmpleoContext))]
-    [Migration("20250301005618_InitialCreate")]
+    [Migration("20250523002345_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -78,7 +78,7 @@ namespace AppEmpleo.Migrations
                     b.Property<int>("CandidatoId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("EsPreferido")
+                    b.Property<bool?>("EsPreferido")
                         .HasColumnType("bit");
 
                     b.Property<DateOnly>("FechaCarga")
