@@ -1,6 +1,6 @@
 ﻿using AppEmpleo.Models;
 
-namespace AppEmpleo.Class.Utilities
+namespace AppEmpleo.Class.Utilities.DataProcessors
 {
     public class OfferDataProcessor
     {

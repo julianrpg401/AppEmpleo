@@ -1,5 +1,7 @@
-using AppEmpleo.Class.Services;
+using AppEmpleo.Class.Cryptography;
+using AppEmpleo.Class.Services.SessionServices;
 using AppEmpleo.Interfaces;
+using AppEmpleo.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Serilog;
@@ -10,8 +12,7 @@ namespace AppEmpleo.Pages.Login
 {
     public class LoginModel : PageModel
     {
-        private IUserRepository _userRepository;
-        private readonly ClaimsService _claimsService;
+        private readonly IUserService _userService;
 
         [BindProperty]
         [Required(ErrorMessage = "El campo Email no puede estar vacío")]
@@ -23,10 +24,9 @@ namespace AppEmpleo.Pages.Login
         [DisplayName("Contraseña")]
         public string Password { get; set; } = null!;
 
-        public LoginModel(IUserRepository userRepository, ClaimsService claimsService)
+        public LoginModel(IUserService userService)
         {
-            _userRepository = userRepository;
-            _claimsService = claimsService;
+            _userService = userService;
         }
 
         public void OnGet()
@@ -43,26 +43,11 @@ namespace AppEmpleo.Pages.Login
 
             try
             {
-                var existingUser = await _userRepository.ValidateExistingUserAsync(Email);
-
-                if (existingUser == null)
+                if (!await _userService.Login(Email, Password))
                 {
+                    Log.Error("Error al autenticar el usuario {Email}", Email);
                     return Page();
                 }
-
-                Password = EncryptService.GetSHA256(Password);
-
-                if (existingUser.ClaveHash != Password)
-                {
-                    return Page();
-                }
-
-                if (existingUser == null | existingUser?.ClaveHash != Password)
-                {
-                    return Page();
-                }
-
-                await _claimsService.UserLogin(existingUser!);
 
                 return RedirectToPage("/Application/Home");
             }

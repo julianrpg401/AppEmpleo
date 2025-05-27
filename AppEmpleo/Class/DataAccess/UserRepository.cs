@@ -1,4 +1,4 @@
-﻿using AppEmpleo.Interfaces;
+﻿using AppEmpleo.Interfaces.Repositories;
 using AppEmpleo.Models;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -8,19 +8,23 @@ namespace AppEmpleo.Class.DataAccess
     public class UserRepository : Repository<Usuario>, IUserRepository
     {
         // Pasa el contexto a la clase base
-        public UserRepository(AppEmpleoContext appEmpleoContext) : base(appEmpleoContext)
-        {
-        }
+        public UserRepository(AppEmpleoContext appEmpleoContext) : base(appEmpleoContext) { }
 
-        // Valida si el correo electrónico ya está 
-        public async Task<Usuario?> ValidateExistingUserAsync(Usuario user)
+        // Valida si el correo electrónico ya está registrado
+        public async Task<bool> ValidateExistingUserAsync(Usuario user)
         {
             try
             {
-                var existingUser = await _appEmpleoContext.Usuarios.FirstOrDefaultAsync
-                    (u => u.Email == user.Email);
+                var existingUser = await _appEmpleoContext.Usuarios
+                    .FirstOrDefaultAsync(u => u.Email == user.Email);
 
-                return existingUser;
+                if (existingUser != null)
+                {
+                    Log.Error("El correo electrónico {Email} ya está registrado", user.Email);
+                    return true;
+                }
+
+                return false;
             }
             catch (Exception ex)
             {
@@ -34,8 +38,14 @@ namespace AppEmpleo.Class.DataAccess
         {
             try
             {
-                var existingUser = await _appEmpleoContext.Usuarios.FirstOrDefaultAsync
-                    (u => u.Email == email);
+                var existingUser = await _appEmpleoContext.Usuarios
+                    .FirstOrDefaultAsync(u => u.Email == email);
+
+                if (existingUser == null)
+                {
+                    Log.Error("El correo electrónico {Email} no está registrado", email);
+                    return null;
+                }
 
                 return existingUser;
             }
@@ -95,10 +105,34 @@ namespace AppEmpleo.Class.DataAccess
             }
         }
 
-        public async Task<Candidato?> GetCandidatoByUsuarioIdAsync(int usuarioId)
+        // Obtiene un candidato por su ID de usuario
+        public async Task<Candidato?> GetCandidateByUserIdAsync(int userId)
         {
-            return await _appEmpleoContext.Candidatos
-                .FirstOrDefaultAsync(c => c.UsuarioId == usuarioId);
+            try
+            {
+                return await _appEmpleoContext.Candidatos
+                    .FirstOrDefaultAsync(c => c.UsuarioId == userId);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error al obtener el candidato por usuarioId {UsuarioId}", userId);
+                throw new ArgumentException("Error al obtener el candidato", ex);
+            }
+        }
+
+        // Obtiene un reclutador por su ID de usuario
+        public async Task<Reclutador?> GetRecruiterByUserIdAsync(int userId)
+        {
+            try
+            {
+                return await _appEmpleoContext.Reclutadores
+                    .FirstOrDefaultAsync(r => r.UsuarioId == userId);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error al obtener el reclutador por usuarioId {UsuarioId}", userId);
+                throw new ArgumentException("Error al obtener el reclutador", ex);
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using AppEmpleo.Interfaces;
+﻿using AppEmpleo.Interfaces.Repositories;
 using AppEmpleo.Models;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -8,9 +8,7 @@ namespace AppEmpleo.Class.DataAccess
     public class OfferRepository : Repository<Oferta>, IOfferRepository
     {
         // Pasa el contexto a la clase base
-        public OfferRepository(AppEmpleoContext appEmpleoContext) : base(appEmpleoContext)
-        {
-        }
+        public OfferRepository(AppEmpleoContext appEmpleoContext) : base(appEmpleoContext) { }
 
         // Obtiene todas las ofertas de la base de datos
         public async Task<List<Oferta>> GetOffersAsync()

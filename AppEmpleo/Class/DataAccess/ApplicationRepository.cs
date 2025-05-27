@@ -21,12 +21,6 @@ namespace AppEmpleo.Class.DataAccess
              .ThenInclude(c => c.Usuario)
              .Include(p => p.OfertaEmpleo)
              .ToListAsync();
-
-            //return await _context.Postulaciones
-            //    .Include(p => p.Curriculum)
-            //    .ThenInclude(c => c.Candidato)
-            //    .Include(p => p.OfertaEmpleo)
-            //    .ToListAsync();
         }
 
         public async Task<Curriculum?> GetCurriculumByIdAsync(int curriculumId)

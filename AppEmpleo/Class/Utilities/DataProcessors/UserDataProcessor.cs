@@ -1,7 +1,7 @@
-﻿using AppEmpleo.Class.Services;
+﻿using AppEmpleo.Class.Cryptography;
 using AppEmpleo.Models;
 
-namespace AppEmpleo.Class.Utilities
+namespace AppEmpleo.Class.Utilities.DataProcessors
 {
     public class UserDataProcessor
     {
@@ -13,7 +13,7 @@ namespace AppEmpleo.Class.Utilities
                 Nombre = user.Nombre.ToUpper(),
                 Apellido = user.Apellido.ToUpper(),
                 Email = user.Email.ToUpper(),
-                ClaveHash = EncryptService.GetSHA256(user.ClaveHash),
+                ClaveHash = EncryptService.HashPassword(user.ClaveHash),
                 Rol = user.Rol.ToUpper(),
                 FechaRegistro = DateOnly.FromDateTime(DateTime.Now),
                 FechaNacimiento = user.FechaNacimiento

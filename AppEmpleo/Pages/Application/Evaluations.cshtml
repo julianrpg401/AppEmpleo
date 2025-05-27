@@ -1,0 +1,35 @@
+﻿@page
+@model AppEmpleo.Pages.Application.EvaluationsModel
+@{
+}
+
+<h3>Postulaciones recibidas</h3>
+
+@if (Model.AllPostulations == null || Model.AllPostulations.Any())
+{
+    <p>No hay postulaciones aún.</p>
+}
+else
+{
+    <table class="w-full text-left">
+        <thead>
+            <tr>
+                <th>Candidato</th>
+                <th>Oferta</th>
+                <th>Fecha</th>
+                <th>CV</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var postulation in Model.AllPostulations)
+            {
+                <tr>
+                    <td>@postulation.Candidato.Usuario.Nombre @postulation.Candidato.Usuario.Apellido</td>
+                    <td>@postulation.OfertaEmpleo.NombreOferta</td>
+                    <td>@postulation.FechaPostulacion.ToString("dd/MM/yyyy")</td>
+                    <a asp-page-handler="DescargarCV" asp-route-curriculumId="@postulation.CurriculumId">Descargar CV</a>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

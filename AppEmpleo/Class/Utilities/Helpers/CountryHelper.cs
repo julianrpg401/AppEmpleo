@@ -1,6 +1,6 @@
 ﻿using AppEmpleo.Models;
 
-namespace AppEmpleo.Class.Utilities
+namespace AppEmpleo.Class.Utilities.Helpers
 {
     public static class CountryHelper
     {

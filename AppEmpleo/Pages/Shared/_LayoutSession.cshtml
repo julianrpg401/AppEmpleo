@@ -1,15 +1,7 @@
-﻿@inject ClaimsService claimsService
-@using AppEmpleo.Class.Services
+﻿@inject IClaimsService claimsService
+@using AppEmpleo.Interfaces.Services.SessionServices
 @using AppEmpleo.Models
-
 @{
-    var authenticatedUser = claimsService.AuthenticatedUser();
-
-    if (!authenticatedUser)
-    {
-        throw new ArgumentException();
-    }
-
     Usuario user = new Usuario()
     {
         Nombre = claimsService.GetName(),

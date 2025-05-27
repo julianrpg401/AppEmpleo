@@ -1,6 +1,10 @@
 using AppEmpleo.Class.DataAccess;
 using AppEmpleo.Class.Services;
+using AppEmpleo.Class.Services.SessionServices;
 using AppEmpleo.Interfaces;
+using AppEmpleo.Interfaces.Repositories;
+using AppEmpleo.Interfaces.Services;
+using AppEmpleo.Interfaces.Services.SessionServices;
 using AppEmpleo.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
@@ -38,9 +42,13 @@ namespace AppEmpleo
             // Registrar repositorios y servicios
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
-            builder.Services.AddScoped<ClaimsService>();
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IOfferService, OfferService>();
+            builder.Services.AddScoped<IPostulationService, PostulationService>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IClaimsService, ClaimsService>();
             builder.Services.AddScoped<IOfferRepository, OfferRepository>();
+            builder.Services.AddScoped<IPostulationRepository, PostulationRepository>();
 
             var app = builder.Build();
 

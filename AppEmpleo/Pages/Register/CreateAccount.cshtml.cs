@@ -1,5 +1,4 @@
-using AppEmpleo.Class.Utilities;
-using AppEmpleo.Interfaces;
+using AppEmpleo.Interfaces.Services;
 using AppEmpleo.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,19 +8,17 @@ namespace AppEmpleo.Pages.CreateAccount
 {
     public class CreateAccountModel : PageModel
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUserService _userService;
 
         [BindProperty]
         public new Usuario User { get; set; } = null!;
 
-        public CreateAccountModel(IUserRepository userRepository)
+        public CreateAccountModel(IUserService userService)
         {
-            _userRepository = userRepository;
+            _userService = userService;
         }
 
-        public void OnGet()
-        {
-        }
+        public void OnGet() { }
 
         // Añade un usuario a la base de datos
         public async Task<IActionResult> OnPostAsync()
@@ -33,16 +30,15 @@ namespace AppEmpleo.Pages.CreateAccount
 
             try
             {
-                var existingUser = await _userRepository.ValidateExistingUserAsync(User);
+                var user = await _userService.RegisterUser(User);
 
-                // Valida si el correo electrónico ya existe
-                if (existingUser != null)
+                if (user == null)
                 {
+                    Log.Error("El correo electrónico {Email} ya está registrado", User.Email);
+                    ModelState.AddModelError(string.Empty, "El correo electrónico ya está registrado. Por favor, use otro correo electrónico.");
+
                     return Page();
                 }
-
-                User = UserDataProcessor.UserFormat(User);
-                await _userRepository.AddAsync(User);
 
                 return RedirectToPage("/Register/RegisterSuccess");
             }

@@ -1,13 +1,14 @@
-using AppEmpleo.Class.Services;
+using AppEmpleo.Class.Services.SessionServices;
+using AppEmpleo.Interfaces.Services.SessionServices;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace AppEmpleo.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ClaimsService? _claimsService;
+        private readonly IClaimsService? _claimsService;
 
-        public IndexModel(ClaimsService claimsService)
+        public IndexModel(IClaimsService claimsService)
         {
             _claimsService = claimsService;
 

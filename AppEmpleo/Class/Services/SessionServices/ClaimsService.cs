@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using Serilog;
+using AppEmpleo.Interfaces.Services.SessionServices;
 
-namespace AppEmpleo.Class.Services
+namespace AppEmpleo.Class.Services.SessionServices
 {
-    public class ClaimsService
+    public class ClaimsService : IClaimsService
     {
         private readonly IHttpContextAccessor? _contextAccessor;
 
@@ -16,26 +17,6 @@ namespace AppEmpleo.Class.Services
         }
 
         // Crea una lista de claims para el usuario y poder autorizarlo
-        public List<Claim> CreateClaims(Usuario user)
-        {
-            try
-            {
-                var claims = new List<Claim>()
-                {
-                    new Claim("UserId", user.UsuarioId.ToString()),
-                    new Claim(ClaimTypes.Name, user.Nombre),
-                    new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, user.Rol)
-                };
-
-                return claims;
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error al crear los claims para el usuario {UserId}", user.UsuarioId);
-                throw;
-            }
-        }
 
         public async Task UserLogin(Usuario user)
         {
@@ -59,6 +40,7 @@ namespace AppEmpleo.Class.Services
             }
         }
 
+        // Cierra la sesión del usuario
         public async Task UserLogout()
         {
             try
@@ -72,6 +54,29 @@ namespace AppEmpleo.Class.Services
             }
         }
 
+        // Crea una lista de claims para el usuario
+        public List<Claim> CreateClaims(Usuario user)
+        {
+            try
+            {
+                var claims = new List<Claim>()
+                {
+                    new Claim("UserId", user.UsuarioId.ToString()),
+                    new Claim(ClaimTypes.Name, user.Nombre),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.Role, user.Rol)
+                };
+
+                return claims;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error al crear los claims para el usuario {UserId}", user.UsuarioId);
+                throw;
+            }
+        }
+
+        // Verifica si el usuario está autenticado
         public bool AuthenticatedUser()
         {
             try
@@ -127,6 +132,7 @@ namespace AppEmpleo.Class.Services
         public string GetRole()
             => GetClaim(ClaimTypes.Role);
 
+        // Métodos privados para crear ClaimsIdentity y ClaimsPrincipal
         private static ClaimsPrincipal GetClaimsPrincipal(ClaimsIdentity claimsIdentity)
             => new ClaimsPrincipal(claimsIdentity);
 
