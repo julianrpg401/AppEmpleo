@@ -2,6 +2,7 @@
 using AppEmpleo.Interfaces.Repositories;
 using AppEmpleo.Interfaces.Services;
 using AppEmpleo.Models;
+using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
 namespace AppEmpleo.Class.Services
@@ -111,6 +112,57 @@ namespace AppEmpleo.Class.Services
             {
                 Log.Error(ex, "Error al obtener las postulaciones del reclutador con ID {RecruiterId}", recruiterId);
                 throw new Exception("Ocurrió un error al obtener las postulaciones. Por favor, inténtelo de nuevo más tarde.");
+            }
+        }
+
+        // Obtiene un currículum por su ID
+        public async Task<Curriculum?> GetCurriculumByIdAsync(int curriculumId)
+        {
+            try
+            {
+                return await _postulationRepository.GetCurriculumByIdAsync(curriculumId);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error al obtener el currículum con ID {CurriculumId}", curriculumId);
+                throw new Exception("Ocurrió un error al obtener el currículum. Por favor, inténtelo de nuevo más tarde.");
+            }
+        }
+
+        // Obtiene la ruta del archivo del currículum en el servidor
+        public string FilePath(Curriculum curriculum)
+        {
+            try
+            {
+                var filePath = Path.Combine(_env.WebRootPath, curriculum.RutaArchivo.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
+
+                return filePath;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error al obtener la ruta del archivo");
+                throw new Exception("Ocurrió un error al obtener la ruta del archivo. Por favor, inténtelo de nuevo más tarde.");
+            }
+        }
+
+        // Descarga el currículum desde el servidor
+        public async Task<FileResult> DownloadCurriculum(Curriculum curriculum, string filePath)
+        {
+            try
+            {
+                var contentType = "application/octet-stream";
+                var fileName = curriculum.NombreArchivo;
+                var fileBytes = await System.IO.File.ReadAllBytesAsync(filePath);
+
+                return new FileContentResult(fileBytes, contentType)
+                {
+                    FileDownloadName = fileName
+                };
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error al descargar el currículum");
+                throw new Exception("Ocurrió un error al descargar el currículum. Por favor, inténtelo de nuevo más tarde.");
             }
         }
     }

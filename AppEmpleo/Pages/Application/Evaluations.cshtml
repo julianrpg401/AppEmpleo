@@ -1,35 +1,33 @@
 ﻿@page
 @model AppEmpleo.Pages.Application.EvaluationsModel
 @{
+    Layout = "~/Pages/Shared/_LayoutSession.cshtml";
+
 }
 
-<h3>Postulaciones recibidas</h3>
+<h3 class="postulations">Postulaciones recibidas</h3>
 
-@if (Model.AllPostulations == null || Model.AllPostulations.Any())
+@if (Model.AllPostulations.Count <= 0)
 {
     <p>No hay postulaciones aún.</p>
 }
 else
 {
-    <table class="w-full text-left">
-        <thead>
-            <tr>
-                <th>Candidato</th>
-                <th>Oferta</th>
-                <th>Fecha</th>
-                <th>CV</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var postulation in Model.AllPostulations)
-            {
-                <tr>
-                    <td>@postulation.Candidato.Usuario.Nombre @postulation.Candidato.Usuario.Apellido</td>
-                    <td>@postulation.OfertaEmpleo.NombreOferta</td>
-                    <td>@postulation.FechaPostulacion.ToString("dd/MM/yyyy")</td>
-                    <a asp-page-handler="DescargarCV" asp-route-curriculumId="@postulation.CurriculumId">Descargar CV</a>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="cards-container">
+        @foreach (var postulation in Model.AllPostulations)
+        {
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">@postulation.Candidato.Usuario.Nombre @postulation.Candidato.Usuario.Apellido</span>
+                </div>
+                <div class="card-body">
+                    <div><strong>Oferta:</strong> @postulation.OfertaEmpleo.NombreOferta</div>
+                    <div><strong>Fecha:</strong> @postulation.FechaPostulacion.ToString("dd/MM/yyyy")</div>
+                </div>
+                <div class="card-footer">
+                    <a class="card-link" asp-page-handler="DescargarCV" asp-route-curriculumId="@postulation.CurriculumId">Descargar CV</a>
+                </div>
+            </div>
+        }
+    </div>
 }

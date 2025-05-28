@@ -40,6 +40,7 @@
     <link href="~/css/forms.css" rel="stylesheet" />
     <link href="~/css/home.css" rel="stylesheet" />
     <link href="~/css/offers.css" rel="stylesheet" />
+    <link href="~/css/evaluations.css" rel="stylesheet" />
 </head>
 <body>
     <header class="cabeza close">
@@ -75,7 +76,7 @@
                         </a>
                     </li>
                     <li class="lista__opcion">
-                        <a href="" class="opcion__link">
+                        <a asp-page="/Application/Evaluations" class="opcion__link">
                             <i class='bx bx-spreadsheet link__icon icon'></i>
                             <span class="link__texto">Evaluaciones</span>
                         </a>
@@ -95,7 +96,7 @@
                 </ul>
                 <div class="menu__boton">
                     <div class="boton__salir">
-                        <form asp-page="/Index">
+                        <form asp-page="/Index" class="salir__form">
                             <button type="submit" class="salir__link">
                                 <i class="bx bx-log-out boton__icon icon"></i>
                                 <span class="salir__texto">Cerrar sesión</span>

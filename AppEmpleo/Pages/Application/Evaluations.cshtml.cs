@@ -25,7 +25,7 @@ namespace AppEmpleo.Pages.Application
             User = _userService.GetUserClaims();
         }
 
-        public async Task OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
             try
             {
@@ -36,6 +36,8 @@ namespace AppEmpleo.Pages.Application
                 Log.Error(ex, "Error al obtener las postulaciones");
                 ModelState.AddModelError(string.Empty, "Ocurrió un error al cargar las postulaciones. Por favor, inténtelo de nuevo más tarde.");
             }
+
+            return Page();
         }
 
         private async Task GetPostulationsAsync()
@@ -43,19 +45,33 @@ namespace AppEmpleo.Pages.Application
 
         public async Task<IActionResult> OnGetDescargarCVAsync(int curriculumId)
         {
-            var curriculum = await _appRepo.GetCurriculumByIdAsync(curriculumId);
-            if (curriculum == null)
-                return NotFound();
+            try
+            {
+                var curriculum = await _postulationService.GetCurriculumByIdAsync(curriculumId);
 
-            var filePath = Path.Combine(_env.WebRootPath, curriculum.RutaArchivo.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
-            if (!System.IO.File.Exists(filePath))
-                return NotFound();
+                if (curriculum == null)
+                {
+                    Log.Warning("Currículum con ID {CurriculumId} no encontrado", curriculumId);
+                    return NotFound();
+                }
 
-            var contentType = "application/octet-stream";
-            var fileName = curriculum.NombreArchivo;
+                var filePath = _postulationService.FilePath(curriculum);
 
-            var fileBytes = await System.IO.File.ReadAllBytesAsync(filePath);
-            return File(fileBytes, contentType, fileName);
+                if (!System.IO.File.Exists(filePath))
+                {
+                    Log.Warning("Archivo de currículum no encontrado en la ruta {FilePath}", filePath);
+                    return NotFound();
+                }
+
+                return await _postulationService.DownloadCurriculum(curriculum, filePath);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error al descargar el CV con ID {CurriculumId}", curriculumId);
+                ModelState.AddModelError(string.Empty, "Ocurrió un error al descargar el CV. Por favor, inténtelo de nuevo más tarde.");
+                
+                return Page();
+            }
         }
     }
 }

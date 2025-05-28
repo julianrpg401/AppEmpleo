@@ -48,7 +48,17 @@
                                     <i class='bx bx-wallet'></i>
                                     <div class="salary">@offer.Moneda @offer.Salario</div>
                                 </div>
-                                <button class="button button__submit button__mobile button__details">Ver detalles</button>
+                                <button class="button button__submit button__mobile button__details"
+                                        data-nombre="@offer.NombreOferta"
+                                        data-descripcion="@offer.Descripcion"
+                                        data-fechainicio="@offer.FechaInicio"
+                                        data-fechacierre="@offer.FechaCierre"
+                                        data-moneda="@offer.Moneda"
+                                        data-salario="@offer.Salario"
+                                        data-modalidad="@offer.ModalidadTrabajo"
+                                        data-pais="@offer.Pais">
+                                    Ver detalles
+                                </button>
                             </div>
 
                             <form asp-page-handler="Apply" method="post" enctype="multipart/form-data" class="mt-2">
@@ -61,6 +71,20 @@
                     }
                 }
             </ul>
+        </div>
+
+        <div id="detailsOverlay" class="details-overlay">
+            <button class="close-btn" onclick="closeOverlay()">&times;</button>
+            <div id="detailsBody">
+                <h2 id="detalleNombre"></h2>
+                <p><strong>Descripción:</strong> <span id="detalleDescripcion"></span></p>
+                <p><strong>Fecha de inicio:</strong> <span id="detalleFechaInicio"></span></p>
+                <p><strong>Fecha de cierre:</strong> <span id="detalleFechaCierre"></span></p>
+                <p><strong>Modalidad:</strong> <span id="detalleModalidad"></span></p>
+                <p><strong>País:</strong> <span id="detallePais"></span></p>
+                <p><strong>Moneda:</strong> <span id="detalleMoneda"></span></p>
+                <p><strong>Salario:</strong> <span id="detalleSalario"></span></p>
+            </div>
         </div>
     }
     else
@@ -138,5 +162,77 @@
 
             </form>
         </div>
+
+        <div class="search__container">
+            <ul class="list__offers">
+                @if (Model.Offers.Count <= 0)
+                {
+                    <li>No hay ofertas para mostrar</li>
+                }
+                else
+                {
+                    foreach (var offer in Model.Offers)
+                    {
+                        <li class="offer">
+                            <div class="offer__header">
+                                <h2 class="offer__title">@offer.NombreOferta</h2>
+                                <div class="offer__date">
+                                    <div class="start__date">@offer.FechaInicio</div>
+                                    <div class="closing__date">@offer.FechaCierre</div>
+                                </div>
+                            </div>
+                            <div class="offer__country">
+                                @foreach (var country in countries)
+                                {
+                                    if (offer.Pais == country.Key.ToString())
+                                    {
+                                        <p class="country">@country.Value</p>
+                                    }
+                                }
+                            </div>
+                            <div class="offer__modality">
+                                <div class="modality__paragraph">@offer.ModalidadTrabajo</div>
+                            </div>
+                            <div class="offer__end">
+                                <div class="offer__salary">
+                                    <i class='bx bx-wallet'></i>
+                                    <div class="salary">@offer.Moneda @offer.Salario</div>
+                                </div>
+                                <button class="button button__submit button__mobile button__details"
+                                        data-nombre="@offer.NombreOferta"
+                                        data-descripcion="@offer.Descripcion"
+                                        data-fechainicio="@offer.FechaInicio"
+                                        data-fechacierre="@offer.FechaCierre"
+                                        data-moneda="@offer.Moneda"
+                                        data-salario="@offer.Salario"
+                                        data-modalidad="@offer.ModalidadTrabajo"
+                                        data-pais="@offer.Pais">
+                                    Ver detalles
+                                </button>
+                            </div>
+
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+
+        <div id="detailsOverlay" class="details-overlay">
+            <button class="close-btn" onclick="closeOverlay()">&times;</button>
+            <div id="detailsBody">
+                <h2 id="detalleNombre"></h2>
+                <p><strong>Descripción:</strong> <span id="detalleDescripcion"></span></p>
+                <p><strong>Fecha de inicio:</strong> <span id="detalleFechaInicio"></span></p>
+                <p><strong>Fecha de cierre:</strong> <span id="detalleFechaCierre"></span></p>
+                <p><strong>Modalidad:</strong> <span id="detalleModalidad"></span></p>
+                <p><strong>País:</strong> <span id="detallePais"></span></p>
+                <p><strong>Moneda:</strong> <span id="detalleMoneda"></span></p>
+                <p><strong>Salario:</strong> <span id="detalleSalario"></span></p>
+            </div>
+        </div>
+
+        <script>
+            
+        </script>
     }
 </div>
