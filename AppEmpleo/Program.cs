@@ -41,7 +41,6 @@ namespace AppEmpleo
 
             // Registrar repositorios y servicios
             builder.Services.AddHttpContextAccessor();
-            builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IOfferService, OfferService>();
             builder.Services.AddScoped<IPostulationService, PostulationService>();
