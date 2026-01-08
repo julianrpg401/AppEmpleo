@@ -22,7 +22,6 @@ public partial class Usuario
     public string Email { get; set; } = null!;
 
     [Required(ErrorMessage = "El campo no puede estar vacío")]
-    [DisplayName("Fecha de nacimiento")]
     public DateOnly FechaNacimiento { get; set; }
 
     [Required(ErrorMessage = "El campo no puede estar vacío")]
