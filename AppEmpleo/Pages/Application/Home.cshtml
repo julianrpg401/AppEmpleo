@@ -217,6 +217,28 @@
             </ul>
         </div>
 
+        <div class="pagination">
+            @if (Model.TotalPages > 1)
+            {
+                <nav aria-label="Paginación de ofertas">
+                    <ul class="pagination-list">
+                        <li>
+                            <a asp-page="Home" asp-route-pageNumber="@(Model.CurrentPage - 1)" class="@(Model.CurrentPage == 1 ? "disabled" : "")">Anterior</a>
+                        </li>
+                        @for (int i = 1; i <= Model.TotalPages; i++)
+                        {
+                            <li>
+                                <a asp-page="Home" asp-route-pageNumber="@i" class="@(Model.CurrentPage == i ? "active" : "")">@i</a>
+                            </li>
+                        }
+                        <li>
+                            <a asp-page="Home" asp-route-pageNumber="@(Model.CurrentPage + 1)" class="@(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">Siguiente</a>
+                        </li>
+                    </ul>
+                </nav>
+            }
+        </div>
+
         <div id="detailsOverlay" class="details-overlay">
             <button class="close-btn" onclick="closeOverlay()">&times;</button>
             <div id="detailsBody">

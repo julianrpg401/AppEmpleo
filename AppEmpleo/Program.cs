@@ -1,6 +1,7 @@
 using AppEmpleo.Class.DataAccess;
 using AppEmpleo.Class.Services;
 using AppEmpleo.Class.Services.SessionServices;
+using AppEmpleo.Class.Middleware;
 using AppEmpleo.Interfaces;
 using AppEmpleo.Interfaces.Repositories;
 using AppEmpleo.Interfaces.Services;
@@ -50,6 +51,9 @@ namespace AppEmpleo
             builder.Services.AddScoped<IPostulationRepository, PostulationRepository>();
 
             var app = builder.Build();
+
+            // Middleware global de manejo de excepciones
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

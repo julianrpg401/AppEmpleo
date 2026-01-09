@@ -39,6 +39,9 @@ namespace AppEmpleo.Class.Services
             return await _offerRepository.GetOffersAsync();
         }
 
-
+        public async Task<(List<Oferta> Offers, int TotalCount)> GetOffersPagedAsync(int pageNumber, int pageSize)
+        {
+            return await _offerRepository.GetOffersPagedAsync(pageNumber, pageSize);
+        }
     }
 }

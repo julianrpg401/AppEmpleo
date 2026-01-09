@@ -150,11 +150,6 @@
     height: min-content
 }
 
-
-
-
-
-
 .details-overlay {
   position: fixed;
   top: 0;
@@ -260,5 +255,131 @@
     height: 2rem;
     font-size: 1.2rem;
   }
+}
+
+/* Tablet: ≥600px */
+@media (min-width: 600px) {
+  .search__container {
+    padding-top: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .list__offers {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 2.5rem;
+    align-items: stretch;
+  }
+  .offer {
+    max-width: 340px;
+    min-width: 280px;
+    flex: 1 1 320px;
+    margin-bottom: 0;
+    box-shadow: 0 0 1.5rem rgba(0,0,0,.18);
+    border-radius: .7rem;
+    padding: 1.2rem;
+  }
+  .offer__header {
+    margin-bottom: 1.2rem;
+  }
+  .offer__title {
+    font-size: 1.3rem;
+  }
+  .offer__date {
+    font-size: .9rem;
+    padding: .3rem .6rem;
+  }
+  .offer__country, .offer__modality {
+    font-size: 1.1rem;
+    padding-inline: 1.2rem;
+    height: 2rem;
+  }
+  .offer__salary {
+    font-size: 1.1rem;
+  }
+  .button__details {
+    padding: .9rem 1.5rem;
+    font-size: 1rem;
+  }
+  .details-overlay {
+    background: rgba(129, 60, 80, 0.7);
+  }
+  #detailsBody {
+    width: 480px;
+    padding: 3rem 2.5rem 2.5rem 2.5rem;
+  }
+}
+
+/* Desktop: ≥1024px */
+@media (min-width: 1024px) {
+  .search__container {
+    max-width: 1200px;
+    padding-top: 2.5rem;
+  }
+  .list__offers {
+    gap: 3rem;
+    justify-content: flex-start;
+  }
+  .offer {
+    max-width: 370px;
+    min-width: 320px;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 2rem rgba(0,0,0,.12);
+  }
+  .offer__title {
+    font-size: 1.5rem;
+  }
+  .offer__date {
+    font-size: 1rem;
+    padding: .4rem .8rem;
+  }
+  .offer__country, .offer__modality {
+    font-size: 1.15rem;
+    padding-inline: 1.5rem;
+    height: 2.2rem;
+  }
+  .offer__salary {
+    font-size: 1.15rem;
+  }
+  .button__details {
+    font-size: 1.05rem;
+    padding: 1rem 2rem;
+  }
+  #detailsBody {
+    width: 540px;
+    padding: 3.5rem 3rem 3rem 3rem;
+  }
+}
+
+/* Paginación responsiva */
+.pagination {
+  margin: 2rem auto 0 auto;
+  text-align: center;
+}
+.pagination-list {
+  display: inline-flex;
+  gap: .5rem;
+  list-style: none;
+  padding: 0;
+}
+.pagination-list li a {
+  display: block;
+  padding: .5rem 1.1rem;
+  border-radius: .4rem;
+  background: var(--gris-palido);
+  color: var(--vino-tinto);
+  font-weight: 600;
+  text-decoration: none;
+  transition: var(--tran-03);
+}
+.pagination-list li a.active {
+  background: var(--vino-tinto);
+  color: var(--blanco);
+}
+.pagination-list li a.disabled {
+  pointer-events: none;
+  opacity: .5;
 }
 

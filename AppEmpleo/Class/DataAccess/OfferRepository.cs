@@ -27,5 +27,22 @@ namespace AppEmpleo.Class.DataAccess
                 throw;
             }
         }
+
+        // Obtiene ofertas paginadas
+        public async Task<(List<Oferta> Offers, int TotalCount)> GetOffersPagedAsync(int pageNumber, int pageSize)
+        {
+            try
+            {
+                var query = _appEmpleoContext.Ofertas.OrderByDescending(o => o.FechaInicio);
+                var totalCount = await query.CountAsync();
+                var offers = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+                return (offers, totalCount);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error al obtener la lista paginada de ofertas");
+                throw;
+            }
+        }
     }
 }

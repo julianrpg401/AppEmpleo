@@ -6,5 +6,6 @@ namespace AppEmpleo.Interfaces.Services
     {
         Task AddOfferAsync(Oferta offer, Usuario user);
         Task<List<Oferta>> GetAllOffersAsync();
+        Task<(List<Oferta> Offers, int TotalCount)> GetOffersPagedAsync(int pageNumber, int pageSize);
     }
 }
