@@ -38,74 +38,75 @@
 
     @await RenderSectionAsync("Styles", required: false)
 </head>
-<body class="app-shell" data-shell>
+<body class="session-layout" data-shell>
     <div class="bg-layer" aria-hidden="true">
         <canvas class="bg-waves" data-bg-waves></canvas>
     </div>
-    <aside class="app-sidebar" aria-label="Barra lateral">
-        <nav class="app-sidebar__nav">
-            <div class="app-sidebar__profile">
-                <img src="~/img/logo.png" alt="Logo" class="app-sidebar__avatar" />
-                <div class="app-sidebar__profile-text">
-                    <span class="app-sidebar__profile-name">@userName</span>
-                    <span class="app-sidebar__profile-role">@userRole</span>
+    <div class="sidebar" role="navigation" aria-label="Barra lateral">
+        <button type="button" class="sidebar__toggle" data-sidebar-toggle aria-label="Contraer o ampliar menú">
+            <i class='bx bx-chevron-right' aria-hidden="true"></i>
+        </button>
+
+        <div class="sidebar__content">
+            <div class="sidebar__profile">
+                <img src="~/img/logo.png" alt="Logo" class="sidebar__avatar" />
+                <div class="sidebar__profile-text">
+                    <span class="sidebar__profile-name">@userName</span>
+                    <span class="sidebar__profile-role">@userRole</span>
                 </div>
             </div>
-            <button type="button" id="sidebarToggle" aria-label="Alternar menú">
-                <i class='bx bx-chevron-right toggle'></i>
-            </button>
 
-            <div class="app-sidebar__search" role="search">
-                <i class='bx bx-search'></i>
-                <input type="search" class="app-sidebar__search-input" placeholder="Buscar..." />
+            <div class="sidebar__search" role="search">
+                <i class='bx bx-search' aria-hidden="true"></i>
+                <input type="search" class="sidebar__search-input" placeholder="Buscar..." />
             </div>
 
-            <ul class="app-sidebar__menu">
-                <li class="app-sidebar__menu-item">
-                    <a asp-page="/Application/Home" class="app-sidebar__menu-link">
-                        <i class='bx bx-home-alt'></i>
-                        <span class="app-sidebar__menu-text">Home</span>
+            <ul class="sidebar__menu">
+                <li class="sidebar__menu-item">
+                    <a asp-page="/Application/Home" class="sidebar__menu-link">
+                        <i class='bx bx-home-alt' aria-hidden="true"></i>
+                        <span class="sidebar__menu-text">Home</span>
                     </a>
                 </li>
-                <li class="app-sidebar__menu-item">
-                    <a asp-page="/Application/Home" class="app-sidebar__menu-link">
-                        <i class='bx bx-briefcase'></i>
-                        <span class="app-sidebar__menu-text">Jobs</span>
+                <li class="sidebar__menu-item">
+                    <a asp-page="/Application/Home" class="sidebar__menu-link">
+                        <i class='bx bx-briefcase' aria-hidden="true"></i>
+                        <span class="sidebar__menu-text">Jobs</span>
                     </a>
                 </li>
-                <li class="app-sidebar__menu-item">
-                    <a asp-page="/Application/Evaluations" class="app-sidebar__menu-link">
-                        <i class='bx bx-spreadsheet'></i>
-                        <span class="app-sidebar__menu-text">Evaluations</span>
+                <li class="sidebar__menu-item">
+                    <a asp-page="/Application/Evaluations" class="sidebar__menu-link">
+                        <i class='bx bx-spreadsheet' aria-hidden="true"></i>
+                        <span class="sidebar__menu-text">Evaluations</span>
                     </a>
                 </li>
-                <li class="app-sidebar__menu-item">
-                    <a href="#" class="app-sidebar__menu-link">
-                        <i class='bx bx-bell'></i>
-                        <span class="app-sidebar__menu-text">Notifications</span>
+                <li class="sidebar__menu-item">
+                    <a href="#" class="sidebar__menu-link">
+                        <i class='bx bx-bell' aria-hidden="true"></i>
+                        <span class="sidebar__menu-text">Notifications</span>
                     </a>
                 </li>
-                <li class="app-sidebar__menu-item">
-                    <a href="#" class="app-sidebar__menu-link">
-                        <i class='bx bx-slider-alt'></i>
-                        <span class="app-sidebar__menu-text">Settings</span>
+                <li class="sidebar__menu-item">
+                    <a href="#" class="sidebar__menu-link">
+                        <i class='bx bx-slider-alt' aria-hidden="true"></i>
+                        <span class="sidebar__menu-text">Settings</span>
                     </a>
                 </li>
             </ul>
 
-            <div class="app-sidebar__footer">
+            <div class="sidebar__footer">
                 <form asp-page="/Index">
-                    <button type="submit" class="btn btn--ghost app-sidebar__logout">
-                        <i class='bx bx-log-out'></i>
-                        <span class="app-sidebar__menu-text">Sign out</span>
+                    <button type="submit" class="btn btn--ghost sidebar__logout">
+                        <i class='bx bx-log-out' aria-hidden="true"></i>
+                        <span class="sidebar__menu-text">Sign out</span>
                     </button>
                 </form>
             </div>
-        </nav>
-    </aside>
+        </div>
+    </div>
 
-    <div class="app-main">
-        <main role="main" class="app-main__content">
+    <div class="main">
+        <main role="main" class="main__content">
             @RenderBody()
         </main>
     </div>

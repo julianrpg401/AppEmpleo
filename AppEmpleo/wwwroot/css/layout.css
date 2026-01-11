@@ -137,10 +137,10 @@ body.dark {
     display: none;
 }
 
-.toggle {
+.cabeza .toggle {
     position: absolute;
-    top: 2rem;
-    right: -6rem;
+    top: 2.6rem;
+    right: -2.4rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -162,13 +162,13 @@ body.dark {
     transition: var(--tran-03);
 }
 
-.toggle::before {
+.cabeza .toggle::before {
     padding-top: 1px;
     transform: rotate(-180deg);
     transition: var(--tran-03);
 }
 
-.toggle:hover {
+.cabeza .toggle:hover {
     color: var(--blanco);
 }
 
