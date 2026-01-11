@@ -14,7 +14,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -28,56 +28,59 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="~/assetsLandingPage/css/Index.css" />
-    <link rel="stylesheet" href="~/css/forms.css" />
+    <!-- CSS (base + layout) -->
+    <link rel="stylesheet" href="~/css/base.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/layouts/guest.css" asp-append-version="true" />
+
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body class="@ViewData["BodyClass"]">
-    <header id="header" class="header">
-        <div class="header__container">
-
-            <!-- Logo -->
-            <a asp-page="/Index" class="container__logo">
-                <!-- Uncomment the line below if you also wish to use an image logo -->
-                <!-- <img src="assets/img/logo.png" alt=""> -->
-                <h1 class="sitename title">JobTI</h1>
+    <div class="bg-layer" aria-hidden="true">
+        <canvas class="bg-waves" data-bg-waves></canvas>
+    </div>
+    <header class="guest-header">
+        <div class="guest-header__container">
+            <a asp-page="/Index" class="guest-header__brand">
+                <h1 class="guest-header__brand-title">JobTI</h1>
             </a>
 
-            <label for="menu-bar" class="fa-solid fa-bars cabeza__barra"></label>
-            <input type="checkbox" id="menu-bar" class="cabeza__input">
+            <button type="button" class="guest-header__nav-toggle" id="guestNavToggle" aria-label="Abrir menú">
+                <i class="bi bi-list" aria-hidden="true"></i>
+            </button>
 
-            <!-- Menu -->
-            <nav id="menu" class="menu">
-                <div class="menu__container">
-                    <ul class="menu__list">
-                        <li class="list__option"><a href="" class="option">Inicio</a></li>
-                        <li class="list__option"><a href="" class="option">Candidatos</a></li>
-                        <li class="list__option"><a href="" class="option">Reclutadores</a></li>
-                        <li class="list__option"><a href="" class="option">Ayuda</a></li>
-                    </ul>
-
-                    <!-- Buttons -->
-                    <div class="buttons">
-                        <a asp-page="/Login/Login" type="button" title="Iniciar sesión" class="button">
-                            <i class="material-icons button__icon">login</i>
-                            Iniciar sesión
-                        </a>
-                        <a asp-page="/Register/CreateAccount" type="button" title="Crear cuenta" class="button">
-                            <i class="material-icons button__icon">account_circle</i>
-                            Crear cuenta
-                        </a>
-                    </div>
-                </div>
+            <nav class="guest-header__nav" aria-label="Navegación principal">
+                <a class="guest-header__link" asp-page="/Index">Inicio</a>
+                <a class="guest-header__link" href="#">Candidatos</a>
+                <a class="guest-header__link" href="#">Reclutadores</a>
+                <a class="guest-header__link" href="#">Ayuda</a>
+                <a asp-page="/Login/Login" class="btn btn--ghost" title="Iniciar sesión">Iniciar sesión</a>
+                <a asp-page="/Register/CreateAccount" class="btn" title="Crear cuenta">Crear cuenta</a>
             </nav>
-
         </div>
     </header>
 
-    <div class="container">
-        <main class="main" role="main">
-            @RenderBody()
-        </main>
-    </div>
+    <main class="guest-main" role="main">
+        @RenderBody()
+    </main>
+
+    <footer class="guest-footer" aria-label="Footer">
+        <div class="guest-footer__container">
+            <div class="guest-footer__brand">
+                <div class="guest-footer__brand-title">JobTI</div>
+                <div class="guest-footer__brand-text">Tu próxima oportunidad en tecnología, más cerca de lo que imaginas.</div>
+            </div>
+
+            <div class="guest-footer__links">
+                <a class="guest-footer__link" asp-page="/Index">Inicio</a>
+                <a class="guest-footer__link" asp-page="/Privacy">Privacidad</a>
+                <a class="guest-footer__link" href="#">Soporte</a>
+            </div>
+
+            <div class="guest-footer__meta">
+                <span class="guest-footer__meta-text">© @DateTime.Now.Year JobTI</span>
+            </div>
+        </div>
+    </footer>
 
     <!-- Scroll Top -->
     <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
@@ -85,8 +88,8 @@
     <!-- Preloader -->
     <div id="preloader"></div>
 
-    <!-- StylesJS -->
-    <script src="~/js/styles.js"></script>
+    <script src="~/js/background.js" asp-append-version="true"></script>
+    <script src="~/js/styles.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -13,37 +13,49 @@ public partial class AppEmpleoContext : DbContext
     {
     }
 
-    public DbSet<Usuario> Usuarios { get; set; }
-    public DbSet<Reclutador> Reclutadores { get; set; }
-    public DbSet<Candidato> Candidatos { get; set; }
-    public DbSet<Curriculum> Curriculums { get; set; }
-    public DbSet<Categoria> Categorias { get; set; }
-    public DbSet<Habilidad> Habilidades { get; set; }
-    public DbSet<Oferta> Ofertas { get; set; }
-    public DbSet<OfertaHabilidad> OfertaHabilidades { get; set; }
-    public DbSet<Postulacion> Postulaciones { get; set; }
+    public DbSet<UserAccount> Users { get; set; }
+    public DbSet<Recruiter> Recruiters { get; set; }
+    public DbSet<Candidate> Candidates { get; set; }
+    public DbSet<Resume> Resumes { get; set; }
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<Skill> Skills { get; set; }
+    public DbSet<JobOffer> JobOffers { get; set; }
+    public DbSet<JobOfferSkill> JobOfferSkills { get; set; }
+    public DbSet<JobApplication> JobApplications { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
+        modelBuilder.Entity<Recruiter>()
+            .HasOne(r => r.User)
+            .WithOne(u => u.Recruiter)
+            .HasForeignKey<Recruiter>(r => r.UserId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Candidate>()
+            .HasOne(c => c.User)
+            .WithOne(u => u.Candidate)
+            .HasForeignKey<Candidate>(c => c.UserId)
+            .OnDelete(DeleteBehavior.NoAction);
+
         // Configurar las relaciones de las claves foráneas
-        modelBuilder.Entity<Postulacion>()
-            .HasOne(p => p.Candidato)
-            .WithMany(c => c.Postulaciones)
-            .HasForeignKey(p => p.CandidatoId)
+        modelBuilder.Entity<JobApplication>()
+            .HasOne(p => p.Candidate)
+            .WithMany(c => c.JobApplications)
+            .HasForeignKey(p => p.CandidateId)
             .OnDelete(DeleteBehavior.NoAction); // No eliminar en cascada
 
-        modelBuilder.Entity<Postulacion>()
-            .HasOne(p => p.Curriculum)
-            .WithMany(c => c.Postulaciones)
-            .HasForeignKey(p => p.CurriculumId)
+        modelBuilder.Entity<JobApplication>()
+            .HasOne(p => p.Resume)
+            .WithMany(c => c.JobApplications)
+            .HasForeignKey(p => p.ResumeId)
             .OnDelete(DeleteBehavior.NoAction); // No eliminar en cascada
 
-        modelBuilder.Entity<Postulacion>()
-            .HasOne(p => p.OfertaEmpleo)
-            .WithMany(o => o.Postulaciones)
-            .HasForeignKey(p => p.OfertaEmpleoId)
+        modelBuilder.Entity<JobApplication>()
+            .HasOne(p => p.JobOffer)
+            .WithMany(o => o.JobApplications)
+            .HasForeignKey(p => p.JobOfferId)
             .OnDelete(DeleteBehavior.NoAction); // No eliminar en cascada
 
         // Configuración adicional de otras entidades si es necesario...

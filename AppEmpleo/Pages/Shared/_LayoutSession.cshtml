@@ -1,13 +1,8 @@
 ﻿@inject IClaimsService claimsService
 @using AppEmpleo.Interfaces.Services.SessionServices
-@using AppEmpleo.Models
 @{
-    Usuario user = new Usuario()
-    {
-        Nombre = claimsService.GetName(),
-        Email = claimsService.GetEmail(),
-        Rol = claimsService.GetRole()
-    };
+    var userName = claimsService.GetName();
+    var userRole = claimsService.GetRole();
 }
 
 <!DOCTYPE html>
@@ -26,6 +21,7 @@
     <link href="https://fonts.googleapis.com" rel="preconnect">
     <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
     <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 
@@ -35,88 +31,80 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" rel="stylesheet">
 
-    <!-- CSS -->
-    <link href="~/css/layout.css" rel="stylesheet" />
-    <link href="~/css/forms.css" rel="stylesheet" />
-    <link href="~/css/home.css" rel="stylesheet" />
-    <link href="~/css/offers.css" rel="stylesheet" />
-    <link href="~/css/evaluations.css" rel="stylesheet" />
+    <!-- CSS (base + layout) -->
+    <link rel="stylesheet" href="~/css/base.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/layouts/session.css" asp-append-version="true" />
+
+    @await RenderSectionAsync("Styles", required: false)
 </head>
-<body>
-    <header class="cabeza close">
-        <nav class="cabeza__menu">
-            <div class="menu__perfil">
-                <picture class="perfil__caja">
-                    <source media="(min-width: 465px)" srcset="~/img/logo.png" class="caja__avatar" />
-                    <source media="(min-width: 650px)" srcset="~/img/logo.png" class="caja__avatar" />
-                    <img src="~/img/logo.png" alt="perfil.png" class="caja__avatar" />
-                </picture>
-                <div class="perfil__texto perfil__texto--color">
-                    <span class="perfil__nombre">@user.Nombre</span>
-                    <span class="perfil__profesion">Desarrollador web</span>
+<body class="app-shell" data-shell>
+    <div class="bg-layer" aria-hidden="true">
+        <canvas class="bg-waves" data-bg-waves></canvas>
+    </div>
+    <aside class="app-sidebar" aria-label="Barra lateral">
+        <nav class="app-sidebar__nav">
+            <div class="app-sidebar__profile">
+                <img src="~/img/logo.png" alt="Logo" class="app-sidebar__avatar" />
+                <div class="app-sidebar__profile-text">
+                    <span class="app-sidebar__profile-name">@userName</span>
+                    <span class="app-sidebar__profile-role">@userRole</span>
                 </div>
+                <button type="button" class="app-sidebar__toggle" id="sidebarToggle" aria-label="Alternar menú">
+                    <i class='bx bx-chevron-right'></i>
+                </button>
             </div>
-            <i class='bx bx-chevron-right toggle' id="arrow"></i>
-            <div class="menu">
-                <div class="menu__buscador">
-                    <i class='bx bx-search buscador__icon icon'></i>
-                    <input type="search" name="name" class="buscador" placeholder="Buscar..." />
-                </div>
-                <ul class="menu__lista">
-                    <li class="lista__opcion">
-                        <a href="" class="opcion__link">
-                            <i class='bx bx-home-alt link__icon icon'></i>
-                            <span class="link__texto">Inicio</span>
-                        </a>
-                    </li>
-                    <li class="lista__opcion">
-                        <a href="" class="opcion__link">
-                            <i class='bx bx-briefcase link__icon icon'></i>
-                            <span class="link__texto">Empleo</span>
-                        </a>
-                    </li>
-                    <li class="lista__opcion">
-                        <a asp-page="/Application/Evaluations" class="opcion__link">
-                            <i class='bx bx-spreadsheet link__icon icon'></i>
-                            <span class="link__texto">Evaluaciones</span>
-                        </a>
-                    </li>
-                    <li class="lista__opcion">
-                        <a href="" class="opcion__link">
-                            <i class='bx bx-bell link__icon icon'></i>
-                            <span class="link__texto">Notificaciones</span>
-                        </a>
-                    </li>
-                    <li class="lista__opcion">
-                        <a href="" class="opcion__link">
-                            <i class='bx bx-slider-alt link__icon icon'></i>
-                            <span class="link__texto">Configuracion</span>
-                        </a>
-                    </li>
-                </ul>
-                <div class="menu__boton">
-                    <div class="boton__salir">
-                        <form asp-page="/Index" class="salir__form">
-                            <button type="submit" class="salir__link">
-                                <i class="bx bx-log-out boton__icon icon"></i>
-                                <span class="salir__texto">Cerrar sesión</span>
-                            </button>
-                        </form>
-                    </div>
-                    <div class="boton__modo">
-                        <i class="bx bx-moon boton__icon boton__icon--modo icon"></i>
-                        <i class="bx bx-sun boton__icon boton__icon--modo icon"></i>
-                        <span class="modo__texto">Modo oscuro</span>
-                        <div class="modo__switch">
-                            <span class="switch"></span>
-                        </div>
-                    </div>
-                </div>
+
+            <div class="app-sidebar__search" role="search">
+                <i class='bx bx-search'></i>
+                <input type="search" class="app-sidebar__search-input" placeholder="Buscar..." />
+            </div>
+
+            <ul class="app-sidebar__menu">
+                <li class="app-sidebar__menu-item">
+                    <a asp-page="/Application/Home" class="app-sidebar__menu-link">
+                        <i class='bx bx-home-alt'></i>
+                        <span class="app-sidebar__menu-text">Home</span>
+                    </a>
+                </li>
+                <li class="app-sidebar__menu-item">
+                    <a asp-page="/Application/Home" class="app-sidebar__menu-link">
+                        <i class='bx bx-briefcase'></i>
+                        <span class="app-sidebar__menu-text">Jobs</span>
+                    </a>
+                </li>
+                <li class="app-sidebar__menu-item">
+                    <a asp-page="/Application/Evaluations" class="app-sidebar__menu-link">
+                        <i class='bx bx-spreadsheet'></i>
+                        <span class="app-sidebar__menu-text">Evaluations</span>
+                    </a>
+                </li>
+                <li class="app-sidebar__menu-item">
+                    <a href="#" class="app-sidebar__menu-link">
+                        <i class='bx bx-bell'></i>
+                        <span class="app-sidebar__menu-text">Notifications</span>
+                    </a>
+                </li>
+                <li class="app-sidebar__menu-item">
+                    <a href="#" class="app-sidebar__menu-link">
+                        <i class='bx bx-slider-alt'></i>
+                        <span class="app-sidebar__menu-text">Settings</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="app-sidebar__footer">
+                <form asp-page="/Index">
+                    <button type="submit" class="btn btn--ghost app-sidebar__logout">
+                        <i class='bx bx-log-out'></i>
+                        <span class="app-sidebar__menu-text">Sign out</span>
+                    </button>
+                </form>
             </div>
         </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+    </aside>
+
+    <div class="app-main">
+        <main role="main" class="app-main__content">
             @RenderBody()
         </main>
     </div>
@@ -124,9 +112,9 @@
     <footer class="border-top footer text-muted">
     </footer>
 
-    <!-- StylesJS -->
-    <script src="~/js/layout.js"></script>
-    <script src="~/js/styles.js"></script>
+    <script src="~/js/layout.js" asp-append-version="true"></script>
+    <script src="~/js/background.js" asp-append-version="true"></script>
+    <script src="~/js/styles.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -2,53 +2,53 @@
 @model AppEmpleo.Pages.CreateAccount.CreateAccountModel
 
 @{
-    ViewData["BodyClass"] = "bg__pink"; // Define la clase del fondo
+    ViewData["BodyClass"] = "page-body page-body--pink";
 }
 
-<div class="default__form">
-    <form method="post" asp-page="Register" class="form">
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/register-create-account.css" asp-append-version="true" />
+}
 
-        <div class="form__group">
-            <label asp-for="User.Nombre" class="label"></label>
-            <input asp-for="User.Nombre" type="text" value="" class="form__input" />
-            <span asp-validation-for="User.Nombre" class="text__danger"></span>
-        </div>
-        <div class="form__group">
-            <label asp-for="User.Apellido" class="label"></label>
-            <input asp-for="User.Apellido" type="text" value="" class="form__input" />
-            <span asp-validation-for="User.Apellido" class="text__danger"></span>
-        </div>
-        <div class="form__group">
-            <label asp-for="User.Email" class="label"></label>
-            <input asp-for="User.Email" type="email" value="" class="form__input" />
-            <span asp-validation-for="User.Email" class="text__danger"></span>
-        </div>
-        <div class="form__group">
-            <label asp-for="User.FechaNacimiento" class="label"></label>
-            <input asp-for="User.FechaNacimiento" type="date" value="" class="form__input" />
-            <span asp-validation-for="User.FechaNacimiento" class="text__danger"></span>
-        </div>
-        <div class="form__group">
-            <label asp-for="User.ClaveHash" class="label"></label>
-            <input asp-for="User.ClaveHash" type="password" value="" class="form__input" />
-            <span asp-validation-for="User.ClaveHash" class="text__danger"></span>
-        </div>
-        <div class="form__group">
-            <label for="Rol" class="label">Rol</label>
-            <div class="form__group--radio">
-                <div class="radio__button">
-                    <label asp-for="User.Rol" class="label label__radio">Candidato</label>
-                    <input asp-for="User.Rol" type="radio" value="candidato" class="input__radio" id="candidato" checked />
-                </div>
-                <div class="radio__button">
-                    <label asp-for="User.Rol" class="label label__radio">Reclutador</label>
-                    <input asp-for="User.Rol" type="radio" value="reclutador" class="input__radio" id="reclutador" />
-                </div>
+<div class="auth register">
+    <div class="card auth__card">
+        <h2 class="auth__title">Create account</h2>
+        <p class="auth__subtitle">Start applying to jobs in minutes</p>
+
+        <form method="post" class="form">
+            <div class="form-field">
+                <label asp-for="NewUser.FirstName" class="form-field__label"></label>
+                <input asp-for="NewUser.FirstName" type="text" class="form-field__input" />
+                <span asp-validation-for="NewUser.FirstName" class="form-field__error"></span>
             </div>
-        </div>
+            <div class="form-field">
+                <label asp-for="NewUser.LastName" class="form-field__label"></label>
+                <input asp-for="NewUser.LastName" type="text" class="form-field__input" />
+                <span asp-validation-for="NewUser.LastName" class="form-field__error"></span>
+            </div>
+            <div class="form-field">
+                <label asp-for="NewUser.Email" class="form-field__label"></label>
+                <input asp-for="NewUser.Email" type="email" class="form-field__input" />
+                <span asp-validation-for="NewUser.Email" class="form-field__error"></span>
+            </div>
+            <div class="form-field">
+                <label asp-for="NewUser.BirthDate" class="form-field__label"></label>
+                <input asp-for="NewUser.BirthDate" type="date" class="form-field__input" />
+                <span asp-validation-for="NewUser.BirthDate" class="form-field__error"></span>
+            </div>
+            <div class="form-field">
+                <label asp-for="NewUser.PasswordHash" class="form-field__label"></label>
+                <input asp-for="NewUser.PasswordHash" type="password" class="form-field__input" />
+                <span asp-validation-for="NewUser.PasswordHash" class="form-field__error"></span>
+            </div>
 
-        <button type="submit" class="button button__submit">Crear Cuenta</button>
-        <p class="form__text">¿Ya tienes una cuenta?<br /><a class="text__link" asp-page="/Login/Login">Inicia sesión</a></p>
-        
-    </form>
+            <div class="form-field">
+                <label class="form-field__label">Role</label>
+                <label class="form-field__hint"><input asp-for="NewUser.Role" type="radio" value="candidato" checked /> Candidate</label>
+                <label class="form-field__hint"><input asp-for="NewUser.Role" type="radio" value="reclutador" /> Recruiter</label>
+            </div>
+
+            <button type="submit" class="btn btn--block">Create account</button>
+            <p class="form-field__hint">Already have an account? <a class="guest-header__link" asp-page="/Login/Login">Sign in</a></p>
+        </form>
+    </div>
 </div>

@@ -1,55 +1,91 @@
-﻿document.querySelectorAll("input").forEach(input => {
-  // Agrega la clase "activo" cuando el input recibe el foco
-  input.addEventListener("focus", () => {
-    input.classList.add("form__input--active");
-  });
+﻿(() => {
+  const attachFocusHelpers = () => {
+    const inputs = document.querySelectorAll('input, textarea, select');
+    inputs.forEach((el) => {
+      el.addEventListener('focus', () => {
+        if (el.classList.contains('form-field__input') || el.classList.contains('form-field__select')) {
+          el.classList.add('form-field__input--active');
+        }
+      });
 
-  // Quita la clase "activo" cuando el input pierde el foco
-  input.addEventListener("blur", () => {
-    input.classList.remove("form__input--active");
-  });
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-  const formOffer = document.getElementById("form");
-  if (formOffer) {
-    const plusIcon = document.querySelector(".form__plus--icon");
-    plusIcon.addEventListener("click", function () {
-      formOffer.classList.toggle("active");
-    });
-  }
-});
-
-function openOverlay(offer) {
-  document.getElementById('detalleNombre').innerText = offer.nombre;
-  document.getElementById('detalleDescripcion').innerText = offer.descripcion;
-  document.getElementById('detalleFechaInicio').innerText = offer.fechainicio;
-  document.getElementById('detalleFechaCierre').innerText = offer.fechacierre;
-  document.getElementById('detalleModalidad').innerText = offer.modalidad;
-  document.getElementById('detallePais').innerText = offer.pais;
-  document.getElementById('detalleMoneda').innerText = offer.moneda;
-  document.getElementById('detalleSalario').innerText = offer.salario;
-  document.getElementById('detailsOverlay').classList.add('active');
-}
-
-function closeOverlay() {
-  document.getElementById('detailsOverlay').classList.remove('active');
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-  document.querySelectorAll('.button__details').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      openOverlay({
-        nombre: this.dataset.nombre,
-        descripcion: this.dataset.descripcion,
-        fechainicio: this.dataset.fechainicio,
-        fechacierre: this.dataset.fechacierre,
-        modalidad: this.dataset.modalidad,
-        pais: this.dataset.pais,
-        moneda: this.dataset.moneda,
-        salario: this.dataset.salario,
-        categoria: this.dataset.categoria
+      el.addEventListener('blur', () => {
+        el.classList.remove('form-field__input--active');
       });
     });
-  });
-});
+  };
+
+  const attachGuestNavToggle = () => {
+    const header = document.querySelector('.guest-header');
+    const toggle = document.getElementById('guestNavToggle');
+    if (!header || !toggle) return;
+
+    const close = () => header.classList.remove('guest-header--nav-open');
+    const toggleOpen = () => header.classList.toggle('guest-header--nav-open');
+
+    toggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleOpen();
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!header.classList.contains('guest-header--nav-open')) return;
+      const clickedToggle = toggle.contains(e.target);
+      const clickedInsideHeader = header.contains(e.target);
+      if (!clickedToggle && !clickedInsideHeader) close();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') close();
+    });
+
+    // Close when switching to desktop layout
+    const mql = window.matchMedia('(min-width: 769px)');
+    const onChange = () => {
+      if (mql.matches) close();
+    };
+    if (typeof mql.addEventListener === 'function') {
+      mql.addEventListener('change', onChange);
+    } else {
+      // Safari fallback
+      mql.addListener(onChange);
+    }
+  };
+
+  const attachRadioPillsFallback = () => {
+    // If :has() is supported, CSS handles everything.
+    const hasHas = (() => {
+      try {
+        return CSS.supports && CSS.supports('selector(:has(*))');
+      } catch {
+        return false;
+      }
+    })();
+    if (hasHas) return;
+
+    const groups = document.querySelectorAll('.radio-group');
+    groups.forEach((group) => {
+      const sync = () => {
+        const pills = group.querySelectorAll('.radio-pill');
+        pills.forEach((pill) => {
+          const input = pill.querySelector('input[type="radio"]');
+          pill.classList.toggle('radio-pill--checked', !!input && input.checked);
+        });
+      };
+
+      group.addEventListener('change', sync);
+      sync();
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      attachFocusHelpers();
+      attachGuestNavToggle();
+      attachRadioPillsFallback();
+    });
+  } else {
+    attachFocusHelpers();
+    attachGuestNavToggle();
+    attachRadioPillsFallback();
+  }
+})();

@@ -2,9 +2,9 @@
 
 namespace AppEmpleo.Interfaces.Repositories
 {
-    public interface IOfferRepository : IAddAsync<Oferta>
+    public interface IOfferRepository : IAddAsync<JobOffer>
     {
-        Task<List<Oferta>> GetOffersAsync();
-        Task<(List<Oferta> Offers, int TotalCount)> GetOffersPagedAsync(int pageNumber, int pageSize);
+        Task<List<JobOffer>> GetOffersAsync();
+        Task<(List<JobOffer> Offers, int TotalCount)> GetOffersPagedAsync(int pageNumber, int pageSize);
     }
 }

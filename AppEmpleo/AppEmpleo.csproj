@@ -21,7 +21,10 @@
 
   <ItemGroup>
     <Folder Include="Logs\" />
-    <Folder Include="wwwroot\assetsLandingPage\js\" />
+    <Folder Include="wwwroot\assetsLandingPage\" />
+    <Folder Include="wwwroot\css\" />
+    <Folder Include="wwwroot\css\layouts\" />
+    <Folder Include="wwwroot\css\pages\" />
   </ItemGroup>
 
 </Project>

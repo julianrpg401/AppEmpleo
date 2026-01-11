@@ -1,42 +1,45 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppEmpleo.Models;
 
-public partial class Usuario
+[Table("User")]
+public partial class UserAccount
 {
     [Key]
-    public int UsuarioId { get; set; }
+    public int UserId { get; set; }
 
     [Required(ErrorMessage = "El campo no puede estar vacío")]
     [MaxLength(50)]
-    public string Nombre { get; set; } = null!;
+    [DisplayName("Nombre")]
+    public string FirstName { get; set; } = null!;
 
     [Required(ErrorMessage = "El campo no puede estar vacío")]
     [MaxLength(50)]
-    public string Apellido { get; set; } = null!;
+    [DisplayName("Apellido")]
+    public string LastName { get; set; } = null!;
 
     [Required(ErrorMessage = "El campo no puede estar vacío")]
     [EmailAddress(ErrorMessage = "El correo electrónico no tiene un formato válido")]
+    [DisplayName("Correo electrónico")]
     public string Email { get; set; } = null!;
 
     [Required(ErrorMessage = "El campo no puede estar vacío")]
-    public DateOnly FechaNacimiento { get; set; }
+    [DisplayName("Fecha de nacimiento")]
+    public DateOnly BirthDate { get; set; }
 
     [Required(ErrorMessage = "El campo no puede estar vacío")]
     [DisplayName("Contraseña")]
-    public string ClaveHash { get; set; } = null!;
+    public string PasswordHash { get; set; } = null!;
 
     [Required(ErrorMessage = "El campo no puede estar vacío")]
     [MaxLength(20)]
-    public string Rol { get; set; } = null!;
+    [DisplayName("Rol")]
+    public string Role { get; set; } = null!;
 
-    public DateOnly FechaRegistro { get; set; }
+    public DateOnly RegisterDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
 
-    [ForeignKey("UsuarioId")]
-    public virtual Reclutador? Reclutador { get; set; }
-
-    [ForeignKey("UsuarioId")]
-    public virtual Candidato? Candidato { get; set; }
+    public virtual Recruiter? Recruiter { get; set; }
+    public virtual Candidate? Candidate { get; set; }
 }

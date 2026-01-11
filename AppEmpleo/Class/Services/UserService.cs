@@ -20,7 +20,7 @@ namespace AppEmpleo.Class.Services
         }
 
         // Registra un nuevo usuario
-        public async Task<Usuario?> RegisterUser(Usuario user)
+        public async Task<UserAccount?> RegisterUser(UserAccount user)
         {
             try
             {
@@ -50,7 +50,7 @@ namespace AppEmpleo.Class.Services
             {
                 var existingUser = await _userRepository.ValidateExistingUserAsync(email);
 
-                if (existingUser == null || !EncryptService.VerifyPassword(password, existingUser.ClaveHash))
+                if (existingUser == null || !EncryptService.VerifyPassword(password, existingUser.PasswordHash))
                 {
                     Log.Error("El usuario {Email} no existe o la contraseña es incorrecta", email);
                     return false;
@@ -68,16 +68,20 @@ namespace AppEmpleo.Class.Services
         }
 
         // Obtiene el usuario actual desde los claims
-        public Usuario GetUserClaims()
+        public UserAccount GetUserClaims()
         {
             try
             {
-                var user = new Usuario()
+                var user = new UserAccount
                 {
-                    UsuarioId = _claimsService.GetId(),
-                    Nombre = _claimsService.GetName(),
+                    UserId = _claimsService.GetId(),
+                    FirstName = _claimsService.GetName(),
+                    LastName = string.Empty,
                     Email = _claimsService.GetEmail(),
-                    Rol = _claimsService.GetRole()
+                    Role = _claimsService.GetRole(),
+                    PasswordHash = string.Empty,
+                    BirthDate = default,
+                    RegisterDate = default
                 };
 
                 return user;
@@ -89,7 +93,7 @@ namespace AppEmpleo.Class.Services
             }
         }
 
-        public async Task<Candidato?> GetCandidateAsync(int userId)
+        public async Task<Candidate?> GetCandidateAsync(int userId)
         {
             try
             {

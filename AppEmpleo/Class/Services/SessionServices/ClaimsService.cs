@@ -18,7 +18,7 @@ namespace AppEmpleo.Class.Services.SessionServices
 
         // Crea una lista de claims para el usuario y poder autorizarlo
 
-        public async Task UserLogin(Usuario user)
+        public async Task UserLogin(UserAccount user)
         {
             try
             {
@@ -35,7 +35,7 @@ namespace AppEmpleo.Class.Services.SessionServices
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "Error al autenticar al usuario {UserId}", user.UsuarioId);
+                Log.Error(ex, "Error al autenticar al usuario {UserId}", user.UserId);
                 throw;
             }
         }
@@ -55,23 +55,23 @@ namespace AppEmpleo.Class.Services.SessionServices
         }
 
         // Crea una lista de claims para el usuario
-        public List<Claim> CreateClaims(Usuario user)
+        public List<Claim> CreateClaims(UserAccount user)
         {
             try
             {
                 var claims = new List<Claim>()
                 {
-                    new Claim("UserId", user.UsuarioId.ToString()),
-                    new Claim(ClaimTypes.Name, user.Nombre),
+                    new Claim("UserId", user.UserId.ToString()),
+                    new Claim(ClaimTypes.Name, user.FirstName),
                     new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, user.Rol)
+                    new Claim(ClaimTypes.Role, user.Role)
                 };
 
                 return claims;
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "Error al crear los claims para el usuario {UserId}", user.UsuarioId);
+                Log.Error(ex, "Error al crear los claims para el usuario {UserId}", user.UserId);
                 throw;
             }
         }

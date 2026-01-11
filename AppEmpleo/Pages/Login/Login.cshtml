@@ -2,25 +2,32 @@
 @model AppEmpleo.Pages.Login.LoginModel
 
 @{
-    ViewData["BodyClass"] = "bg__pink"; 
+    ViewData["BodyClass"] = "page-body page-body--pink";
 }
 
-<div class="default__form">
-    <form method="post" asp-page="Login" class="form">
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/login.css" asp-append-version="true" />
+}
 
-        <div class="form__group">
-            <label asp-for="Email" class="label"></label>
-            <input asp-for="Email" type="email" class="form__input" />
-            <span asp-validation-for="Email" class="text-danger"></span>
-        </div>
-        <div class="form__group">
-            <label asp-for="Password" class="label"></label>
-            <input asp-for="Password" type="password" class="form__input" />
-            <span asp-validation-for="Password" class="text-danger"></span>
-        </div>
+<div class="auth login">
+    <div class="card auth__card">
+        <h2 class="auth__title">Sign in</h2>
+        <p class="auth__subtitle">Welcome back to JobTI</p>
 
-        <button type="submit" class="button button__submit">Iniciar Sesión</button>
-        <p class="form__text"><a class="text__link" href="#">¿Olvidaste tu contraseña?</a></p>
+        <form method="post" asp-page="Login" class="form">
+            <div class="form-field">
+                <label asp-for="Email" class="form-field__label"></label>
+                <input asp-for="Email" type="email" class="form-field__input" />
+                <span asp-validation-for="Email" class="form-field__error"></span>
+            </div>
+            <div class="form-field">
+                <label asp-for="Password" class="form-field__label"></label>
+                <input asp-for="Password" type="password" class="form-field__input" />
+                <span asp-validation-for="Password" class="form-field__error"></span>
+            </div>
 
-    </form>
+            <button type="submit" class="btn btn--block">Sign in</button>
+            <p class="form-field__hint"><a class="guest-header__link" href="#">Forgot your password?</a></p>
+        </form>
+    </div>
 </div>
