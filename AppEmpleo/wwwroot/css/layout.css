@@ -140,7 +140,7 @@ body.dark {
 .toggle {
     position: absolute;
     top: 2rem;
-    right: -3rem;
+    right: -6rem;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -34,6 +34,7 @@
     <!-- CSS (base + layout) -->
     <link rel="stylesheet" href="~/css/base.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/layouts/session.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
 
     @await RenderSectionAsync("Styles", required: false)
 </head>
@@ -49,10 +50,10 @@
                     <span class="app-sidebar__profile-name">@userName</span>
                     <span class="app-sidebar__profile-role">@userRole</span>
                 </div>
-                <button type="button" class="app-sidebar__toggle" id="sidebarToggle" aria-label="Alternar menú">
-                    <i class='bx bx-chevron-right'></i>
-                </button>
             </div>
+            <button type="button" id="sidebarToggle" aria-label="Alternar menú">
+                <i class='bx bx-chevron-right toggle'></i>
+            </button>
 
             <div class="app-sidebar__search" role="search">
                 <i class='bx bx-search'></i>
