@@ -39,7 +39,7 @@
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body class="session-layout" data-shell>
-    <div class="bg-layer" aria-hidden="true">
+    @* <div class="bg-layer" aria-hidden="true">
         <canvas class="bg-waves" data-bg-waves></canvas>
     </div>
     <div class="sidebar" role="navigation" aria-label="Barra lateral">
@@ -103,7 +103,70 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div> *@
+
+    <nav class="sidebar close">
+
+        <header>
+            <div class="image-text">
+                <span class="image-text__span">
+                    <img src="~/img/logo.png" alt="logo" />
+                </span>
+                <div class="text header-text">
+                    <span class="name">@userName</span>
+                    <span class="role">@userRole</span>
+                </div>
+            </div>
+            <i class="bx bx-chevron-right toggle"></i>
+        </header>
+
+        <div class="menu-bar">
+            <div class="menu">
+                <ul class="menu-links">
+                    <li class="nav-link">
+                        <a asp-page="/Application/Home" class="link">
+                            <i class='bx bx-home-alt icon' aria-hidden="true"></i>
+                            <span class="text nav-text">Inicio</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#" class="link">
+                            <i class='bx bx-briefcase icon' aria-hidden="true"></i>
+                            <span class="text nav-text">Inicio</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a asp-page="/Application/Evaluations" class="link">
+                            <i class='bx bx-spreadsheet icon' aria-hidden="true"></i>
+                            <span class="text nav-text">Evaluaciones</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#" class="link">
+                            <i class='bx bx-bell icon' aria-hidden="true"></i>
+                            <span class="text nav-text">Notificaciones</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#" class="link">
+                            <i class='bx bx-slider-alt icon' aria-hidden="true"></i>
+                            <span class="text nav-text">Ajustes</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="bottom-content">
+            <form asp-page="/Index" class="nav-link nav-link__bottom">
+                <button type="submit" class="link link-bottom">
+                    <i class='bx bx-log-out icon' id="log-out-icon" aria-hidden="true"></i>
+                    <span class="sidebar__menu-text">Cerrar sesión</span>
+                </button>
+            </form>
+        </div>
+
+    </nav>
 
     <div class="main">
         <main role="main" class="main__content">
@@ -114,6 +177,7 @@
     <footer class="border-top footer text-muted">
     </footer>
 
+    <script src="~/js/_LayoutSession.js" asp-append-version="true"></script>
     <script src="~/js/layout.js" asp-append-version="true"></script>
     <script src="~/js/background.js" asp-append-version="true"></script>
     <script src="~/js/styles.js" asp-append-version="true"></script>
