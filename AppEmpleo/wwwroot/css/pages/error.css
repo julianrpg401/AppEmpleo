@@ -1,0 +1,23 @@
+.error {
+  max-width: 860px;
+}
+
+.error__title {
+  margin: 0 0 10px 0;
+  color: var(--color-primary-700);
+  font-weight: 950;
+}
+
+.error__subtitle {
+  margin: 0 0 18px 0;
+  color: var(--color-slate-700);
+  font-weight: 800;
+}
+
+.error__code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  background: var(--color-gray-050);
+  border: 1px solid var(--color-gray-200);
+  padding: 2px 6px;
+  border-radius: 8px;
+}

@@ -1,0 +1,25 @@
+.register-success {
+  display: grid;
+  place-items: center;
+  padding: 32px 0;
+}
+
+.register-success__card {
+  width: min(620px, 100%);
+  padding: 18px;
+}
+
+.register-success__text {
+  margin: 0;
+  font-weight: 700;
+}
+
+.register-success__link {
+  color: var(--color-primary-700);
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.register-success__link:hover {
+  text-decoration: underline;
+}

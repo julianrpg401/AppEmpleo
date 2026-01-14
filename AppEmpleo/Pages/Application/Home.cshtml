@@ -16,11 +16,11 @@
 }
 
 @section Scripts {
-    <script src="~/js/application-home.js" asp-append-version="true"></script>
+    <script src="~/js/pages/application-home.js" asp-append-version="true"></script>
 }
 
 <div class="job-board">
-    @if (Model.CurrentUser.Role == "CANDIDATO")
+    @if (Model.CurrentUser.Role == "CANDIDATO") 
     {
         <form class="job-board__search" autocomplete="off">
             <input id="jobSearchQuery" class="job-board__search-input" type="search" placeholder="Find a job" aria-label="Buscar oferta" />

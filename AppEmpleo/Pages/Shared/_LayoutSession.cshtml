@@ -34,76 +34,11 @@
     <!-- CSS (base + layout) -->
     <link rel="stylesheet" href="~/css/base.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/layouts/session.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/layouts/layout.css" asp-append-version="true" />
 
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body class="session-layout" data-shell>
-    @* <div class="bg-layer" aria-hidden="true">
-        <canvas class="bg-waves" data-bg-waves></canvas>
-    </div>
-    <div class="sidebar" role="navigation" aria-label="Barra lateral">
-        <button type="button" class="sidebar__toggle" data-sidebar-toggle aria-label="Contraer o ampliar menú">
-            <i class='bx bx-chevron-right' aria-hidden="true"></i>
-        </button>
-
-        <div class="sidebar__content">
-            <div class="sidebar__profile">
-                <img src="~/img/logo.png" alt="Logo" class="sidebar__avatar" />
-                <div class="sidebar__profile-text">
-                    <span class="sidebar__profile-name">@userName</span>
-                    <span class="sidebar__profile-role">@userRole</span>
-                </div>
-            </div>
-
-            <div class="sidebar__search" role="search">
-                <i class='bx bx-search' aria-hidden="true"></i>
-                <input type="search" class="sidebar__search-input" placeholder="Buscar..." />
-            </div>
-
-            <ul class="sidebar__menu">
-                <li class="sidebar__menu-item">
-                    <a asp-page="/Application/Home" class="sidebar__menu-link">
-                        <i class='bx bx-home-alt' aria-hidden="true"></i>
-                        <span class="sidebar__menu-text">Home</span>
-                    </a>
-                </li>
-                <li class="sidebar__menu-item">
-                    <a asp-page="/Application/Home" class="sidebar__menu-link">
-                        <i class='bx bx-briefcase' aria-hidden="true"></i>
-                        <span class="sidebar__menu-text">Jobs</span>
-                    </a>
-                </li>
-                <li class="sidebar__menu-item">
-                    <a asp-page="/Application/Evaluations" class="sidebar__menu-link">
-                        <i class='bx bx-spreadsheet' aria-hidden="true"></i>
-                        <span class="sidebar__menu-text">Evaluations</span>
-                    </a>
-                </li>
-                <li class="sidebar__menu-item">
-                    <a href="#" class="sidebar__menu-link">
-                        <i class='bx bx-bell' aria-hidden="true"></i>
-                        <span class="sidebar__menu-text">Notifications</span>
-                    </a>
-                </li>
-                <li class="sidebar__menu-item">
-                    <a href="#" class="sidebar__menu-link">
-                        <i class='bx bx-slider-alt' aria-hidden="true"></i>
-                        <span class="sidebar__menu-text">Settings</span>
-                    </a>
-                </li>
-            </ul>
-
-            <div class="sidebar__footer">
-                <form asp-page="/Index">
-                    <button type="submit" class="btn btn--ghost sidebar__logout">
-                        <i class='bx bx-log-out' aria-hidden="true"></i>
-                        <span class="sidebar__menu-text">Sign out</span>
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div> *@
 
     <nav class="sidebar close">
 
@@ -161,7 +96,7 @@
             <form asp-page="/Index" class="nav-link nav-link__bottom">
                 <button type="submit" class="link link-bottom">
                     <i class='bx bx-log-out icon' id="log-out-icon" aria-hidden="true"></i>
-                    <span class="sidebar__menu-text">Cerrar sesión</span>
+                    <span class="sidebar__menu-text" id="log-out-text">Cerrar sesión</span>
                 </button>
             </form>
         </div>
@@ -177,9 +112,9 @@
     <footer class="border-top footer text-muted">
     </footer>
 
-    <script src="~/js/_LayoutSession.js" asp-append-version="true"></script>
-    <script src="~/js/layout.js" asp-append-version="true"></script>
-    <script src="~/js/background.js" asp-append-version="true"></script>
+    <script src="~/js/layouts/sidebar.js" asp-append-version="true"></script>
+    @* <script src="~/js/layout.js" asp-append-version="true"></script> *@
+    <script src="~/js/layouts/background.js" asp-append-version="true"></script>
     <script src="~/js/styles.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
