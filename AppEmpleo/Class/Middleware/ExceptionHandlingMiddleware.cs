@@ -25,7 +25,7 @@ namespace AppEmpleo.Class.Middleware
                 Log.Error(ex, "Unhandled exception");
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 context.Response.ContentType = "text/html";
-                await context.Response.WriteAsync("<h2>OcurriÛ un error inesperado. Por favor, intÈntelo de nuevo m·s tarde.</h2>");
+                await context.Response.WriteAsync("<h2>Ocurri√≥ un error inesperado. Por favor, int√©ntelo de nuevo m√°s tarde.</h2>");
             }
         }
     }

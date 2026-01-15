@@ -11,7 +11,7 @@ namespace AppEmpleo.Pages.CreateAccount
         private readonly IUserService _userService;
 
         [BindProperty]
-        public new Usuario User { get; set; } = null!;
+        public UserAccount NewUser { get; set; } = null!;
 
         public CreateAccountModel(IUserService userService)
         {
@@ -20,7 +20,7 @@ namespace AppEmpleo.Pages.CreateAccount
 
         public void OnGet() { }
 
-        // Añade un usuario a la base de datos
+        // Aï¿½ade un usuario a la base de datos
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -30,12 +30,12 @@ namespace AppEmpleo.Pages.CreateAccount
 
             try
             {
-                var user = await _userService.RegisterUser(User);
+                var user = await _userService.RegisterUser(NewUser);
 
                 if (user == null)
                 {
-                    Log.Error("El correo electrónico {Email} ya está registrado", User.Email);
-                    ModelState.AddModelError(string.Empty, "El correo electrónico ya está registrado. Por favor, use otro correo electrónico.");
+                    Log.Error("El correo electrï¿½nico {Email} ya estï¿½ registrado", NewUser.Email);
+                    ModelState.AddModelError(string.Empty, "El correo electrï¿½nico ya estï¿½ registrado. Por favor, use otro correo electrï¿½nico.");
 
                     return Page();
                 }
@@ -45,7 +45,7 @@ namespace AppEmpleo.Pages.CreateAccount
             catch (Exception ex)
             {
                 Log.Error(ex, "Error al crear la cuenta");
-                ModelState.AddModelError(string.Empty, "Ocurrió un error al crear la cuenta. Por favor, inténtelo de nuevo más tarde.");
+                ModelState.AddModelError(string.Empty, "Ocurriï¿½ un error al crear la cuenta. Por favor, intï¿½ntelo de nuevo mï¿½s tarde.");
 
                 return Page();
             }

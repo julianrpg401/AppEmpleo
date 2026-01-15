@@ -5,24 +5,24 @@ namespace AppEmpleo.Class.Utilities.Helpers
     public static class CurrencyHelper
     {
         // Diccionario de nombres de monedas
-        public static readonly Dictionary<CurrencyType, string> CurrencyName = new()
+        public static readonly Dictionary<CurrencyCode, string> CurrencyName = new()
         {
-            { CurrencyType.USD, "Dólar Estadounidense" },
-            { CurrencyType.MXN, "Peso Mexicano" },
-            { CurrencyType.COP, "Peso Colombiano" },
-            { CurrencyType.ARS, "Peso Argentino" },
-            { CurrencyType.BRL, "Real Brasileño" },
-            { CurrencyType.PEN, "Sol Peruano" },
-            { CurrencyType.CLP, "Peso Chileno" },
-            { CurrencyType.UYU, "Peso Uruguayo" },
-            { CurrencyType.DOP, "Peso Dominicano" },
-            { CurrencyType.VES, "Bolívar Venezolano" },
-            { CurrencyType.PYG, "Guaraní Paraguayo" },
-            { CurrencyType.BOB, "Boliviano" },
-            { CurrencyType.CRC, "Colón Costarricense" },
-            { CurrencyType.GTQ, "Quetzal Guatemalteco" },
-            { CurrencyType.HNL, "Lempira Hondureño" },
-            { CurrencyType.PAB, "Balboa Panameño" }
+            { CurrencyCode.USD, "Dólar Estadounidense" },
+            { CurrencyCode.MXN, "Peso Mexicano" },
+            { CurrencyCode.COP, "Peso Colombiano" },
+            { CurrencyCode.ARS, "Peso Argentino" },
+            { CurrencyCode.BRL, "Real Brasileño" },
+            { CurrencyCode.PEN, "Sol Peruano" },
+            { CurrencyCode.CLP, "Peso Chileno" },
+            { CurrencyCode.UYU, "Peso Uruguayo" },
+            { CurrencyCode.DOP, "Peso Dominicano" },
+            { CurrencyCode.VES, "Bolívar Venezolano" },
+            { CurrencyCode.PYG, "Guaraní Paraguayo" },
+            { CurrencyCode.BOB, "Boliviano" },
+            { CurrencyCode.CRC, "Colón Costarricense" },
+            { CurrencyCode.GTQ, "Quetzal Guatemalteco" },
+            { CurrencyCode.HNL, "Lempira Hondureño" },
+            { CurrencyCode.PAB, "Balboa Panameño" }
         };
     }
 }

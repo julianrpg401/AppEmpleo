@@ -13,16 +13,16 @@ namespace AppEmpleo.Pages.Application
         private readonly IUserService _userService;
         private readonly IPostulationService _postulationService;
 
-        public new Usuario User { get; set; } = null!;
+        public UserAccount CurrentUser { get; set; } = null!;
 
-        public List<Postulacion> AllPostulations { get; set; } = [];
+        public List<JobApplication> AllPostulations { get; set; } = [];
 
         public EvaluationsModel(IUserService userService, IPostulationService postulationService)
         {
             _userService = userService;
             _postulationService = postulationService;
 
-            User = _userService.GetUserClaims();
+            CurrentUser = _userService.GetUserClaims();
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -34,14 +34,14 @@ namespace AppEmpleo.Pages.Application
             catch (Exception ex)
             {
                 Log.Error(ex, "Error al obtener las postulaciones");
-                ModelState.AddModelError(string.Empty, "Ocurrió un error al cargar las postulaciones. Por favor, inténtelo de nuevo más tarde.");
+                ModelState.AddModelError(string.Empty, "Ocurriï¿½ un error al cargar las postulaciones. Por favor, intï¿½ntelo de nuevo mï¿½s tarde.");
             }
 
             return Page();
         }
 
         private async Task GetPostulationsAsync()
-            => AllPostulations = await _postulationService.GetAllPostulationsAsync(User.UsuarioId);
+            => AllPostulations = await _postulationService.GetAllPostulationsAsync(CurrentUser.UserId);
 
         public async Task<IActionResult> OnGetDescargarCVAsync(int curriculumId)
         {
@@ -51,7 +51,7 @@ namespace AppEmpleo.Pages.Application
 
                 if (curriculum == null)
                 {
-                    Log.Warning("Currículum con ID {CurriculumId} no encontrado", curriculumId);
+                    Log.Warning("Currï¿½culum con ID {CurriculumId} no encontrado", curriculumId);
                     return NotFound();
                 }
 
@@ -59,7 +59,7 @@ namespace AppEmpleo.Pages.Application
 
                 if (!System.IO.File.Exists(filePath))
                 {
-                    Log.Warning("Archivo de currículum no encontrado en la ruta {FilePath}", filePath);
+                    Log.Warning("Archivo de currï¿½culum no encontrado en la ruta {FilePath}", filePath);
                     return NotFound();
                 }
 
@@ -68,7 +68,7 @@ namespace AppEmpleo.Pages.Application
             catch (Exception ex)
             {
                 Log.Error(ex, "Error al descargar el CV con ID {CurriculumId}", curriculumId);
-                ModelState.AddModelError(string.Empty, "Ocurrió un error al descargar el CV. Por favor, inténtelo de nuevo más tarde.");
+                ModelState.AddModelError(string.Empty, "Ocurriï¿½ un error al descargar el CV. Por favor, intï¿½ntelo de nuevo mï¿½s tarde.");
                 
                 return Page();
             }

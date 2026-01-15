@@ -19,7 +19,7 @@ namespace AppEmpleo.Class.Services
         }
 
         // Crea un currículum y lo guarda en el servidor
-        private async Task<int> CreateCurriculum(Candidato candidate, IFormFile CVFile)
+        private async Task<int> CreateCurriculum(Candidate candidate, IFormFile CVFile)
         {
             try
             {
@@ -28,7 +28,7 @@ namespace AppEmpleo.Class.Services
 
                 await SendCurriculum(curriculum);
 
-                return curriculum.CurriculumId;
+                return curriculum.ResumeId;
             }
             catch (Exception ex)
             {
@@ -66,7 +66,7 @@ namespace AppEmpleo.Class.Services
         }
 
         // Envía el currículum al repositorio para guardarlo en la base de datos
-        private async Task SendCurriculum(Curriculum curriculum)
+        private async Task SendCurriculum(Resume curriculum)
         {
             try
             {
@@ -80,16 +80,16 @@ namespace AppEmpleo.Class.Services
         }
 
         // Crea una postulación para una oferta de empleo
-        public async Task CreatePostulation(int offerId, Candidato candidate, IFormFile CVFile)
+        public async Task CreatePostulation(int offerId, Candidate candidate, IFormFile CVFile)
         {
             try
             {
-                var postulacion = new Postulacion
+                var postulacion = new JobApplication
                 {
-                    OfertaEmpleoId = offerId,
-                    CandidatoId = candidate.CandidatoId,
-                    CurriculumId = await CreateCurriculum(candidate, CVFile), // crea el currículum y obtiene su ID
-                    FechaPostulacion = DateTime.UtcNow
+                    JobOfferId = offerId,
+                    CandidateId = candidate.CandidateId,
+                    ResumeId = await CreateCurriculum(candidate, CVFile), // crea el currículum y obtiene su ID
+                    AppliedAt = DateOnly.FromDateTime(DateTime.UtcNow)
                 };
 
                 await _postulationRepository.AddPostulationAsync(postulacion);
@@ -102,7 +102,7 @@ namespace AppEmpleo.Class.Services
         }
 
         // Obtiene todas las postulaciones de un reclutador por su ID
-        public async Task<List<Postulacion>> GetAllPostulationsAsync(int recruiterId)
+        public async Task<List<JobApplication>> GetAllPostulationsAsync(int recruiterId)
         {
             try
             {
@@ -116,7 +116,7 @@ namespace AppEmpleo.Class.Services
         }
 
         // Obtiene un currículum por su ID
-        public async Task<Curriculum?> GetCurriculumByIdAsync(int curriculumId)
+        public async Task<Resume?> GetCurriculumByIdAsync(int curriculumId)
         {
             try
             {
@@ -130,11 +130,11 @@ namespace AppEmpleo.Class.Services
         }
 
         // Obtiene la ruta del archivo del currículum en el servidor
-        public string FilePath(Curriculum curriculum)
+        public string FilePath(Resume curriculum)
         {
             try
             {
-                var filePath = Path.Combine(_env.WebRootPath, curriculum.RutaArchivo.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
+                var filePath = Path.Combine(_env.WebRootPath, curriculum.FilePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
 
                 return filePath;
             }
@@ -146,12 +146,12 @@ namespace AppEmpleo.Class.Services
         }
 
         // Descarga el currículum desde el servidor
-        public async Task<FileResult> DownloadCurriculum(Curriculum curriculum, string filePath)
+        public async Task<FileResult> DownloadCurriculum(Resume curriculum, string filePath)
         {
             try
             {
                 var contentType = "application/octet-stream";
-                var fileName = curriculum.NombreArchivo;
+            var fileName = curriculum.FileName;
                 var fileBytes = await System.IO.File.ReadAllBytesAsync(filePath);
 
                 return new FileContentResult(fileBytes, contentType)

@@ -16,7 +16,7 @@ namespace AppEmpleo.Class.Services
             _offerRepository = offerRepository;
         }
 
-        public async Task AddOfferAsync(Oferta offer, Usuario user)
+        public async Task AddOfferAsync(JobOffer offer, UserAccount user)
         {
             try
             {
@@ -34,12 +34,12 @@ namespace AppEmpleo.Class.Services
             }
         }
 
-        public async Task<List<Oferta>> GetAllOffersAsync()
+        public async Task<List<JobOffer>> GetAllOffersAsync()
         {
             return await _offerRepository.GetOffersAsync();
         }
 
-        public async Task<(List<Oferta> Offers, int TotalCount)> GetOffersPagedAsync(int pageNumber, int pageSize)
+        public async Task<(List<JobOffer> Offers, int TotalCount)> GetOffersPagedAsync(int pageNumber, int pageSize)
         {
             return await _offerRepository.GetOffersPagedAsync(pageNumber, pageSize);
         }

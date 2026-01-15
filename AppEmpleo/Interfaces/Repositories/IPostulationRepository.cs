@@ -4,10 +4,10 @@ namespace AppEmpleo.Interfaces.Repositories
 {
     public interface IPostulationRepository
     {
-        Task<List<Postulacion>> GetAllPostulationsAsync();
-        Task<List<Postulacion>> GetPostulationsByRecruiterIdAsync(int recruiterId);
-        Task<Curriculum?> GetCurriculumByIdAsync(int curriculumId);
-        Task AddCurriculumAsync(Curriculum curriculum);
-        Task AddPostulationAsync(Postulacion postulation);
+        Task<List<JobApplication>> GetAllPostulationsAsync();
+        Task<List<JobApplication>> GetPostulationsByRecruiterIdAsync(int recruiterId);
+        Task<Resume?> GetCurriculumByIdAsync(int curriculumId);
+        Task AddCurriculumAsync(Resume curriculum);
+        Task AddPostulationAsync(JobApplication postulation);
     }
 }

@@ -2,21 +2,78 @@
 @model IndexModel
 @{
     ViewData["Title"] = "Index";
-	ViewData["BodyClass"] = "bg__white"; // Define la clase del fondo
+	ViewData["BodyClass"] = "page-body page-body--white";
 }
 
-<!-- Hero section -->
-<section id="hero" class="hero">
-	<div class="hero__container">
-		<div class="container__text">
-			<h1 class="text__title">Encuentra el empleo que siempre soñaste</h1>
-			<p class="text__paragraph">Unete a la mejor plataforma de empleo para TI de Latinoamérica</p>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/index.css" asp-append-version="true" />
+}
+
+@section Scripts {
+	<script src="~/js/pages/index.js" asp-append-version="true" defer></script>
+}
+
+<section class="landing-hero" aria-label="Hero">
+	<div class="landing-hero__container">
+		<div>
+			<h1 class="landing-hero__title">Encuentra el empleo que siempre soñaste</h1>
+			<p class="landing-hero__text">Únete a la plataforma de empleo TI para Latinoamérica</p>
+			<div class="landing-hero__cta">
+				<a asp-page="/Register/CreateAccount" class="btn" title="Crear cuenta">Regístrate</a>
+			</div>
 		</div>
-		<div class="container__img">
-			<img src="~/assetsLandingPage/img/hero-img.png" alt="hero-img" class="img">
+		<div class="landing-hero__media">
+			<img src="~/img/svg/hero-image.svg" alt="Ilustración" class="landing-hero__image">
 		</div>
 	</div>
-	<a asp-page="/Register/CreateAccount" type="button" title="Iniciar sesión" class="button button__register" id="button__register--index">
-		Regístrate
-	</a>
+</section>
+
+<section class="landing-section landing-section--features" aria-label="Beneficios">
+	<div class="landing-section__header">
+		<h2 class="landing-section__title">Hecha para el talento… y para quienes lo contratan</h2>
+		<p class="landing-section__subtitle">JobTI convierte el proceso de búsqueda y selección en una experiencia clara, rápida y con intención.</p>
+	</div>
+
+	<div class="landing-grid">
+		<article class="landing-card">
+			<div class="landing-card__badge">Para candidatos</div>
+			<h3 class="landing-card__title">Postula con el CV perfecto, siempre</h3>
+			<p class="landing-card__text">
+				Mantén hasta <strong>tres currículums</strong> listos en tu perfil (por ejemplo: Frontend, Backend, Full‑Stack)
+				y elige cuál adjuntar a cada postulación. Así tu experiencia se cuenta con el enfoque correcto.
+			</p>
+			<ul class="landing-list">
+				<li class="landing-list__item">Organiza versiones de tu CV por rol o tecnología</li>
+				<li class="landing-list__item">Decide qué CV enviar según la oferta</li>
+				<li class="landing-list__item">Recibe notificaciones cuando un reclutador abra tu CV</li>
+			</ul>
+		</article>
+
+		<article class="landing-card">
+			<div class="landing-card__badge">Para reclutadores</div>
+			<h3 class="landing-card__title">Selecciona mejor y más rápido</h3>
+			<p class="landing-card__text">
+				Contacta candidatos por email y gestiona el estado de cada postulación con trazabilidad.
+				Publica ofertas con fechas de inicio y cierre para mantener procesos ordenados.
+			</p>
+			<ul class="landing-list">
+				<li class="landing-list__item">Contacta directamente desde la plataforma</li>
+				<li class="landing-list__item">Cambia el estado de postulación (en revisión, entrevista, etc.)</li>
+				<li class="landing-list__item">Si no hay respuesta en 2 semanas, la postulación se descarta del proceso</li>
+			</ul>
+		</article>
+	</div>
+</section>
+
+<section class="landing-section landing-section--cta" aria-label="Llamado a la acción">
+	<div class="landing-cta">
+		<div class="landing-cta__content">
+			<h2 class="landing-cta__title">Deja de “buscar”. Empieza a avanzar.</h2>
+			<p class="landing-cta__text">Crea tu cuenta, prepara tus currículums y postula con confianza.</p>
+		</div>
+		<div class="landing-cta__actions">
+			<a asp-page="/Register/CreateAccount" class="btn" title="Crear cuenta">Crear cuenta</a>
+			<a asp-page="/Login/Login" class="btn btn--ghost" title="Iniciar sesión">Ya tengo cuenta</a>
+		</div>
+	</div>
 </section>

@@ -3,6 +3,12 @@
 @{
     ViewData["Title"] = "Privacy Policy";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/privacy.css" asp-append-version="true" />
+}
+
+<article class="legal">
+    <h1 class="legal__title">@ViewData["Title"]</h1>
+    <p class="legal__text">Use this page to detail your site's privacy policy.</p>
+</article>

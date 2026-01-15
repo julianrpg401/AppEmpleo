@@ -22,398 +22,399 @@ namespace AppEmpleo.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("AppEmpleo.Models.Candidato", b =>
+            modelBuilder.Entity("AppEmpleo.Models.Candidate", b =>
                 {
-                    b.Property<int>("CandidatoId")
+                    b.Property<int>("CandidateId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CandidatoId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CandidateId"));
 
-                    b.Property<string>("Direccion")
+                    b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Telefono")
+                    b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UsuarioId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("CandidatoId");
+                    b.HasKey("CandidateId");
 
-                    b.HasIndex("UsuarioId")
+                    b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Candidatos");
+                    b.ToTable("Candidates");
                 });
 
-            modelBuilder.Entity("AppEmpleo.Models.Categoria", b =>
+            modelBuilder.Entity("AppEmpleo.Models.Category", b =>
                 {
-                    b.Property<int>("CategoriaId")
+                    b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoriaId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"));
 
-                    b.Property<string>("Nombre")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CategoriaId");
+                    b.HasKey("CategoryId");
 
-                    b.ToTable("Categorias");
+                    b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("AppEmpleo.Models.Curriculum", b =>
+            modelBuilder.Entity("AppEmpleo.Models.JobApplication", b =>
                 {
-                    b.Property<int>("CurriculumId")
+                    b.Property<int>("JobApplicationId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CurriculumId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("JobApplicationId"));
 
-                    b.Property<int>("CandidatoId")
-                        .HasColumnType("int");
-
-                    b.Property<bool?>("EsPreferido")
-                        .HasColumnType("bit");
-
-                    b.Property<DateOnly>("FechaCarga")
+                    b.Property<DateOnly>("AppliedAt")
                         .HasColumnType("date");
 
-                    b.Property<string>("NombreArchivo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CandidateId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("RutaArchivo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("JobOfferId")
+                        .HasColumnType("int");
 
-                    b.HasKey("CurriculumId");
+                    b.Property<int>("ResumeId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("CandidatoId");
+                    b.HasKey("JobApplicationId");
 
-                    b.ToTable("Curriculums");
+                    b.HasIndex("CandidateId");
+
+                    b.HasIndex("JobOfferId");
+
+                    b.HasIndex("ResumeId");
+
+                    b.ToTable("JobApplications");
                 });
 
-            modelBuilder.Entity("AppEmpleo.Models.Habilidad", b =>
+            modelBuilder.Entity("AppEmpleo.Models.JobOffer", b =>
                 {
-                    b.Property<int>("HabilidadId")
+                    b.Property<int>("JobOfferId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HabilidadId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("JobOfferId"));
 
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("HabilidadId");
-
-                    b.ToTable("Habilidades");
-                });
-
-            modelBuilder.Entity("AppEmpleo.Models.Oferta", b =>
-                {
-                    b.Property<int>("OfertaId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OfertaId"));
-
-                    b.Property<int?>("CategoriaId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Descripcion")
+                    b.Property<string>("Country")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateOnly>("FechaCierre")
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateOnly>("EndDate")
                         .HasColumnType("date");
 
-                    b.Property<DateOnly>("FechaInicio")
-                        .HasColumnType("date");
-
-                    b.Property<string>("ModalidadTrabajo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Moneda")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NombreOferta")
+                    b.Property<string>("JobTitle")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Pais")
+                    b.Property<int?>("RecruiterId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("Salary")
+                        .HasColumnType("decimal(10, 2)")
+                        .HasColumnName("Salary");
+
+                    b.Property<DateOnly>("StartDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("WorkMode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ReclutadorId")
-                        .HasColumnType("int");
+                    b.HasKey("JobOfferId");
 
-                    b.Property<decimal?>("Salario")
-                        .HasColumnType("decimal(10, 2)");
+                    b.HasIndex("CategoryId");
 
-                    b.HasKey("OfertaId");
+                    b.HasIndex("RecruiterId");
 
-                    b.HasIndex("CategoriaId");
-
-                    b.HasIndex("ReclutadorId");
-
-                    b.ToTable("Ofertas");
+                    b.ToTable("JobOffers");
                 });
 
-            modelBuilder.Entity("AppEmpleo.Models.OfertaHabilidad", b =>
+            modelBuilder.Entity("AppEmpleo.Models.JobOfferSkill", b =>
                 {
-                    b.Property<int>("OfertaHabilidadId")
+                    b.Property<int>("JobOfferSkillId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OfertaHabilidadId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("JobOfferSkillId"));
 
-                    b.Property<int>("HabilidadId")
+                    b.Property<int>("JobOfferId")
                         .HasColumnType("int");
 
-                    b.Property<int>("OfertaEmpleoId")
+                    b.Property<int>("SkillId")
                         .HasColumnType("int");
 
-                    b.HasKey("OfertaHabilidadId");
+                    b.HasKey("JobOfferSkillId");
 
-                    b.HasIndex("HabilidadId");
+                    b.HasIndex("JobOfferId");
 
-                    b.HasIndex("OfertaEmpleoId");
+                    b.HasIndex("SkillId");
 
-                    b.ToTable("OfertaHabilidades");
+                    b.ToTable("JobOfferSkills");
                 });
 
-            modelBuilder.Entity("AppEmpleo.Models.Postulacion", b =>
+            modelBuilder.Entity("AppEmpleo.Models.Recruiter", b =>
                 {
-                    b.Property<int>("PostulacionId")
+                    b.Property<int>("RecruiterId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PostulacionId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RecruiterId"));
 
-                    b.Property<int>("CandidatoId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CurriculumId")
-                        .HasColumnType("int");
+                    b.HasKey("RecruiterId");
 
-                    b.Property<DateTime>("FechaPostulacion")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("OfertaEmpleoId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PostulacionId");
-
-                    b.HasIndex("CandidatoId");
-
-                    b.HasIndex("CurriculumId");
-
-                    b.HasIndex("OfertaEmpleoId");
-
-                    b.ToTable("Postulaciones");
-                });
-
-            modelBuilder.Entity("AppEmpleo.Models.Reclutador", b =>
-                {
-                    b.Property<int>("ReclutadorId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReclutadorId"));
-
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ReclutadorId");
-
-                    b.HasIndex("UsuarioId")
+                    b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Reclutadores");
+                    b.ToTable("Recruiters");
                 });
 
-            modelBuilder.Entity("AppEmpleo.Models.Usuario", b =>
+            modelBuilder.Entity("AppEmpleo.Models.Resume", b =>
                 {
-                    b.Property<int>("UsuarioId")
+                    b.Property<int>("ResumeId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UsuarioId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ResumeId"));
 
-                    b.Property<string>("Apellido")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int>("CandidateId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("ClaveHash")
+                    b.Property<string>("FileName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsPreferred")
+                        .HasColumnType("bit");
+
+                    b.Property<DateOnly>("UploadedDate")
+                        .HasColumnType("date");
+
+                    b.HasKey("ResumeId");
+
+                    b.HasIndex("CandidateId");
+
+                    b.ToTable("Resumes");
+                });
+
+            modelBuilder.Entity("AppEmpleo.Models.Skill", b =>
+                {
+                    b.Property<int>("SkillId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SkillId"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SkillId");
+
+                    b.ToTable("Skills");
+                });
+
+            modelBuilder.Entity("AppEmpleo.Models.UserAccount", b =>
+                {
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
+
+                    b.Property<DateOnly>("BirthDate")
+                        .HasColumnType("date");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateOnly>("FechaNacimiento")
-                        .HasColumnType("date");
-
-                    b.Property<DateOnly>("FechaRegistro")
-                        .HasColumnType("date");
-
-                    b.Property<string>("Nombre")
+                    b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Rol")
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateOnly>("RegisterDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Role")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.HasKey("UsuarioId");
+                    b.HasKey("UserId");
 
-                    b.ToTable("Usuarios");
+                    b.ToTable("User");
                 });
 
-            modelBuilder.Entity("AppEmpleo.Models.Candidato", b =>
+            modelBuilder.Entity("AppEmpleo.Models.Candidate", b =>
                 {
-                    b.HasOne("AppEmpleo.Models.Usuario", "Usuario")
-                        .WithOne("Candidato")
-                        .HasForeignKey("AppEmpleo.Models.Candidato", "UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("AppEmpleo.Models.Curriculum", b =>
-                {
-                    b.HasOne("AppEmpleo.Models.Candidato", "Candidato")
-                        .WithMany("Curriculums")
-                        .HasForeignKey("CandidatoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Candidato");
-                });
-
-            modelBuilder.Entity("AppEmpleo.Models.Oferta", b =>
-                {
-                    b.HasOne("AppEmpleo.Models.Categoria", "Categoria")
-                        .WithMany("Ofertas")
-                        .HasForeignKey("CategoriaId");
-
-                    b.HasOne("AppEmpleo.Models.Reclutador", "Reclutador")
-                        .WithMany("Ofertas")
-                        .HasForeignKey("ReclutadorId");
-
-                    b.Navigation("Categoria");
-
-                    b.Navigation("Reclutador");
-                });
-
-            modelBuilder.Entity("AppEmpleo.Models.OfertaHabilidad", b =>
-                {
-                    b.HasOne("AppEmpleo.Models.Habilidad", "Habilidad")
-                        .WithMany("OfertaHabilidades")
-                        .HasForeignKey("HabilidadId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AppEmpleo.Models.Oferta", "OfertaEmpleo")
-                        .WithMany("OfertaHabilidades")
-                        .HasForeignKey("OfertaEmpleoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Habilidad");
-
-                    b.Navigation("OfertaEmpleo");
-                });
-
-            modelBuilder.Entity("AppEmpleo.Models.Postulacion", b =>
-                {
-                    b.HasOne("AppEmpleo.Models.Candidato", "Candidato")
-                        .WithMany("Postulaciones")
-                        .HasForeignKey("CandidatoId")
+                    b.HasOne("AppEmpleo.Models.UserAccount", "User")
+                        .WithOne("Candidate")
+                        .HasForeignKey("AppEmpleo.Models.Candidate", "UserId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("AppEmpleo.Models.Curriculum", "Curriculum")
-                        .WithMany("Postulaciones")
-                        .HasForeignKey("CurriculumId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("AppEmpleo.Models.Oferta", "OfertaEmpleo")
-                        .WithMany("Postulaciones")
-                        .HasForeignKey("OfertaEmpleoId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Candidato");
-
-                    b.Navigation("Curriculum");
-
-                    b.Navigation("OfertaEmpleo");
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("AppEmpleo.Models.Reclutador", b =>
+            modelBuilder.Entity("AppEmpleo.Models.JobApplication", b =>
                 {
-                    b.HasOne("AppEmpleo.Models.Usuario", "Usuario")
-                        .WithOne("Reclutador")
-                        .HasForeignKey("AppEmpleo.Models.Reclutador", "UsuarioId")
+                    b.HasOne("AppEmpleo.Models.Candidate", "Candidate")
+                        .WithMany("JobApplications")
+                        .HasForeignKey("CandidateId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("AppEmpleo.Models.JobOffer", "JobOffer")
+                        .WithMany("JobApplications")
+                        .HasForeignKey("JobOfferId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("AppEmpleo.Models.Resume", "Resume")
+                        .WithMany("JobApplications")
+                        .HasForeignKey("ResumeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Candidate");
+
+                    b.Navigation("JobOffer");
+
+                    b.Navigation("Resume");
+                });
+
+            modelBuilder.Entity("AppEmpleo.Models.JobOffer", b =>
+                {
+                    b.HasOne("AppEmpleo.Models.Category", "Category")
+                        .WithMany("JobOffers")
+                        .HasForeignKey("CategoryId");
+
+                    b.HasOne("AppEmpleo.Models.Recruiter", "Recruiter")
+                        .WithMany("JobOffers")
+                        .HasForeignKey("RecruiterId");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Recruiter");
+                });
+
+            modelBuilder.Entity("AppEmpleo.Models.JobOfferSkill", b =>
+                {
+                    b.HasOne("AppEmpleo.Models.JobOffer", "JobOffer")
+                        .WithMany("JobOfferSkills")
+                        .HasForeignKey("JobOfferId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Usuario");
+                    b.HasOne("AppEmpleo.Models.Skill", "Skill")
+                        .WithMany("JobOfferSkills")
+                        .HasForeignKey("SkillId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("JobOffer");
+
+                    b.Navigation("Skill");
                 });
 
-            modelBuilder.Entity("AppEmpleo.Models.Candidato", b =>
+            modelBuilder.Entity("AppEmpleo.Models.Recruiter", b =>
                 {
-                    b.Navigation("Curriculums");
+                    b.HasOne("AppEmpleo.Models.UserAccount", "User")
+                        .WithOne("Recruiter")
+                        .HasForeignKey("AppEmpleo.Models.Recruiter", "UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
-                    b.Navigation("Postulaciones");
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("AppEmpleo.Models.Categoria", b =>
+            modelBuilder.Entity("AppEmpleo.Models.Resume", b =>
                 {
-                    b.Navigation("Ofertas");
+                    b.HasOne("AppEmpleo.Models.Candidate", "Candidate")
+                        .WithMany("Resumes")
+                        .HasForeignKey("CandidateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Candidate");
                 });
 
-            modelBuilder.Entity("AppEmpleo.Models.Curriculum", b =>
+            modelBuilder.Entity("AppEmpleo.Models.Candidate", b =>
                 {
-                    b.Navigation("Postulaciones");
+                    b.Navigation("JobApplications");
+
+                    b.Navigation("Resumes");
                 });
 
-            modelBuilder.Entity("AppEmpleo.Models.Habilidad", b =>
+            modelBuilder.Entity("AppEmpleo.Models.Category", b =>
                 {
-                    b.Navigation("OfertaHabilidades");
+                    b.Navigation("JobOffers");
                 });
 
-            modelBuilder.Entity("AppEmpleo.Models.Oferta", b =>
+            modelBuilder.Entity("AppEmpleo.Models.JobOffer", b =>
                 {
-                    b.Navigation("OfertaHabilidades");
+                    b.Navigation("JobApplications");
 
-                    b.Navigation("Postulaciones");
+                    b.Navigation("JobOfferSkills");
                 });
 
-            modelBuilder.Entity("AppEmpleo.Models.Reclutador", b =>
+            modelBuilder.Entity("AppEmpleo.Models.Recruiter", b =>
                 {
-                    b.Navigation("Ofertas");
+                    b.Navigation("JobOffers");
                 });
 
-            modelBuilder.Entity("AppEmpleo.Models.Usuario", b =>
+            modelBuilder.Entity("AppEmpleo.Models.Resume", b =>
                 {
-                    b.Navigation("Candidato");
+                    b.Navigation("JobApplications");
+                });
 
-                    b.Navigation("Reclutador");
+            modelBuilder.Entity("AppEmpleo.Models.Skill", b =>
+                {
+                    b.Navigation("JobOfferSkills");
+                });
+
+            modelBuilder.Entity("AppEmpleo.Models.UserAccount", b =>
+                {
+                    b.Navigation("Candidate");
+
+                    b.Navigation("Recruiter");
                 });
 #pragma warning restore 612, 618
         }

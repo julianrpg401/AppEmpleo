@@ -8,249 +8,280 @@
 
     var countries = CountryHelper.CountryName;
     var currencies = CurrencyHelper.CurrencyName;
+    var selectedWorkMode = string.IsNullOrWhiteSpace(Model.Offer?.WorkMode) ? "Remoto" : Model.Offer.WorkMode;
 }
 
-<div class="role">
-    @if (Model.User.Rol == "CANDIDATO")
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/application-home.css" asp-append-version="true" />
+}
+
+@section Scripts {
+    <script src="~/js/pages/application-home.js" asp-append-version="true"></script>
+}
+
+<div class="job-board">
+    @if (Model.CurrentUser.Role == "CANDIDATO") 
     {
-        <div class="search__container">
-            <ul class="list__offers">
+        <form class="job-board__search" autocomplete="off">
+            <input id="jobSearchQuery" class="job-board__search-input" type="search" placeholder="Find a job" aria-label="Buscar oferta" />
+            <select id="jobSearchLocation" class="job-board__search-select" aria-label="Ubicación">
+                <option value="">Localization</option>
+                @foreach (var country in countries)
+                {
+                    <option value="@country.Value">@country.Value</option>
+                }
+            </select>
+            <button id="jobSearchButton" class="btn" type="submit">Search</button>
+        </form>
+
+        <div class="job-board__grid">
+            <section class="job-results" aria-label="Resultados">
+                <div class="job-results__header">
+                    <h2 class="job-results__title">Search Results</h2>
+                    <span id="jobResultsCount" class="job-results__count"></span>
+                </div>
+
                 @if (Model.Offers.Count <= 0)
                 {
-                    <li>No hay ofertas para mostrar</li>
+                    <p class="job-results__count">No job offers found.</p>
                 }
                 else
                 {
-                    foreach (var offer in Model.Offers)
-                    {
-                        <li class="offer">
-                            <div class="offer__header">
-                                <h2 class="offer__title">@offer.NombreOferta</h2>
-                                <div class="offer__date">
-                                    <div class="start__date">@offer.FechaInicio</div>
-                                    <div class="closing__date">@offer.FechaCierre</div>
-                                </div>
-                            </div>
-                            <div class="offer__country">
-                                @foreach (var country in countries)
-                                {
-                                    if (offer.Pais == country.Key.ToString())
-                                    {
-                                        <p class="country">@country.Value</p>
-                                    }
-                                }
-                            </div>
-                            <div class="offer__modality">
-                                <div class="modality__paragraph">@offer.ModalidadTrabajo</div>
-                            </div>
-                            <div class="offer__end">
-                                <div class="offer__salary">
-                                    <i class='bx bx-wallet'></i>
-                                    <div class="salary">@offer.Moneda @offer.Salario</div>
-                                </div>
-                                <button class="button button__submit button__mobile button__details"
-                                        data-nombre="@offer.NombreOferta"
-                                        data-descripcion="@offer.Descripcion"
-                                        data-fechainicio="@offer.FechaInicio"
-                                        data-fechacierre="@offer.FechaCierre"
-                                        data-moneda="@offer.Moneda"
-                                        data-salario="@offer.Salario"
-                                        data-modalidad="@offer.ModalidadTrabajo"
-                                        data-pais="@offer.Pais">
-                                    Ver detalles
-                                </button>
-                            </div>
+                    <ul class="job-results__list">
+                        @foreach (var offer in Model.Offers)
+                        {
+                            var countryName = offer.Country;
+                            if (Enum.TryParse<AppEmpleo.Models.CountryCode>(offer.Country, out var countryKey) && countries.TryGetValue(countryKey, out var name))
+                            {
+                                countryName = name;
+                            }
+                            var salaryText = $"{offer.Currency} {offer.Salary}";
+                            var datesText = $"Start {offer.StartDate} · Close {offer.EndDate}";
+                            var locationText = $"{offer.WorkMode} · {countryName}";
+                            var logoLetter = string.IsNullOrWhiteSpace(offer.JobTitle) ? "J" : offer.JobTitle.Trim().Substring(0, 1).ToUpperInvariant();
 
-                            <form asp-page-handler="Apply" method="post" enctype="multipart/form-data" class="mt-2">
-                                <input type="hidden" name="OfertaEmpleoId" value="@offer.OfertaId" />
-                                <input type="file" name="CVFile" accept=".pdf" required />
-                                <button type="submit" class="button button__submit">Postular</button>
-                            </form>
+                            <li class="job-card"
+                                data-offer-id="@offer.JobOfferId"
+                                data-title="@offer.JobTitle"
+                                data-company="JobTI"
+                                data-description="@offer.Description"
+                                data-salary="@salaryText"
+                                data-dates="@datesText"
+                                data-location="@locationText">
 
-                        </li>
-                    }
+                                <div class="job-card__top">
+                                    <div class="job-card__logo" aria-hidden="true">@logoLetter</div>
+                                    <div>
+                                        <h3 class="job-card__title">@offer.JobTitle</h3>
+                                        <p class="job-card__company">JobTI</p>
+                                    </div>
+                                </div>
+
+                                <div class="job-card__tags">
+                                    <span class="chip" data-chip>@offer.WorkMode</span>
+                                    <span class="chip" data-chip>@countryName</span>
+                                    <span class="chip" data-chip>@offer.Currency</span>
+                                </div>
+
+                                <div class="job-card__meta">
+                                    <span class="job-card__salary">@salaryText</span>
+                                    <span class="job-card__time">@offer.StartDate</span>
+                                </div>
+                            </li>
+                        }
+                    </ul>
                 }
-            </ul>
-        </div>
+            </section>
 
-        <div id="detailsOverlay" class="details-overlay">
-            <button class="close-btn" onclick="closeOverlay()">&times;</button>
-            <div id="detailsBody">
-                <h2 id="detalleNombre"></h2>
-                <p><strong>Descripción:</strong> <span id="detalleDescripcion"></span></p>
-                <p><strong>Fecha de inicio:</strong> <span id="detalleFechaInicio"></span></p>
-                <p><strong>Fecha de cierre:</strong> <span id="detalleFechaCierre"></span></p>
-                <p><strong>Modalidad:</strong> <span id="detalleModalidad"></span></p>
-                <p><strong>País:</strong> <span id="detallePais"></span></p>
-                <p><strong>Moneda:</strong> <span id="detalleMoneda"></span></p>
-                <p><strong>Salario:</strong> <span id="detalleSalario"></span></p>
-            </div>
+            <aside class="job-detail" aria-label="Detalle de la oferta">
+                <h2 class="job-detail__title">Select a job</h2>
+                <div class="job-detail__subtitle">JobTI</div>
+
+                <div class="job-detail__section">
+                    <div class="job-detail__label">Description</div>
+                    <div id="jobDetailDescription" class="job-detail__text">Pick an offer from the list to see details.</div>
+                </div>
+
+                <div class="job-detail__section">
+                    <div class="job-detail__label">Skills</div>
+                    <div id="jobDetailTags" class="job-detail__tags"></div>
+                </div>
+
+                <div class="job-detail__section">
+                    <div class="job-detail__label">Based salary</div>
+                    <div id="jobDetailSalary" class="job-detail__text">--</div>
+                </div>
+
+                <div class="job-detail__section">
+                    <div class="job-detail__label">Dates</div>
+                    <div id="jobDetailDates" class="job-detail__text">--</div>
+                </div>
+
+                <div class="job-detail__section">
+                    <div class="job-detail__label">Location</div>
+                    <div id="jobDetailLocation" class="job-detail__text">--</div>
+                </div>
+
+                <form asp-page-handler="Apply" method="post" enctype="multipart/form-data" class="job-detail__apply">
+                    <input id="jobApplyOfferId" type="hidden" name="JobOfferId" value="" />
+                    <div class="job-detail__file">
+                        <label class="form-field__label" for="jobApplyFile">Upload your CV (PDF)</label>
+                        <input id="jobApplyFile" class="job-detail__file-input" type="file" name="CVFile" accept=".pdf" required />
+                        <div class="form-field__hint">Tip: use a short, well-formatted PDF for better readability.</div>
+                    </div>
+                    <button type="submit" class="btn btn--block">Apply Now</button>
+                </form>
+            </aside>
         </div>
     }
     else
     {
-        <div class="default__form form__offer" id="form__offer">
+        <div class="offer-create">
+            <div class="card offer-create__card">
+                <h2 class="offer-create__title">Create a job offer</h2>
 
-            <i class='bx bx-plus-circle form__plus--icon'></i>
-
-            <form method="post" asp-page="Home" class="form" id="form">
-
-                <div class="form__group">
-                    <label asp-for="Offer.NombreOferta" class="label"></label>
-                    <input asp-for="Offer.NombreOferta" type="text" value="" class="form__input" />
-                </div>
-                <div class="form__group form__group--date">
-                    <div class="form__group--column">
-                        <label asp-for="Offer.FechaInicio" class="label"></label>
-                        <input asp-for="Offer.FechaInicio" type="date" value="" class="form__input" />
-                    </div>
-                    <div class="form__group--column">
-                        <label asp-for="Offer.FechaCierre" class="label"></label>
-                        <input asp-for="Offer.FechaCierre" type="date" value="" class="form__input" />
-                    </div>
-                </div>
-                <div class="form__group">
-                    <label asp-for="Offer.Pais" class="label"></label>
-                    <input asp-for="Offer.Pais" type="list" value="" class="form__input" list="pais" />
-                    <datalist id="pais">
-                        @foreach (var country in countries)
-                        {
-                            <option value="@country.Key">@country.Value</option>
-                        }
-                    </datalist>
-                </div>
-                <div class="form__group form__group--salary">
-                    <div class="form__group--currency">
-                        <label asp-for="Offer.Moneda" class="label label__currency"></label>
-                        <input asp-for="Offer.Moneda" type="list" class="form__input form__input--currency" list="moneda" value="" />
-                        <datalist id="moneda">
-                            @foreach (var currency in currencies)
-                            {
-                                <option value="@currency.Key">@currency.Value</option>
-                            }
-                        </datalist>
-                    </div>
-                    <div class="form__group--value">
-                        <label asp-for="Offer.Salario" class="label"></label>
-                        <input asp-for="Offer.Salario" type="number" class="form__input" />
-                    </div>
-                </div>
-                <div class="form__group">
-                    <label asp-for="Offer.Descripcion" class="label"></label>
-                    <input asp-for="Offer.Descripcion" type="text" value="" class="form__input" />
-                </div>
-                <div class="form__group">
-                    <label asp-for="Offer.ModalidadTrabajo" class="label">Modalidad</label>
-                    <div class="form__group--radio">
-                        <div class="radio__button">
-                            <label asp-for="Offer.ModalidadTrabajo" class="label label__radio">Presencial</label>
-                            <input asp-for="Offer.ModalidadTrabajo" type="radio" value="presencial" class="input__radio" checked />
+                <form method="post" asp-page="Home" class="form offer-create__form" autocomplete="off">
+                    <div class="offer-create__grid">
+                        <div class="form-field form-field--full">
+                            <label asp-for="Offer.JobTitle" class="form-field__label"></label>
+                            <input asp-for="Offer.JobTitle" type="text" class="form-field__input" placeholder="Frontend Developer" />
                         </div>
-                        <div class="radio__button">
-                            <label asp-for="Offer.ModalidadTrabajo" class="label label__radio">Remoto</label>
-                            <input asp-for="Offer.ModalidadTrabajo" type="radio" value="remoto" class="input__radio" />
+
+                        <div class="form-field">
+                            <label asp-for="Offer.StartDate" class="form-field__label"></label>
+                            <input asp-for="Offer.StartDate" type="date" class="form-field__input" />
                         </div>
-                        <div class="radio__button">
-                            <label asp-for="Offer.ModalidadTrabajo" class="label label__radio">Híbrido</label>
-                            <input asp-for="Offer.ModalidadTrabajo" type="radio" value="hibrido" class="input__radio" />
+
+                        <div class="form-field">
+                            <label asp-for="Offer.EndDate" class="form-field__label"></label>
+                            <input asp-for="Offer.EndDate" type="date" class="form-field__input" />
+                        </div>
+
+                        <div class="form-field">
+                            <label asp-for="Offer.Country" class="form-field__label"></label>
+                            <input asp-for="Offer.Country" class="form-field__input" list="countryList" placeholder="Country" />
+                            <datalist id="countryList">
+                                @foreach (var country in countries)
+                                {
+                                    <option value="@country.Key">@country.Value</option>
+                                }
+                            </datalist>
+                        </div>
+
+                        <div class="form-field">
+                            <label asp-for="Offer.Currency" class="form-field__label"></label>
+                            <input asp-for="Offer.Currency" class="form-field__input" list="currencyList" placeholder="Currency" />
+                            <datalist id="currencyList">
+                                @foreach (var currency in currencies)
+                                {
+                                    <option value="@currency.Key">@currency.Value</option>
+                                }
+                            </datalist>
+                        </div>
+
+                        <div class="form-field">
+                            <label asp-for="Offer.Salary" class="form-field__label"></label>
+                            <input asp-for="Offer.Salary" type="number" class="form-field__input" placeholder="1000" />
+                        </div>
+
+                        <div class="form-field form-field--full">
+                            <label class="form-field__label">Work mode</label>
+                            <div class="radio-group" role="radiogroup" aria-label="Modalidad">
+                                <label class="radio-pill">
+                                    <input type="radio" name="Offer.WorkMode" value="Remoto" checked="@(selectedWorkMode == "Remoto")" />
+                                    Remoto
+                                </label>
+                                <label class="radio-pill">
+                                    <input type="radio" name="Offer.WorkMode" value="Presencial" checked="@(selectedWorkMode == "Presencial")" />
+                                    Presencial
+                                </label>
+                                <label class="radio-pill">
+                                    <input type="radio" name="Offer.WorkMode" value="Híbrido" checked="@(selectedWorkMode == "Híbrido")" />
+                                    Híbrido
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-field form-field--full">
+                            <label asp-for="Offer.Description" class="form-field__label"></label>
+                            <input asp-for="Offer.Description" type="text" class="form-field__input" placeholder="Short description…" />
                         </div>
                     </div>
+
+                    <button type="submit" class="btn btn--block">Publish offer</button>
+                </form>
+            </div>
+
+            <section class="offer-list" aria-label="Offers">
+                <div class="offer-list__header">
+                    <h2 class="offer-list__title">Your latest offers</h2>
+                    <span class="offer-list__count">@Model.TotalOffers total</span>
                 </div>
 
-                <button type="submit" class="button button__submit button__mobile" id="button__offer">Publicar oferta</button>
-                <button type="button" class="button button__submit button__mobile button__mobile--cancel">Cancelar</button>
-
-            </form>
-        </div>
-
-        <div class="search__container">
-            <ul class="list__offers">
                 @if (Model.Offers.Count <= 0)
                 {
-                    <li>No hay ofertas para mostrar</li>
+                    <p class="job-results__count">No job offers found.</p>
                 }
                 else
                 {
-                    foreach (var offer in Model.Offers)
-                    {
-                        <li class="offer">
-                            <div class="offer__header">
-                                <h2 class="offer__title">@offer.NombreOferta</h2>
-                                <div class="offer__date">
-                                    <div class="start__date">@offer.FechaInicio</div>
-                                    <div class="closing__date">@offer.FechaCierre</div>
-                                </div>
-                            </div>
-                            <div class="offer__country">
-                                @foreach (var country in countries)
-                                {
-                                    if (offer.Pais == country.Key.ToString())
-                                    {
-                                        <p class="country">@country.Value</p>
-                                    }
-                                }
-                            </div>
-                            <div class="offer__modality">
-                                <div class="modality__paragraph">@offer.ModalidadTrabajo</div>
-                            </div>
-                            <div class="offer__end">
-                                <div class="offer__salary">
-                                    <i class='bx bx-wallet'></i>
-                                    <div class="salary">@offer.Moneda @offer.Salario</div>
-                                </div>
-                                <button class="button button__submit button__mobile button__details"
-                                        data-nombre="@offer.NombreOferta"
-                                        data-descripcion="@offer.Descripcion"
-                                        data-fechainicio="@offer.FechaInicio"
-                                        data-fechacierre="@offer.FechaCierre"
-                                        data-moneda="@offer.Moneda"
-                                        data-salario="@offer.Salario"
-                                        data-modalidad="@offer.ModalidadTrabajo"
-                                        data-pais="@offer.Pais">
-                                    Ver detalles
-                                </button>
-                            </div>
-
-                        </li>
-                    }
-                }
-            </ul>
-        </div>
-
-        <div class="pagination">
-            @if (Model.TotalPages > 1)
-            {
-                <nav aria-label="Paginación de ofertas">
-                    <ul class="pagination-list">
-                        <li>
-                            <a asp-page="Home" asp-route-pageNumber="@(Model.CurrentPage - 1)" class="@(Model.CurrentPage == 1 ? "disabled" : "")">Anterior</a>
-                        </li>
-                        @for (int i = 1; i <= Model.TotalPages; i++)
+                    <ul class="offer-list__grid">
+                        @foreach (var offer in Model.Offers)
                         {
-                            <li>
-                                <a asp-page="Home" asp-route-pageNumber="@i" class="@(Model.CurrentPage == i ? "active" : "")">@i</a>
+                            var countryName = offer.Country;
+                            if (Enum.TryParse<AppEmpleo.Models.CountryCode>(offer.Country, out var countryKey) && countries.TryGetValue(countryKey, out var name))
+                            {
+                                countryName = name;
+                            }
+                            var salaryText = $"{offer.Currency} {offer.Salary}";
+                            var datesText = $"Start {offer.StartDate} · Close {offer.EndDate}";
+                            var logoLetter = string.IsNullOrWhiteSpace(offer.JobTitle) ? "J" : offer.JobTitle.Trim().Substring(0, 1).ToUpperInvariant();
+
+                            <li class="job-card">
+                                <div class="job-card__top">
+                                    <div class="job-card__logo" aria-hidden="true">@logoLetter</div>
+                                    <div>
+                                        <h3 class="job-card__title">@offer.JobTitle</h3>
+                                        <p class="job-card__company">JobTI</p>
+                                    </div>
+                                </div>
+
+                                <div class="job-card__tags">
+                                    <span class="chip" data-chip>@offer.WorkMode</span>
+                                    <span class="chip" data-chip>@countryName</span>
+                                    <span class="chip" data-chip>@offer.Currency</span>
+                                </div>
+
+                                <div class="job-card__meta">
+                                    <span class="job-card__salary">@salaryText</span>
+                                    <span class="job-card__time">@datesText</span>
+                                </div>
                             </li>
                         }
-                        <li>
-                            <a asp-page="Home" asp-route-pageNumber="@(Model.CurrentPage + 1)" class="@(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">Siguiente</a>
-                        </li>
                     </ul>
-                </nav>
-            }
-        </div>
+                }
 
-        <div id="detailsOverlay" class="details-overlay">
-            <button class="close-btn" onclick="closeOverlay()">&times;</button>
-            <div id="detailsBody">
-                <h2 id="detalleNombre"></h2>
-                <p><strong>Descripción:</strong> <span id="detalleDescripcion"></span></p>
-                <p><strong>Fecha de inicio:</strong> <span id="detalleFechaInicio"></span></p>
-                <p><strong>Fecha de cierre:</strong> <span id="detalleFechaCierre"></span></p>
-                <p><strong>Modalidad:</strong> <span id="detalleModalidad"></span></p>
-                <p><strong>País:</strong> <span id="detallePais"></span></p>
-                <p><strong>Moneda:</strong> <span id="detalleMoneda"></span></p>
-                <p><strong>Salario:</strong> <span id="detalleSalario"></span></p>
-            </div>
+                <div class="pager">
+                    @if (Model.TotalPages > 1)
+                    {
+                        <nav aria-label="Paginación de ofertas">
+                            <ul class="pager__list">
+                                <li>
+                                    <a asp-page="Home" asp-route-pageNumber="@(Model.CurrentPage - 1)" class="pager__link @(Model.CurrentPage == 1 ? "pager__link--disabled" : "")">Previous</a>
+                                </li>
+                                @for (int i = 1; i <= Model.TotalPages; i++)
+                                {
+                                    <li>
+                                        <a asp-page="Home" asp-route-pageNumber="@i" class="pager__link @(Model.CurrentPage == i ? "pager__link--active" : "")">@i</a>
+                                    </li>
+                                }
+                                <li>
+                                    <a asp-page="Home" asp-route-pageNumber="@(Model.CurrentPage + 1)" class="pager__link @(Model.CurrentPage == Model.TotalPages ? "pager__link--disabled" : "")">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    }
+                </div>
+            </section>
         </div>
     }
 </div>

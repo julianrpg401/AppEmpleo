@@ -5,17 +5,17 @@ using Serilog;
 
 namespace AppEmpleo.Class.DataAccess
 {
-    public class UserRepository : Repository<Usuario>, IUserRepository
+    public class UserRepository : Repository<UserAccount>, IUserRepository
     {
         // Pasa el contexto a la clase base
         public UserRepository(AppEmpleoContext appEmpleoContext) : base(appEmpleoContext) { }
 
         // Valida si el correo electrónico ya está registrado
-        public async Task<bool> ValidateExistingUserAsync(Usuario user)
+        public async Task<bool> ValidateExistingUserAsync(UserAccount user)
         {
             try
             {
-                var existingUser = await _appEmpleoContext.Usuarios
+                var existingUser = await _appEmpleoContext.Users
                     .FirstOrDefaultAsync(u => u.Email == user.Email);
 
                 if (existingUser != null)
@@ -34,11 +34,11 @@ namespace AppEmpleo.Class.DataAccess
         }
 
         // Valida si el correo electrónico ya está registrado (sobrecarga)
-        public async Task<Usuario?> ValidateExistingUserAsync(string email)
+        public async Task<UserAccount?> ValidateExistingUserAsync(string email)
         {
             try
             {
-                var existingUser = await _appEmpleoContext.Usuarios
+                var existingUser = await _appEmpleoContext.Users
                     .FirstOrDefaultAsync(u => u.Email == email);
 
                 if (existingUser == null)
@@ -47,7 +47,9 @@ namespace AppEmpleo.Class.DataAccess
                     return null;
                 }
 
-                return existingUser;
+                var user = await GetUserAsync(existingUser);
+
+                return user;
             }
             catch (Exception ex)
             {
@@ -57,23 +59,23 @@ namespace AppEmpleo.Class.DataAccess
         }
 
         // Obtiene un usuario con el rol y su respectivo id
-        public async Task<Usuario> GetUserAsync(Usuario user)
+        public async Task<UserAccount> GetUserAsync(UserAccount user)
         {
             try
             {
-                Usuario? foundUser;
+                UserAccount? foundUser;
 
-                switch (user.Rol)
+                switch (user.Role)
                 {
                     case "RECLUTADOR":
 
-                        foundUser = await _appEmpleoContext.Usuarios
-                            .Include(r => r.Reclutador)
-                            .FirstOrDefaultAsync(r => r.UsuarioId == user.UsuarioId);
+                        foundUser = await _appEmpleoContext.Users
+                            .Include(r => r.Recruiter)
+                            .FirstOrDefaultAsync(r => r.UserId == user.UserId);
 
                         if (foundUser == null)
                         {
-                            Log.Error("No se encontró el reclutador {UserId}", user.UsuarioId);
+                            Log.Error("No se encontró el reclutador {UserId}", user.UserId);
                             throw new ArgumentException("No se encontró el reclutador");
                         }
 
@@ -81,37 +83,37 @@ namespace AppEmpleo.Class.DataAccess
 
                     case "CANDIDATO":
 
-                        foundUser = await _appEmpleoContext.Usuarios
-                            .Include(c => c.Candidato)
-                            .FirstOrDefaultAsync(c => c.UsuarioId == user.UsuarioId);
+                        foundUser = await _appEmpleoContext.Users
+                            .Include(c => c.Candidate)
+                            .FirstOrDefaultAsync(c => c.UserId == user.UserId);
 
                         if (foundUser == null)
                         {
-                            Log.Error("No se encontró el candidato {UserId}", user.UsuarioId);
+                            Log.Error("No se encontró el candidato {UserId}", user.UserId);
                             throw new ArgumentException("No se encontró el reclutador");
                         }
 
                         return foundUser;
 
                     default:
-                        Log.Error("Rol no válido {Rol}", user.Rol);
+                        Log.Error("Rol no válido {Rol}", user.Role);
                         throw new ArgumentException("Rol no válido");
                 }
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "Error al obtener el usuario con el rol {Rol} y el id {UsuarioId}", user.Rol, user.UsuarioId);
+                Log.Error(ex, "Error al obtener el usuario con el rol {Rol} y el id {UsuarioId}", user.Role, user.UserId);
                 throw new ArgumentException("Error al validar el usuario", ex);
             }
         }
 
         // Obtiene un candidato por su ID de usuario
-        public async Task<Candidato?> GetCandidateByUserIdAsync(int userId)
+        public async Task<Candidate?> GetCandidateByUserIdAsync(int userId)
         {
             try
             {
-                return await _appEmpleoContext.Candidatos
-                    .FirstOrDefaultAsync(c => c.UsuarioId == userId);
+                return await _appEmpleoContext.Candidates
+                    .FirstOrDefaultAsync(c => c.UserId == userId);
             }
             catch (Exception ex)
             {
@@ -121,12 +123,12 @@ namespace AppEmpleo.Class.DataAccess
         }
 
         // Obtiene un reclutador por su ID de usuario
-        public async Task<Reclutador?> GetRecruiterByUserIdAsync(int userId)
+        public async Task<Recruiter?> GetRecruiterByUserIdAsync(int userId)
         {
             try
             {
-                return await _appEmpleoContext.Reclutadores
-                    .FirstOrDefaultAsync(r => r.UsuarioId == userId);
+                return await _appEmpleoContext.Recruiters
+                    .FirstOrDefaultAsync(r => r.UserId == userId);
             }
             catch (Exception ex)
             {

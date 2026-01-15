@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <Folder Include="Logs\" />
-    <Folder Include="wwwroot\assetsLandingPage\js\" />
   </ItemGroup>
 
 </Project>

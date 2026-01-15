@@ -15,20 +15,18 @@ namespace AppEmpleo.Pages.Application
         private readonly IOfferService _offerService;
         private readonly IPostulationService _postulationService;
 
-        public List<Postulacion> TodasPostulaciones { get; set; } = [];
-
         [BindProperty]
         public IFormFile? CVFile { get; set; }
 
         [BindProperty]
-        public int OfertaEmpleoId { get; set; }
+        public int JobOfferId { get; set; }
 
-        public new Usuario User { get; set; } = null!;
+        public UserAccount CurrentUser { get; set; } = null!;
 
         [BindProperty]
-        public Oferta Offer { get; set; } = null!;
+        public JobOffer Offer { get; set; } = new() { Country = string.Empty, Currency = string.Empty };
 
-        public List<Oferta> Offers { get; set; } = [];
+        public List<JobOffer> Offers { get; set; } = [];
 
         public int CurrentPage { get; set; } = 1;
         public int PageSize { get; set; } = 5;
@@ -41,7 +39,7 @@ namespace AppEmpleo.Pages.Application
             _offerService = offerService;
             _postulationService = postulationService;
 
-            User = _userService.GetUserClaims();
+            CurrentUser = _userService.GetUserClaims();
         }
 
         // Obtiene las ofertas paginadas
@@ -54,30 +52,37 @@ namespace AppEmpleo.Pages.Application
 
         private async Task GetOffersPagedAsync()
         {
-            (List<Oferta> offers, int totalCount) = await _offerService.GetOffersPagedAsync(CurrentPage, PageSize);
+            (List<JobOffer> offers, int totalCount) = await _offerService.GetOffersPagedAsync(CurrentPage, PageSize);
             Offers = offers;
             TotalOffers = totalCount;
             TotalPages = (int)Math.Ceiling(totalCount / (double)PageSize);
         }
 
-        // Añade una oferta a la base de datos
+        // Aï¿½ade una oferta a la base de datos
         public async Task<IActionResult> OnPostAsync()
         {
-            await _offerService.AddOfferAsync(Offer, User);
-            return Page();
+            if (!ModelState.IsValid)
+            {
+                await OnGetAsync(CurrentPage);
+                return Page();
+            }
+
+            await _offerService.AddOfferAsync(Offer, CurrentUser);
+            // Redirect-to-GET to refresh paged list and show the new offer in the same page.
+            return RedirectToPage(new { pageNumber = 1 });
         }
 
         // Aplica a una oferta de empleo
         public async Task<IActionResult> OnPostApplyAsync()
         {
-            if ((CVFile == null || CVFile.Length == 0) || await _userService.GetCandidateAsync(User.UsuarioId) == null)
+            if ((CVFile == null || CVFile.Length == 0) || await _userService.GetCandidateAsync(CurrentUser.UserId) == null)
             {
-                ModelState.AddModelError(string.Empty, "Debe subir un archivo de currículum y tener un candidato asociado.");
+                ModelState.AddModelError(string.Empty, "Debe subir un archivo de currï¿½culum y tener un candidato asociado.");
                 await OnGetAsync(CurrentPage);
                 return Page();
             }
-            var candidate = await _userService.GetCandidateAsync(User.UsuarioId);
-            await _postulationService.CreatePostulation(OfertaEmpleoId, candidate!, CVFile);
+            var candidate = await _userService.GetCandidateAsync(CurrentUser.UserId);
+            await _postulationService.CreatePostulation(JobOfferId, candidate!, CVFile);
             return RedirectToPage(new { pageNumber = CurrentPage });
         }
     }
