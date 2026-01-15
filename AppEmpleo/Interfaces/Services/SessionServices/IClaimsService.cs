@@ -14,5 +14,7 @@ namespace AppEmpleo.Interfaces.Services.SessionServices
         string GetName();
         string GetEmail();
         string GetRole();
+
+        string GetUserData();
     }
 }

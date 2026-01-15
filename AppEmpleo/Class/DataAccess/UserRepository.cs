@@ -47,7 +47,9 @@ namespace AppEmpleo.Class.DataAccess
                     return null;
                 }
 
-                return existingUser;
+                var user = await GetUserAsync(existingUser);
+
+                return user;
             }
             catch (Exception ex)
             {

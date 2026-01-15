@@ -67,6 +67,16 @@ namespace AppEmpleo.Class.Services.SessionServices
                     new Claim(ClaimTypes.Role, user.Role)
                 };
 
+                switch (user.Role)
+                {
+                    case "CANDIDATO":
+                        claims.Add(new Claim(ClaimTypes.UserData, user.Candidate!.CandidateId.ToString()));
+                        break;
+                    case "RECLUTADOR":
+                        claims.Add(new Claim(ClaimTypes.UserData, user.Recruiter!.RecruiterId.ToString()));
+                        break;
+                }
+
                 return claims;
             }
             catch (Exception ex)
@@ -131,6 +141,9 @@ namespace AppEmpleo.Class.Services.SessionServices
         // Obtiene el rol del usuario
         public string GetRole()
             => GetClaim(ClaimTypes.Role);
+
+        public string GetUserData()
+            => GetClaim(ClaimTypes.UserData);
 
         // Métodos privados para crear ClaimsIdentity y ClaimsPrincipal
         private static ClaimsPrincipal GetClaimsPrincipal(ClaimsIdentity claimsIdentity)

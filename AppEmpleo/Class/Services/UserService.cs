@@ -76,13 +76,29 @@ namespace AppEmpleo.Class.Services
                 {
                     UserId = _claimsService.GetId(),
                     FirstName = _claimsService.GetName(),
-                    LastName = string.Empty,
                     Email = _claimsService.GetEmail(),
                     Role = _claimsService.GetRole(),
+                    LastName = string.Empty,
                     PasswordHash = string.Empty,
                     BirthDate = default,
                     RegisterDate = default
                 };
+
+                switch (user.Role)
+                {
+                    case "CANDIDATO":
+                        user.Candidate = new Candidate()
+                        {
+                            CandidateId = int.Parse(_claimsService.GetUserData())
+                        };
+                        break;
+                    case "RECLUTADOR":
+                        user.Recruiter = new Recruiter()
+                        {
+                            RecruiterId = int.Parse(_claimsService.GetUserData())
+                        };
+                        break;
+                }
 
                 return user;
             }

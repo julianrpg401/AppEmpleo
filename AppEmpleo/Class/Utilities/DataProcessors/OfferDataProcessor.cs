@@ -9,7 +9,7 @@ namespace AppEmpleo.Class.Utilities.DataProcessors
         {
             JobOffer offerFormatted = new JobOffer()
             {
-                RecruiterId = user.UserId,
+                RecruiterId = user.Recruiter.RecruiterId,
                 JobTitle = offer.JobTitle.ToUpper(),
                 StartDate = offer.StartDate,
                 EndDate = offer.EndDate,
