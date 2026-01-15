@@ -5,20 +5,20 @@ using Serilog;
 
 namespace AppEmpleo.Class.DataAccess
 {
-    public class PostulationRepository : Repository<Postulacion>, IPostulationRepository
+    public class PostulationRepository : Repository<JobApplication>, IPostulationRepository
     {
         // Contexto de la base de datos
         public PostulationRepository(AppEmpleoContext appEmpleoContext) : base(appEmpleoContext) { }
 
         // Método para obtener todas las postulaciones
-        public async Task<List<Postulacion>> GetAllPostulationsAsync()
+        public async Task<List<JobApplication>> GetAllPostulationsAsync()
         {
             try
             {
-                return await _appEmpleoContext.Postulaciones
-                    .Include(p => p.Candidato)
-                    .ThenInclude(c => c.Usuario)
-                    .Include(p => p.OfertaEmpleo)
+                return await _appEmpleoContext.JobApplications
+                    .Include(p => p.Candidate)
+                    .ThenInclude(c => c.User)
+                    .Include(p => p.JobOffer)
                     .ToListAsync();
             }
             catch (Exception ex)
@@ -29,16 +29,18 @@ namespace AppEmpleo.Class.DataAccess
         }
 
         // Método para obtener las postulaciones de un reclutador específico
-        public async Task<List<Postulacion>> GetPostulationsByRecruiterIdAsync(int recruiterId)
+        public async Task<List<JobApplication>> GetPostulationsByRecruiterIdAsync(int recruiterId)
         {
             try
             {
-                return await _appEmpleoContext.Postulaciones
-                    .Include(p => p.Candidato)
-                    .ThenInclude(c => c.Usuario)
-                    .Include(p => p.OfertaEmpleo)
-                    .ThenInclude(o => o.Reclutador)
-                    .Where(p => p.OfertaEmpleo.ReclutadorId == recruiterId)
+                return await _appEmpleoContext.JobApplications
+                    .Include(p => p.Candidate)
+                    .ThenInclude(c => c.User)
+                    .Include(p => p.JobOffer)
+                    .ThenInclude(o => o.Recruiter)
+                    // NOTE: Historically this method was called with the authenticated user's UsuarioId.
+                    // Filtering by Recruiter.UserId keeps it correct even if RecruiterId != UserId.
+                        .Where(p => p.JobOffer.Recruiter != null && p.JobOffer.Recruiter.UserId == recruiterId)
                     .ToListAsync();
             }
             catch (Exception ex)
@@ -49,12 +51,12 @@ namespace AppEmpleo.Class.DataAccess
         }
 
         // Método para obtener un curriculum por su ID
-        public async Task<Curriculum?> GetCurriculumByIdAsync(int curriculumId)
+        public async Task<Resume?> GetCurriculumByIdAsync(int curriculumId)
         {
             try
             {
-                return await _appEmpleoContext.Curriculums
-                    .FirstOrDefaultAsync(c => c.CurriculumId == curriculumId);
+                return await _appEmpleoContext.Resumes
+                    .FirstOrDefaultAsync(c => c.ResumeId == curriculumId);
 
             }
             catch (Exception ex)
@@ -65,11 +67,11 @@ namespace AppEmpleo.Class.DataAccess
         }
 
         // Método para añadir un curriculum a la base de datos
-        public async Task AddCurriculumAsync(Curriculum curriculum)
+        public async Task AddCurriculumAsync(Resume curriculum)
         {
             try
             {
-                await _appEmpleoContext.Curriculums.AddAsync(curriculum);
+                await _appEmpleoContext.Resumes.AddAsync(curriculum);
                 await _appEmpleoContext.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -80,11 +82,11 @@ namespace AppEmpleo.Class.DataAccess
         }
 
         // Método para añadir una postulación a la base de datos
-        public async Task AddPostulationAsync(Postulacion postulation)
+        public async Task AddPostulationAsync(JobApplication postulation)
         {
             try
             {
-                await _appEmpleoContext.Postulaciones.AddAsync(postulation);
+                await _appEmpleoContext.JobApplications.AddAsync(postulation);
                 await _appEmpleoContext.SaveChangesAsync();
             }
             catch (Exception ex)

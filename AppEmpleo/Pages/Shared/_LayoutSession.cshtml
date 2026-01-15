@@ -1,13 +1,8 @@
 ﻿@inject IClaimsService claimsService
 @using AppEmpleo.Interfaces.Services.SessionServices
-@using AppEmpleo.Models
 @{
-    Usuario user = new Usuario()
-    {
-        Nombre = claimsService.GetName(),
-        Email = claimsService.GetEmail(),
-        Rol = claimsService.GetRole()
-    };
+    var userName = claimsService.GetName();
+    var userRole = claimsService.GetRole();
 }
 
 <!DOCTYPE html>
@@ -26,6 +21,7 @@
     <link href="https://fonts.googleapis.com" rel="preconnect">
     <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
     <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 
@@ -35,88 +31,80 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" rel="stylesheet">
 
-    <!-- CSS -->
-    <link href="~/css/layout.css" rel="stylesheet" />
-    <link href="~/css/forms.css" rel="stylesheet" />
-    <link href="~/css/home.css" rel="stylesheet" />
-    <link href="~/css/offers.css" rel="stylesheet" />
-    <link href="~/css/evaluations.css" rel="stylesheet" />
+    <!-- CSS (base + layout) -->
+    <link rel="stylesheet" href="~/css/base.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/layouts/session.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/layouts/layout.css" asp-append-version="true" />
+
+    @await RenderSectionAsync("Styles", required: false)
 </head>
-<body>
-    <header class="cabeza close">
-        <nav class="cabeza__menu">
-            <div class="menu__perfil">
-                <picture class="perfil__caja">
-                    <source media="(min-width: 465px)" srcset="~/img/logo.png" class="caja__avatar" />
-                    <source media="(min-width: 650px)" srcset="~/img/logo.png" class="caja__avatar" />
-                    <img src="~/img/logo.png" alt="perfil.png" class="caja__avatar" />
-                </picture>
-                <div class="perfil__texto perfil__texto--color">
-                    <span class="perfil__nombre">@user.Nombre</span>
-                    <span class="perfil__profesion">Desarrollador web</span>
+<body class="session-layout" data-shell>
+
+    <nav class="sidebar close">
+
+        <header>
+            <div class="image-text">
+                <span class="image-text__span">
+                    <img src="~/img/logo.png" alt="logo" />
+                </span>
+                <div class="text header-text">
+                    <span class="name">@userName</span>
+                    <span class="role">@userRole</span>
                 </div>
             </div>
-            <i class='bx bx-chevron-right toggle' id="arrow"></i>
+            <i class="bx bx-chevron-right toggle"></i>
+        </header>
+
+        <div class="menu-bar">
             <div class="menu">
-                <div class="menu__buscador">
-                    <i class='bx bx-search buscador__icon icon'></i>
-                    <input type="search" name="name" class="buscador" placeholder="Buscar..." />
-                </div>
-                <ul class="menu__lista">
-                    <li class="lista__opcion">
-                        <a href="" class="opcion__link">
-                            <i class='bx bx-home-alt link__icon icon'></i>
-                            <span class="link__texto">Inicio</span>
+                <ul class="menu-links">
+                    <li class="nav-link">
+                        <a asp-page="/Application/Home" class="link">
+                            <i class='bx bx-home-alt icon' aria-hidden="true"></i>
+                            <span class="text nav-text">Inicio</span>
                         </a>
                     </li>
-                    <li class="lista__opcion">
-                        <a href="" class="opcion__link">
-                            <i class='bx bx-briefcase link__icon icon'></i>
-                            <span class="link__texto">Empleo</span>
+                    <li class="nav-link">
+                        <a href="#" class="link">
+                            <i class='bx bx-briefcase icon' aria-hidden="true"></i>
+                            <span class="text nav-text">Inicio</span>
                         </a>
                     </li>
-                    <li class="lista__opcion">
-                        <a asp-page="/Application/Evaluations" class="opcion__link">
-                            <i class='bx bx-spreadsheet link__icon icon'></i>
-                            <span class="link__texto">Evaluaciones</span>
+                    <li class="nav-link">
+                        <a asp-page="/Application/Evaluations" class="link">
+                            <i class='bx bx-spreadsheet icon' aria-hidden="true"></i>
+                            <span class="text nav-text">Evaluaciones</span>
                         </a>
                     </li>
-                    <li class="lista__opcion">
-                        <a href="" class="opcion__link">
-                            <i class='bx bx-bell link__icon icon'></i>
-                            <span class="link__texto">Notificaciones</span>
+                    <li class="nav-link">
+                        <a href="#" class="link">
+                            <i class='bx bx-bell icon' aria-hidden="true"></i>
+                            <span class="text nav-text">Notificaciones</span>
                         </a>
                     </li>
-                    <li class="lista__opcion">
-                        <a href="" class="opcion__link">
-                            <i class='bx bx-slider-alt link__icon icon'></i>
-                            <span class="link__texto">Configuracion</span>
+                    <li class="nav-link">
+                        <a href="#" class="link">
+                            <i class='bx bx-slider-alt icon' aria-hidden="true"></i>
+                            <span class="text nav-text">Ajustes</span>
                         </a>
                     </li>
                 </ul>
-                <div class="menu__boton">
-                    <div class="boton__salir">
-                        <form asp-page="/Index" class="salir__form">
-                            <button type="submit" class="salir__link">
-                                <i class="bx bx-log-out boton__icon icon"></i>
-                                <span class="salir__texto">Cerrar sesión</span>
-                            </button>
-                        </form>
-                    </div>
-                    <div class="boton__modo">
-                        <i class="bx bx-moon boton__icon boton__icon--modo icon"></i>
-                        <i class="bx bx-sun boton__icon boton__icon--modo icon"></i>
-                        <span class="modo__texto">Modo oscuro</span>
-                        <div class="modo__switch">
-                            <span class="switch"></span>
-                        </div>
-                    </div>
-                </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+        </div>
+
+        <div class="bottom-content">
+            <form asp-page="/Index" class="nav-link nav-link__bottom">
+                <button type="submit" class="link link-bottom">
+                    <i class='bx bx-log-out icon' id="log-out-icon" aria-hidden="true"></i>
+                    <span class="sidebar__menu-text" id="log-out-text">Cerrar sesión</span>
+                </button>
+            </form>
+        </div>
+
+    </nav>
+
+    <div class="main">
+        <main role="main" class="main__content">
             @RenderBody()
         </main>
     </div>
@@ -124,9 +112,10 @@
     <footer class="border-top footer text-muted">
     </footer>
 
-    <!-- StylesJS -->
-    <script src="~/js/layout.js"></script>
-    <script src="~/js/styles.js"></script>
+    <script src="~/js/layouts/sidebar.js" asp-append-version="true"></script>
+    @* <script src="~/js/layout.js" asp-append-version="true"></script> *@
+    <script src="~/js/layouts/background.js" asp-append-version="true"></script>
+    <script src="~/js/styles.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

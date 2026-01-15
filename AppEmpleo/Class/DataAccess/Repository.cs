@@ -22,6 +22,23 @@ namespace AppEmpleo.Class.DataAccess
         {
             try
             {
+                // Verifica si la entidad es una oferta de trabajo
+                if (entity is JobOffer jobOffer)
+                {
+                    // Verifica si el RecruiterId existe en la base de datos
+                    if (jobOffer.RecruiterId.HasValue)
+                    {
+                        var recruiterExists = await _appEmpleoContext.Recruiters
+                            .AnyAsync(r => r.RecruiterId == jobOffer.RecruiterId.Value);
+
+                        if (!recruiterExists)
+                        {
+                            throw new InvalidOperationException(
+                                $"No existe un reclutador con el ID {jobOffer.RecruiterId.Value}.");
+                        }
+                    }
+                }
+
                 await _dbSet.AddAsync(entity);
                 await _appEmpleoContext.SaveChangesAsync();
             }

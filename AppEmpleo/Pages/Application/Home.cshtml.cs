@@ -15,20 +15,23 @@ namespace AppEmpleo.Pages.Application
         private readonly IOfferService _offerService;
         private readonly IPostulationService _postulationService;
 
-        public List<Postulacion> TodasPostulaciones { get; set; } = [];
-
         [BindProperty]
         public IFormFile? CVFile { get; set; }
 
         [BindProperty]
-        public int OfertaEmpleoId { get; set; }
+        public int JobOfferId { get; set; }
 
-        public new Usuario User { get; set; } = null!;
+        public UserAccount CurrentUser { get; set; } = null!;
 
         [BindProperty]
-        public Oferta Offer { get; set; } = null!;
+        public JobOffer Offer { get; set; } = new() { Country = string.Empty, Currency = string.Empty };
 
-        public List<Oferta> Offers { get; set; } = [];
+        public List<JobOffer> Offers { get; set; } = [];
+
+        public int CurrentPage { get; set; } = 1;
+        public int PageSize { get; set; } = 5;
+        public int TotalPages { get; set; }
+        public int TotalOffers { get; set; }
 
         public HomeModel(IUserService userService, IOfferService offerService, IPostulationService postulationService)
         {
@@ -36,62 +39,51 @@ namespace AppEmpleo.Pages.Application
             _offerService = offerService;
             _postulationService = postulationService;
 
-            User = _userService.GetUserClaims();
+            CurrentUser = _userService.GetUserClaims();
         }
 
-        // Obtiene las ofertas
-        public async Task<IActionResult> OnGetAsync()
+        // Obtiene las ofertas paginadas
+        public async Task<IActionResult> OnGetAsync(int? pageNumber)
         {
-            try
-            {
-                await GetOffersAsync();
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error al obtener las ofertas");
-                ModelState.AddModelError(string.Empty, "Ocurrió un error al obtener la página de inicio. Por favor, inténtelo de nuevo más tarde.");
-            }
-
+            CurrentPage = pageNumber ?? 1;
+            await GetOffersPagedAsync();
             return Page();
         }
 
-        // Añade una oferta a la base de datos
+        private async Task GetOffersPagedAsync()
+        {
+            (List<JobOffer> offers, int totalCount) = await _offerService.GetOffersPagedAsync(CurrentPage, PageSize);
+            Offers = offers;
+            TotalOffers = totalCount;
+            TotalPages = (int)Math.Ceiling(totalCount / (double)PageSize);
+        }
+
+        // Aï¿½ade una oferta a la base de datos
         public async Task<IActionResult> OnPostAsync()
         {
-            try
+            if (!ModelState.IsValid)
             {
-                await _offerService.AddOfferAsync(Offer, User);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error al crear la oferta");
-                ModelState.AddModelError(string.Empty, "Ocurrió un error al crear la oferta. Por favor, inténtelo de nuevo más tarde.");
+                await OnGetAsync(CurrentPage);
+                return Page();
             }
 
-            return Page();
+            await _offerService.AddOfferAsync(Offer, CurrentUser);
+            // Redirect-to-GET to refresh paged list and show the new offer in the same page.
+            return RedirectToPage(new { pageNumber = 1 });
         }
 
         // Aplica a una oferta de empleo
         public async Task<IActionResult> OnPostApplyAsync()
         {
-            if ((CVFile == null || CVFile.Length == 0) || await _userService.GetCandidateAsync(User.UsuarioId) == null)
+            if ((CVFile == null || CVFile.Length == 0) || await _userService.GetCandidateAsync(CurrentUser.UserId) == null)
             {
-                Log.Warning("El usuario {UserId} no tiene un candidato asociado o no se ha subido un archivo.", User.UsuarioId);
-                ModelState.AddModelError(string.Empty, "Debe subir un archivo de currículum y tener un candidato asociado.");
-                
-                await OnGetAsync();
-
+                ModelState.AddModelError(string.Empty, "Debe subir un archivo de currï¿½culum y tener un candidato asociado.");
+                await OnGetAsync(CurrentPage);
                 return Page();
             }
-
-            var candidate = await _userService.GetCandidateAsync(User.UsuarioId);
-            await _postulationService.CreatePostulation(OfertaEmpleoId, candidate!, CVFile);
-
-            return RedirectToPage();
+            var candidate = await _userService.GetCandidateAsync(CurrentUser.UserId);
+            await _postulationService.CreatePostulation(JobOfferId, candidate!, CVFile);
+            return RedirectToPage(new { pageNumber = CurrentPage });
         }
-
-        // Obtiene las ofertas
-        private async Task GetOffersAsync()
-            => Offers = await _offerService.GetAllOffersAsync();
     }
 }

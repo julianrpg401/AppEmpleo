@@ -5,19 +5,20 @@ namespace AppEmpleo.Class.Utilities.DataProcessors
     public class OfferDataProcessor
     {
         // Formatea una oferta para ser insertada en la base de datos
-        public static Oferta OfferFormat(Oferta offer, Usuario user)
+        public static JobOffer OfferFormat(JobOffer offer, UserAccount user)
         {
-            Oferta offerFormatted = new Oferta()
+            JobOffer offerFormatted = new JobOffer()
             {
-                ReclutadorId = user.UsuarioId,
-                NombreOferta = offer.NombreOferta.ToUpper(),
-                FechaInicio = offer.FechaInicio,
-                FechaCierre = offer.FechaCierre,
-                Pais = offer.Pais.ToUpper(),
-                Moneda = offer.Moneda.ToUpper(),
-                Salario = offer.Salario,
-                Descripcion = offer.Descripcion.ToUpper(),
-                ModalidadTrabajo = offer.ModalidadTrabajo.ToUpper()
+                RecruiterId = user.Recruiter.RecruiterId,
+                JobTitle = offer.JobTitle.ToUpper(),
+                StartDate = offer.StartDate,
+                EndDate = offer.EndDate,
+                Country = offer.Country.ToUpper(),
+                Currency = offer.Currency.ToUpper(),
+                Salary = offer.Salary,
+                Description = offer.Description.ToUpper(),
+                WorkMode = offer.WorkMode.ToUpper(),
+                CategoryId = offer.CategoryId
             };
 
             return offerFormatted;

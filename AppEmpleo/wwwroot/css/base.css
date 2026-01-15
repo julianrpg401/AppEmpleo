@@ -1,0 +1,296 @@
+﻿:root {
+  --font-heading: Montserrat, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  --font-body: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  /* Color system (kept close to your original palette) */
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-primary-700: #813c50;
+  --color-primary-600: #875065;
+  --color-primary-300: #d397ae;
+  --color-primary-100: #f4c3d7;
+  --color-pink-300: #ffb3c8;
+  --color-pink-200: #ffc6d5;
+  --color-pink-100: #ffd9e3;
+  --color-pink-050: #ffecf1;
+  --color-pink-025: #fff8fa;
+  --color-gray-700: #4d4d4d;
+  --color-gray-600: #757575;
+  --color-gray-300: #c5c5c5;
+  --color-gray-200: #dbdbdb;
+  --color-gray-100: #ededed;
+  --color-gray-050: #f7f7f7;
+  --text-color: #707070;
+  --color-slate-700: #586272;
+  --color-slate-300: #a6aec1;
+  --color-slate-200: #cfd5e1;
+  --color-slate-050: #ededf2;
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.10);
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --transition-fast: 150ms ease;
+  --transition-med: 240ms ease;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100vh;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--color-gray-700);
+  background: var(--color-pink-050);
+  position: relative;
+  isolation: isolate;
+}
+
+/* Typography: headings/titles/tags in Montserrat; paragraphs/body in Inter */
+h1, h2, h3, h4, h5, h6,
+.chip,
+[data-chip],
+.landing-section__subtitle,
+.job-detail__subtitle,
+.job-card__company,
+.auth__subtitle,
+.job-results__count,
+.offer-list__count,
+.btn,
+.form-field__label {
+  font-family: var(--font-heading);
+}
+
+p,
+.landing-hero__text,
+.landing-card__text,
+.landing-cta__text,
+.job-detail__text,
+.job-card__company {
+  font-family: var(--font-body);
+}
+
+/* Animated background layer (canvas + blobs) */
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.bg-layer::before,
+.bg-layer::after {
+  content: "";
+  position: absolute;
+  width: 740px;
+  height: 740px;
+  border-radius: 999px;
+  filter: blur(50px);
+  opacity: 0.55;
+  transform: translate3d(0, 0, 0);
+}
+
+.bg-layer::before {
+  top: -340px;
+  left: -280px;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 179, 200, 0.9), rgba(255, 217, 227, 0));
+  animation: bgBlobA 16s ease-in-out infinite;
+}
+
+.bg-layer::after {
+  bottom: -360px;
+  right: -260px;
+  background: radial-gradient(circle at 70% 30%, rgba(129, 60, 80, 0.25), rgba(255, 198, 213, 0));
+  animation: bgBlobB 18s ease-in-out infinite;
+}
+
+.bg-waves {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.35;
+}
+
+@keyframes bgBlobA {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(80px, 60px, 0) scale(1.06);
+  }
+}
+
+@keyframes bgBlobB {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(-70px, -80px, 0) scale(1.04);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-layer::before,
+  .bg-layer::after {
+    animation: none;
+  }
+
+  .bg-waves {
+    display: none;
+  }
+}
+
+/* Responsive helpers (used across layouts/pages) */
+@media (max-width: 576px) {
+  .btn {
+    padding: 11px 16px;
+  }
+
+  .guest-main {
+    padding: 18px;
+  }
+}
+
+/* Body theme helpers */
+.page-body--pink {
+  background: var(--color-pink-050);
+}
+
+.page-body--white {
+  background: var(--color-white);
+}
+
+/* Accessible focus */
+:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--color-primary-700), transparent 40%);
+  outline-offset: 2px;
+}
+
+/* Common UI components */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: var(--color-primary-700);
+  color: var(--color-white);
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(129, 60, 80, 0.18);
+  transition: transform var(--transition-fast), background var(--transition-med);
+}
+
+.btn:hover {
+  background: var(--color-primary-600);
+  transform: translateY(-1px);
+}
+
+.btn:disabled,
+.btn[aria-disabled='true'] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn--ghost {
+  background: transparent;
+  border-color: var(--color-primary-700);
+  color: var(--color-primary-700);
+  box-shadow: none;
+}
+
+.btn--ghost:hover {
+  background: color-mix(in srgb, var(--color-primary-100), transparent 40%);
+}
+
+.btn--block {
+  width: 100%;
+  border-radius: 14px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-slate-200), transparent 55%);
+  color: var(--color-slate-700);
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.card {
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Form primitives */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-field__label {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--color-gray-600);
+}
+
+.form-field__input,
+.form-field__select {
+  width: 100%;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid var(--color-gray-200);
+  background: var(--color-slate-050);
+  padding: 0 14px;
+  font-weight: 600;
+  color: color-mix(in srgb, var(--color-primary-700), transparent 30%);
+  transition: border-color var(--transition-med), box-shadow var(--transition-med);
+}
+
+.form-field__input--active {
+  border-color: var(--color-primary-700);
+  box-shadow: 0 0 0 4px rgba(129, 60, 80, 0.10);
+}
+
+.form-field__hint {
+  font-size: 12px;
+  color: var(--color-slate-700);
+}
+
+.text-danger,
+.text__danger {
+  color: var(--color-primary-700);
+  font-weight: 800;
+}
+
+.form-field__error {
+  color: var(--color-primary-700);
+  font-weight: 900;
+  font-size: 12px;
+}

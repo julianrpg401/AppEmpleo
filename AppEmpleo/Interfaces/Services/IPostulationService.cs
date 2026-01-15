@@ -5,10 +5,10 @@ namespace AppEmpleo.Interfaces.Services
 {
     public interface IPostulationService
     {
-        Task CreatePostulation(int offerId, Candidato candidate, IFormFile CVFile);
-        Task<List<Postulacion>> GetAllPostulationsAsync(int recruiterId);
-        Task<Curriculum?> GetCurriculumByIdAsync(int curriculumId);
-        string FilePath(Curriculum curriculum);
-        Task<FileResult> DownloadCurriculum(Curriculum curriculum, string filePath);
+        Task CreatePostulation(int offerId, Candidate candidate, IFormFile CVFile);
+        Task<List<JobApplication>> GetAllPostulationsAsync(int recruiterId);
+        Task<Resume?> GetCurriculumByIdAsync(int curriculumId);
+        string FilePath(Resume curriculum);
+        Task<FileResult> DownloadCurriculum(Resume curriculum, string filePath);
     }
 }

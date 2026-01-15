@@ -1,0 +1,15 @@
+.legal {
+  max-width: 860px;
+}
+
+.legal__title {
+  margin: 0 0 10px 0;
+  color: var(--color-primary-700);
+  font-weight: 950;
+}
+
+.legal__text {
+  margin: 0;
+  color: var(--color-slate-700);
+  font-weight: 650;
+}

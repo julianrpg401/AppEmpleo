@@ -6,17 +6,17 @@ namespace AppEmpleo.Class.Utilities.DataProcessors
     public class UserDataProcessor
     {
         // Formatea un usuario para ser insertado en la base de datos
-        public static Usuario UserFormat(Usuario user)
+        public static UserAccount UserFormat(UserAccount user)
         {
-            Usuario userFormatted = new Usuario()
+            UserAccount userFormatted = new UserAccount()
             {
-                Nombre = user.Nombre.ToUpper(),
-                Apellido = user.Apellido.ToUpper(),
+                FirstName = user.FirstName.ToUpper(),
+                LastName = user.LastName.ToUpper(),
                 Email = user.Email.ToUpper(),
-                ClaveHash = EncryptService.HashPassword(user.ClaveHash),
-                Rol = user.Rol.ToUpper(),
-                FechaRegistro = DateOnly.FromDateTime(DateTime.Now),
-                FechaNacimiento = user.FechaNacimiento
+                PasswordHash = EncryptService.HashPassword(user.PasswordHash),
+                Role = user.Role.ToUpper(),
+                RegisterDate = DateOnly.FromDateTime(DateTime.Now),
+                BirthDate = user.BirthDate
             };
 
             UserTypeFormat(userFormatted);
@@ -25,20 +25,20 @@ namespace AppEmpleo.Class.Utilities.DataProcessors
         }
 
         // Agrega el rol del usuario
-        private static void UserTypeFormat(Usuario user)
+        private static void UserTypeFormat(UserAccount user)
         {
-            switch (user.Rol)
+            switch (user.Role)
             {
                 case "CANDIDATO":
-                    user.Candidato = new Candidato()
+                    user.Candidate = new Candidate()
                     {
-                        UsuarioId = user.UsuarioId
+                        UserId = user.UserId
                     };
                     break;
                 case "RECLUTADOR":
-                    user.Reclutador = new Reclutador()
+                    user.Recruiter = new Recruiter()
                     {
-                        UsuarioId = user.UsuarioId
+                        UserId = user.UserId
                     };
                     break;
             }

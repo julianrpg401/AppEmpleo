@@ -1,4 +1,16 @@
 ﻿@page
 @model AppEmpleo.Pages.Register.RegisterSuccessModel
 
-<p>¡Tu cuenta ha sido creada exitosamente! Puedes <a asp-page="/Login/Login">iniciar sesión</a> ahora.</p>
+@section Styles {
+	<link rel="stylesheet" href="~/css/pages/register-success.css" asp-append-version="true" />
+}
+
+<div class="register-success">
+	<div class="card register-success__card">
+		<p class="register-success__text">
+			Your account has been created successfully. You can
+			<a class="register-success__link" asp-page="/Login/Login">sign in</a>
+			now.
+		</p>
+	</div>
+</div>
