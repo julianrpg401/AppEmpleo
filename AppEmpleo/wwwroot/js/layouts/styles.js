@@ -17,10 +17,50 @@
   const attachGuestNavToggle = () => {
     const header = document.querySelector('.guest-header');
     const toggle = document.getElementById('guestNavToggle');
-    if (!header || !toggle) return;
+    const nav = header?.querySelector('.guest-header__nav');
+    if (!header || !toggle || !nav) return;
 
-    const close = () => header.classList.remove('guest-header--nav-open');
-    const toggleOpen = () => header.classList.toggle('guest-header--nav-open');
+    const applyHeight = (value) => {
+      nav.style.maxHeight = value;
+    };
+
+    const open = () => {
+      header.classList.add('guest-header--nav-open');
+      applyHeight(`${nav.scrollHeight}px`);
+    };
+
+    const close = () => {
+      if (!header.classList.contains('guest-header--nav-open')) {
+        applyHeight('0px');
+        return;
+      }
+
+      const currentHeight = `${nav.scrollHeight}px`;
+      applyHeight(currentHeight);
+      // Force reflow so the browser registers the starting height before collapsing
+      void nav.offsetHeight;
+
+      header.classList.remove('guest-header--nav-open');
+      requestAnimationFrame(() => {
+        applyHeight('0px');
+      });
+    };
+
+    const toggleOpen = () => {
+      if (header.classList.contains('guest-header--nav-open')) {
+        close();
+        return;
+      }
+
+      open();
+    };
+
+    nav.addEventListener('transitionend', (event) => {
+      if (event.propertyName !== 'max-height') return;
+      if (header.classList.contains('guest-header--nav-open')) {
+        applyHeight('');
+      }
+    });
 
     toggle.addEventListener('click', (e) => {
       e.preventDefault();

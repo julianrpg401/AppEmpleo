@@ -35,6 +35,7 @@ public partial class JobOffer
     public DateOnly EndDate { get; set; }
 
     [Required]
+    [DisplayName("Moneda")]
     [EnumDataType(typeof(CurrencyCode), ErrorMessage = "La moneda no es válida.")]
     public required string Currency { get; set; }
 
