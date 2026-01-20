@@ -11,8 +11,8 @@
 
 <div class="auth login">
     <div class="card auth__card">
-        <h2 class="auth__title">Sign in</h2>
-        <p class="auth__subtitle">Welcome back to JobTI</p>
+        <h2 class="auth__title">Inicio de sesión</h2>
+        <p class="auth__subtitle">¡Bienvenido de nuevo a JobTI!</p>
 
         <form method="post" asp-page="Login" class="form">
             <div class="form-field">
@@ -26,8 +26,8 @@
                 <span asp-validation-for="Password" class="form-field__error"></span>
             </div>
 
-            <button type="submit" class="btn btn--block">Sign in</button>
-            <p class="form-field__hint"><a class="guest-header__link" href="#">Forgot your password?</a></p>
+            <button type="submit" class="btn btn--block">Iniciar sesión</button>
+            <p class="form-field__hint"><a class="guest-header__link" id="forgot-password" href="#">¿Olvidaste tu contraseña?</a></p>
         </form>
     </div>
 </div>

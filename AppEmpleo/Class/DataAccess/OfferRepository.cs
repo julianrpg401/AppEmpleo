@@ -17,6 +17,7 @@ namespace AppEmpleo.Class.DataAccess
             {
                 var listOffers = await _appEmpleoContext.JobOffers
                     .OrderByDescending(o => o.StartDate)
+                    .Include(r => r.Recruiter!.User.FirstName)
                     .ToListAsync();
 
                 return listOffers;
@@ -33,9 +34,19 @@ namespace AppEmpleo.Class.DataAccess
         {
             try
             {
-                var query = _appEmpleoContext.JobOffers.OrderByDescending(o => o.StartDate);
+                var query = _appEmpleoContext.JobOffers
+                    .OrderByDescending(o => o.StartDate)
+                    .Include(r => r.Recruiter!.User);
+
                 var totalCount = await query.CountAsync();
                 var offers = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+
+                foreach (var offer in offers)
+                {
+                    Log.Information("Oferta obtenida: {JobTitle} por {FirstName}", offer.JobTitle, offer.Recruiter?.User.FirstName);
+                    offer.Description.ToLower();
+                }
+
                 return (offers, totalCount);
             }
             catch (Exception ex)

@@ -10,8 +10,8 @@ namespace AppEmpleo.Class.Utilities.DataProcessors
         {
             UserAccount userFormatted = new UserAccount()
             {
-                FirstName = user.FirstName.ToUpper(),
-                LastName = user.LastName.ToUpper(),
+                FirstName = CapitalizeFirst(user.FirstName),
+                LastName = CapitalizeFirst(user.LastName),
                 Email = user.Email.ToUpper(),
                 PasswordHash = EncryptService.HashPassword(user.PasswordHash),
                 Role = user.Role.ToUpper(),
@@ -42,6 +42,16 @@ namespace AppEmpleo.Class.Utilities.DataProcessors
                     };
                     break;
             }
+        }
+
+        // Capitaliza solo la primera letra de un texto
+        private static string CapitalizeFirst(string? text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+                return string.Empty;
+
+            text = text.Trim();
+            return char.ToUpper(text[0]) + text.Substring(1).ToLower();
         }
     }
 }

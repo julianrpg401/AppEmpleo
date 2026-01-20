@@ -2,7 +2,6 @@ using AppEmpleo.Class.DataAccess;
 using AppEmpleo.Class.Services;
 using AppEmpleo.Class.Services.SessionServices;
 using AppEmpleo.Class.Middleware;
-using AppEmpleo.Interfaces;
 using AppEmpleo.Interfaces.Repositories;
 using AppEmpleo.Interfaces.Services;
 using AppEmpleo.Interfaces.Services.SessionServices;

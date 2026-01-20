@@ -1,6 +1,7 @@
 ﻿@page
 @model AppEmpleo.Pages.Application.HomeModel
 @using AppEmpleo.Class.Utilities.Helpers
+@using AppEmpleo.Models
 @using Microsoft.AspNetCore.Authorization
 @{
     ViewData["Title"] = "Ofertas de empleo";
@@ -25,7 +26,7 @@
         <form class="job-board__search" autocomplete="off">
             <input id="jobSearchQuery" class="job-board__search-input" type="search" placeholder="Find a job" aria-label="Buscar oferta" />
             <select id="jobSearchLocation" class="job-board__search-select" aria-label="Ubicación">
-                <option value="">Localization</option>
+                <option value="">Ubicación</option>
                 @foreach (var country in countries)
                 {
                     <option value="@country.Value">@country.Value</option>
@@ -37,13 +38,13 @@
         <div class="job-board__grid">
             <section class="job-results" aria-label="Resultados">
                 <div class="job-results__header">
-                    <h2 class="job-results__title">Search Results</h2>
+                    <h2 class="job-results__title">Resultados de busqueda</h2>
                     <span id="jobResultsCount" class="job-results__count"></span>
                 </div>
 
                 @if (Model.Offers.Count <= 0)
                 {
-                    <p class="job-results__count">No job offers found.</p>
+                    <p class="job-results__count">No se han encontrado ofertas.</p>
                 }
                 else
                 {
@@ -51,10 +52,12 @@
                         @foreach (var offer in Model.Offers)
                         {
                             var countryName = offer.Country;
-                            if (Enum.TryParse<AppEmpleo.Models.CountryCode>(offer.Country, out var countryKey) && countries.TryGetValue(countryKey, out var name))
+
+                            if (Enum.TryParse<CountryCode>(offer.Country, out var countryKey) && countries.TryGetValue(countryKey, out var name))
                             {
                                 countryName = name;
                             }
+
                             var salaryText = $"{offer.Currency} {offer.Salary}";
                             var datesText = $"Start {offer.StartDate} · Close {offer.EndDate}";
                             var locationText = $"{offer.WorkMode} · {countryName}";
@@ -63,7 +66,7 @@
                             <li class="job-card"
                                 data-offer-id="@offer.JobOfferId"
                                 data-title="@offer.JobTitle"
-                                data-company="JobTI"
+                                data-recruiter="@(offer.Recruiter?.User.FirstName) @(offer.Recruiter?.User.LastName)"
                                 data-description="@offer.Description"
                                 data-salary="@salaryText"
                                 data-dates="@datesText"
@@ -73,7 +76,7 @@
                                     <div class="job-card__logo" aria-hidden="true">@logoLetter</div>
                                     <div>
                                         <h3 class="job-card__title">@offer.JobTitle</h3>
-                                        <p class="job-card__company">JobTI</p>
+                                        <p class="job-card__company">@(offer.Recruiter?.User.FirstName) @(offer.Recruiter?.User.LastName)</p>
                                     </div>
                                 </div>
 
@@ -95,20 +98,20 @@
 
             <aside class="job-detail" aria-label="Detalle de la oferta">
                 <h2 class="job-detail__title">Select a job</h2>
-                <div class="job-detail__subtitle">JobTI</div>
+                <div class="job-detail__subtitle">@*Aqui va el nombre del reclutador*@</div>
 
                 <div class="job-detail__section">
-                    <div class="job-detail__label">Description</div>
+                    <div class="job-detail__label">Descripción</div>
                     <div id="jobDetailDescription" class="job-detail__text">Pick an offer from the list to see details.</div>
                 </div>
 
                 <div class="job-detail__section">
-                    <div class="job-detail__label">Skills</div>
+                    <div class="job-detail__label">Habilidades</div>
                     <div id="jobDetailTags" class="job-detail__tags"></div>
                 </div>
 
                 <div class="job-detail__section">
-                    <div class="job-detail__label">Based salary</div>
+                    <div class="job-detail__label">Salario</div>
                     <div id="jobDetailSalary" class="job-detail__text">--</div>
                 </div>
 
@@ -118,7 +121,7 @@
                 </div>
 
                 <div class="job-detail__section">
-                    <div class="job-detail__label">Location</div>
+                    <div class="job-detail__label">Ubicación</div>
                     <div id="jobDetailLocation" class="job-detail__text">--</div>
                 </div>
 
@@ -228,10 +231,12 @@
                         @foreach (var offer in Model.Offers)
                         {
                             var countryName = offer.Country;
-                            if (Enum.TryParse<AppEmpleo.Models.CountryCode>(offer.Country, out var countryKey) && countries.TryGetValue(countryKey, out var name))
+
+                            if (Enum.TryParse<CountryCode>(offer.Country, out var countryKey) && countries.TryGetValue(countryKey, out var name))
                             {
                                 countryName = name;
                             }
+
                             var salaryText = $"{offer.Currency} {offer.Salary}";
                             var datesText = $"Start {offer.StartDate} · Close {offer.EndDate}";
                             var logoLetter = string.IsNullOrWhiteSpace(offer.JobTitle) ? "J" : offer.JobTitle.Trim().Substring(0, 1).ToUpperInvariant();

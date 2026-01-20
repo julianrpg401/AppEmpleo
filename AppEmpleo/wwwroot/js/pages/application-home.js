@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     card.classList.add('job-card--active');
 
     const title = card.dataset.title || 'Job offer';
-    const company = card.dataset.company || 'JobTI';
+    const recruiter = card.dataset.recruiter || '';
     const description = card.dataset.description || '';
     const salary = card.dataset.salary || '--';
     const dates = card.dataset.dates || '--';
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const offerId = card.dataset.offerId;
 
     if (detailTitle) detailTitle.textContent = title;
-    if (detailSubtitle) detailSubtitle.textContent = company;
+    if (detailSubtitle) detailSubtitle.textContent = recruiter;
     if (detailDescription) detailDescription.textContent = description;
     if (detailSalary) detailSalary.textContent = salary;
     if (detailDates) detailDates.textContent = dates;

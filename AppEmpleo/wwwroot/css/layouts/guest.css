@@ -30,7 +30,6 @@
   font-weight: 900;
   letter-spacing: 0.5px;
   color: var(--color-primary-700);
-  text-shadow: 0 12px 30px rgba(129, 60, 80, 0.18);
   animation: brandFloat 4.8s ease-in-out infinite;
 }
 
@@ -121,6 +120,10 @@
   padding: 10px 12px;
   border-radius: 999px;
   transition: background var(--transition-med);
+}
+
+#forgot-password {
+  text-decoration: underline;
 }
 
 .guest-header__link:hover {

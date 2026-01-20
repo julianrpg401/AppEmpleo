@@ -9,19 +9,29 @@ namespace AppEmpleo.Class.Utilities.DataProcessors
         {
             JobOffer offerFormatted = new JobOffer()
             {
-                RecruiterId = user.Recruiter.RecruiterId,
+                RecruiterId = user.Recruiter!.RecruiterId,
                 JobTitle = offer.JobTitle.ToUpper(),
                 StartDate = offer.StartDate,
                 EndDate = offer.EndDate,
                 Country = offer.Country.ToUpper(),
                 Currency = offer.Currency.ToUpper(),
                 Salary = offer.Salary,
-                Description = offer.Description.ToUpper(),
+                Description = CapitalizeFirst(offer.Description),
                 WorkMode = offer.WorkMode.ToUpper(),
                 CategoryId = offer.CategoryId
             };
 
             return offerFormatted;
+        }
+
+        // Capitaliza solo la primera letra de la descripción
+        private static string CapitalizeFirst(string? text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+                return string.Empty;
+
+            text = text.Trim();
+            return char.ToUpper(text[0]) + text.Substring(1).ToLower();
         }
     }
 }
