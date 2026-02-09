@@ -1,6 +1,7 @@
 ﻿@page
 @model AppEmpleo.Pages.Application.HomeModel
 @using AppEmpleo.Class.Utilities.Helpers
+@using AppEmpleo.Class.Utilities.Normalization
 @using AppEmpleo.Models
 @using Microsoft.AspNetCore.Authorization
 @{
@@ -21,7 +22,7 @@
 }
 
 <div class="job-board">
-    @if (Model.CurrentUser.Role == "CANDIDATO") 
+    @if (Model.CurrentUser.Role == RoleConstants.Candidate) 
     {
         <form class="job-board__search" autocomplete="off">
             <input id="jobSearchQuery" class="job-board__search-input" type="search" placeholder="Find a job" aria-label="Buscar oferta" />

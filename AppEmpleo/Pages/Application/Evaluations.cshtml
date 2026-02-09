@@ -12,21 +12,21 @@
 <div class="evaluation">
     <h2 class="evaluation__title">Received applications</h2>
 
-@if (Model.AllPostulations.Count <= 0)
+@if (Model.AllApplications.Count <= 0)
 {
     <p>No applications yet.</p>
 }
 else
 {
     <div class="evaluation__grid">
-        @foreach (var postulation in Model.AllPostulations)
+        @foreach (var application in Model.AllApplications)
         {
             <div class="card evaluation-card">
-                <h3 class="evaluation-card__title">@postulation.Candidate.User.FirstName @postulation.Candidate.User.LastName</h3>
-                <div class="evaluation-card__meta"><strong>Offer:</strong> @postulation.JobOffer.JobTitle</div>
-                <div class="evaluation-card__meta"><strong>Date:</strong> @postulation.AppliedAt.ToString("dd/MM/yyyy")</div>
+                <h3 class="evaluation-card__title">@application.Candidate.User.FirstName @application.Candidate.User.LastName</h3>
+                <div class="evaluation-card__meta"><strong>Offer:</strong> @application.JobOffer.JobTitle</div>
+                <div class="evaluation-card__meta"><strong>Date:</strong> @application.AppliedAt.ToString("dd/MM/yyyy")</div>
                 <div class="evaluation-card__actions">
-                    <a class="evaluation-card__link" asp-page-handler="DescargarCV" asp-route-curriculumId="@postulation.ResumeId">Download CV</a>
+                    <a class="evaluation-card__link" asp-page-handler="DownloadResume" asp-route-resumeId="@application.ResumeId">Download CV</a>
                 </div>
             </div>
         }

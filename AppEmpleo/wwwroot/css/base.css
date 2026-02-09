@@ -294,3 +294,7 @@ p,
   font-weight: 900;
   font-size: 12px;
 }
+
+.btn-create__account{
+  box-shadow: none;
+}

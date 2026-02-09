@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AppEmpleo.Interfaces.Services
 {
-    public interface IPostulationService
+    public interface IJobApplicationService
     {
-        Task CreatePostulation(int offerId, Candidate candidate, IFormFile CVFile);
-        Task<List<JobApplication>> GetAllPostulationsAsync(int recruiterId);
-        Task<Resume?> GetCurriculumByIdAsync(int curriculumId);
-        string FilePath(Resume curriculum);
-        Task<FileResult> DownloadCurriculum(Resume curriculum, string filePath);
+        Task CreateApplicationAsync(int offerId, Candidate candidate, IFormFile file);
+        Task<List<JobApplication>> GetApplicationsByRecruiterAsync(int recruiterUserId);
+        Task<Resume?> GetResumeByIdAsync(int resumeId);
+        string GetResumeFilePath(Resume resume);
+        Task<FileResult> DownloadResumeAsync(Resume resume, string filePath);
     }
 }

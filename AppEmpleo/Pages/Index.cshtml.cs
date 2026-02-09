@@ -6,21 +6,19 @@ namespace AppEmpleo.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly IClaimsService? _claimsService;
+        private readonly IClaimsService _claimsService;
 
         public IndexModel(IClaimsService claimsService)
         {
             _claimsService = claimsService;
-
-            if (_claimsService.AuthenticatedUser())
-            {
-                _claimsService?.UserLogout();
-            }
         }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-
+            if (_claimsService.AuthenticatedUser())
+            {
+                await _claimsService.UserLogout();
+            }
         }
     }
 }

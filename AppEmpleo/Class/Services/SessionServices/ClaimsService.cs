@@ -1,15 +1,15 @@
-﻿using AppEmpleo.Models;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using System.Security.Claims;
-using Serilog;
+﻿using AppEmpleo.Class.Utilities.Normalization;
 using AppEmpleo.Interfaces.Services.SessionServices;
+using AppEmpleo.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
 
 namespace AppEmpleo.Class.Services.SessionServices
 {
     public class ClaimsService : IClaimsService
     {
-        private readonly IHttpContextAccessor? _contextAccessor;
+        private readonly IHttpContextAccessor _contextAccessor;
 
         public ClaimsService(IHttpContextAccessor contextAccessor)
         {
@@ -20,114 +20,69 @@ namespace AppEmpleo.Class.Services.SessionServices
 
         public async Task UserLogin(UserAccount user)
         {
-            try
-            {
-                var claims = CreateClaims(user);
-                var claimsIdentity = GetClaimsIdentity(claims);
-                var claimsPrincipal = GetClaimsPrincipal(claimsIdentity);
+            var claims = CreateClaims(user);
+            var claimsIdentity = GetClaimsIdentity(claims);
+            var claimsPrincipal = GetClaimsPrincipal(claimsIdentity);
 
-                var authProperties = new AuthenticationProperties
-                {
-                    IsPersistent = false,
-                };
-
-                await _contextAccessor!.HttpContext!.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal, authProperties);
-            }
-            catch (Exception ex)
+            var authProperties = new AuthenticationProperties
             {
-                Log.Error(ex, "Error al autenticar al usuario {UserId}", user.UserId);
-                throw;
-            }
+                IsPersistent = false,
+            };
+
+            await _contextAccessor.HttpContext!.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                claimsPrincipal,
+                authProperties);
         }
 
         // Cierra la sesión del usuario
         public async Task UserLogout()
         {
-            try
-            {
-                await _contextAccessor!.HttpContext!.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error al cerrar la sesión del usuario");
-                throw;
-            }
+            await _contextAccessor.HttpContext!.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
         // Crea una lista de claims para el usuario
         public List<Claim> CreateClaims(UserAccount user)
         {
-            try
+            var claims = new List<Claim>()
             {
-                var claims = new List<Claim>()
-                {
-                    new Claim("UserId", user.UserId.ToString()),
-                    new Claim(ClaimTypes.Name, user.FirstName),
-                    new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, user.Role)
-                };
+                new Claim("UserId", user.UserId.ToString()),
+                new Claim(ClaimTypes.Name, user.FirstName),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, user.Role)
+            };
 
-                switch (user.Role)
-                {
-                    case "CANDIDATO":
-                        claims.Add(new Claim(ClaimTypes.UserData, user.Candidate!.CandidateId.ToString()));
-                        break;
-                    case "RECLUTADOR":
-                        claims.Add(new Claim(ClaimTypes.UserData, user.Recruiter!.RecruiterId.ToString()));
-                        break;
-                }
-
-                return claims;
-            }
-            catch (Exception ex)
+            if (user.Role == RoleConstants.Candidate && user.Candidate != null)
             {
-                Log.Error(ex, "Error al crear los claims para el usuario {UserId}", user.UserId);
-                throw;
+                claims.Add(new Claim(ClaimTypes.UserData, user.Candidate.CandidateId.ToString()));
             }
+            else if (user.Role == RoleConstants.Recruiter && user.Recruiter != null)
+            {
+                claims.Add(new Claim(ClaimTypes.UserData, user.Recruiter.RecruiterId.ToString()));
+            }
+
+            return claims;
         }
 
         // Verifica si el usuario está autenticado
         public bool AuthenticatedUser()
         {
-            try
-            {
-                return _contextAccessor!.HttpContext!?.User?.Identity?.IsAuthenticated ?? false;
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error al verificar si el usuario está autenticado");
-                throw;
-            }
+            return _contextAccessor.HttpContext?.User?.Identity?.IsAuthenticated ?? false;
         }
 
         // Obtiene un claim específico del usuario
         public string GetClaim(string claimType)
         {
-            try
-            {
-                return _contextAccessor!.HttpContext!?.User.FindFirst(claimType)?.Value ?? string.Empty;
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error al obtener el claim {ClaimType}", claimType);
-                throw;
-            }
+            return _contextAccessor.HttpContext?.User.FindFirst(claimType)?.Value ?? string.Empty;
         }
 
         // Obtiene el Id del usuario
         public int GetId()
         {
-            try
-            {
-                var userIdClaim = GetClaim("UserId");
-
-                return int.TryParse(userIdClaim, out int userId) ? userId : throw new InvalidOperationException("El UserId no es válido.");
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error al obtener el Id del usuario");
-                throw;
-            }
+            var userIdClaim = GetClaim("UserId");
+            return int.TryParse(userIdClaim, out int userId)
+                ? userId
+                : throw new InvalidOperationException("UserId claim is invalid.");
         }
 
         // Obtiene el nombre del usuario

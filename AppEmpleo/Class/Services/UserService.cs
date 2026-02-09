@@ -1,10 +1,10 @@
-﻿using AppEmpleo.Class.Cryptography;
-using AppEmpleo.Class.Utilities.DataProcessors;
+﻿using AppEmpleo.Class.Utilities.Normalization;
 using AppEmpleo.Interfaces.Repositories;
+using AppEmpleo.Interfaces.Security;
 using AppEmpleo.Interfaces.Services;
 using AppEmpleo.Interfaces.Services.SessionServices;
+using AppEmpleo.Interfaces.Utilities;
 using AppEmpleo.Models;
-using Serilog;
 
 namespace AppEmpleo.Class.Services
 {
@@ -12,114 +12,94 @@ namespace AppEmpleo.Class.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IClaimsService _claimsService;
+        private readonly IUserNormalizer _userNormalizer;
+        private readonly IPasswordHasher _passwordHasher;
 
-        public UserService(IUserRepository userRepository, IClaimsService claimsService)
+        public UserService(
+            IUserRepository userRepository,
+            IClaimsService claimsService,
+            IUserNormalizer userNormalizer,
+            IPasswordHasher passwordHasher)
         {
             _userRepository = userRepository;
             _claimsService = claimsService;
+            _userNormalizer = userNormalizer;
+            _passwordHasher = passwordHasher;
         }
 
-        // Registra un nuevo usuario
-        public async Task<UserAccount?> RegisterUser(UserAccount user)
+        // Registers a new user.
+        public async Task<UserAccount?> RegisterUserAsync(UserAccount user)
         {
-            try
+            var normalized = _userNormalizer.NormalizeForRegistration(user);
+            var exists = await _userRepository.EmailExistsAsync(normalized.Email);
+
+            if (exists)
             {
-                var existingUser = await _userRepository.ValidateExistingUserAsync(user);
-
-                if (existingUser == true)
-                {
-                    return null;
-                }
-
-                user = UserDataProcessor.UserFormat(user);
-                await _userRepository.AddAsync(user);
-
-                return user;
+                return null;
             }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error al registrar el usuario {Email}", user.Email);
-                throw;
-            }
+
+            await _userRepository.AddAsync(normalized);
+            return normalized;
         }
 
-        // Inicia sesión con el usuario
-        public async Task<bool> Login(string email, string password)
+        // Authenticates a user.
+        public async Task<bool> LoginAsync(string email, string password)
         {
-            try
+            var normalizedEmail = _userNormalizer.NormalizeEmail(email);
+            var existingUser = await _userRepository.GetByEmailAsync(normalizedEmail);
+
+            if (existingUser == null)
             {
-                var existingUser = await _userRepository.ValidateExistingUserAsync(email);
-
-                if (existingUser == null || !EncryptService.VerifyPassword(password, existingUser.PasswordHash))
-                {
-                    Log.Error("El usuario {Email} no existe o la contraseña es incorrecta", email);
-                    return false;
-                }
-
-                await _claimsService.UserLogin(existingUser);
-
-                return true;
+                return false;
             }
-            catch (Exception ex)
+
+            if (!_passwordHasher.VerifyPassword(password, existingUser.PasswordHash))
             {
-                Log.Error(ex, "Error al autenticar el usuario {Email}", email);
-                throw;
+                return false;
             }
+
+            await _claimsService.UserLogin(existingUser);
+            return true;
         }
 
-        // Obtiene el usuario actual desde los claims
-        public UserAccount GetUserClaims()
+        // Gets the current user from claims.
+        public UserAccount GetCurrentUserFromClaims()
         {
-            try
+            var role = _claimsService.GetRole();
+            var user = new UserAccount
             {
-                var user = new UserAccount
+                UserId = _claimsService.GetId(),
+                FirstName = _claimsService.GetName(),
+                Email = _claimsService.GetEmail(),
+                Role = role,
+                LastName = string.Empty,
+                PasswordHash = string.Empty,
+                BirthDate = default,
+                RegisterDate = default
+            };
+
+            if (role == RoleConstants.Candidate)
+            {
+                user.Candidate = new Candidate
                 {
-                    UserId = _claimsService.GetId(),
-                    FirstName = _claimsService.GetName(),
-                    Email = _claimsService.GetEmail(),
-                    Role = _claimsService.GetRole(),
-                    LastName = string.Empty,
-                    PasswordHash = string.Empty,
-                    BirthDate = default,
-                    RegisterDate = default
+                    CandidateId = int.Parse(_claimsService.GetUserData())
                 };
-
-                switch (user.Role)
-                {
-                    case "CANDIDATO":
-                        user.Candidate = new Candidate()
-                        {
-                            CandidateId = int.Parse(_claimsService.GetUserData())
-                        };
-                        break;
-                    case "RECLUTADOR":
-                        user.Recruiter = new Recruiter()
-                        {
-                            RecruiterId = int.Parse(_claimsService.GetUserData())
-                        };
-                        break;
-                }
-
-                return user;
             }
-            catch (Exception ex)
+            else if (role == RoleConstants.Recruiter)
             {
-                Log.Error(ex, "Error al obtener el usuario con ID {Id}", _claimsService.GetId());
-                throw;
+                user.Recruiter = new Recruiter
+                {
+                    RecruiterId = int.Parse(_claimsService.GetUserData())
+                };
             }
+
+            return user;
         }
 
-        public async Task<Candidate?> GetCandidateAsync(int userId)
+        // Retrieves the candidate entity by user id.
+        public async Task<Candidate?> GetCandidateByUserIdAsync(int userId)
         {
-            try
-            {
-                return await _userRepository.GetCandidateByUserIdAsync(userId);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, $"Error al obtener el candidato con id: {userId}");
-                throw;
-            }
+            return await _userRepository.GetCandidateByUserIdAsync(userId);
         }
     }
 }

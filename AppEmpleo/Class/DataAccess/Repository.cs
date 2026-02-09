@@ -1,7 +1,6 @@
 ﻿using AppEmpleo.Interfaces;
 using AppEmpleo.Models;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
 
 namespace AppEmpleo.Class.DataAccess
 {
@@ -10,43 +9,18 @@ namespace AppEmpleo.Class.DataAccess
         protected readonly AppEmpleoContext _appEmpleoContext;
         private readonly DbSet<T> _dbSet;
 
-        // Inyecta el contexto de la base de datos y un DbSet (de un modelo)
+        // Injects the database context and DbSet.
         public Repository(AppEmpleoContext appEmpleoContext)
         {
             _appEmpleoContext = appEmpleoContext;
             _dbSet = appEmpleoContext.Set<T>();
         }
 
-        // Añade un objeto a la base de datos
+        // Adds an entity to the database.
         public async Task AddAsync(T entity)
         {
-            try
-            {
-                // Verifica si la entidad es una oferta de trabajo
-                if (entity is JobOffer jobOffer)
-                {
-                    // Verifica si el RecruiterId existe en la base de datos
-                    if (jobOffer.RecruiterId.HasValue)
-                    {
-                        var recruiterExists = await _appEmpleoContext.Recruiters
-                            .AnyAsync(r => r.RecruiterId == jobOffer.RecruiterId.Value);
-
-                        if (!recruiterExists)
-                        {
-                            throw new InvalidOperationException(
-                                $"No existe un reclutador con el ID {jobOffer.RecruiterId.Value}.");
-                        }
-                    }
-                }
-
-                await _dbSet.AddAsync(entity);
-                await _appEmpleoContext.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error al añadir un objeto a la base de datos");
-                throw;
-            }
+            await _dbSet.AddAsync(entity);
+            await _appEmpleoContext.SaveChangesAsync();
         }
     }
 }

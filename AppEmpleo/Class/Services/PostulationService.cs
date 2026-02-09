@@ -1,169 +1,92 @@
-﻿using AppEmpleo.Class.Utilities.DataProcessors;
-using AppEmpleo.Interfaces.Repositories;
+﻿using AppEmpleo.Interfaces.Repositories;
 using AppEmpleo.Interfaces.Services;
+using AppEmpleo.Interfaces.Services.Storage;
+using AppEmpleo.Interfaces.Utilities;
 using AppEmpleo.Models;
+using AppEmpleo.Class.Exceptions;
 using Microsoft.AspNetCore.Mvc;
-using Serilog;
 
 namespace AppEmpleo.Class.Services
 {
-    public class PostulationService : IPostulationService
+    public class JobApplicationService : IJobApplicationService
     {
-        private readonly IPostulationRepository _postulationRepository;
-        private readonly IWebHostEnvironment _env;
+        private readonly IJobApplicationRepository _applicationRepository;
+        private readonly IResumeStorage _resumeStorage;
+        private readonly IResumeFactory _resumeFactory;
 
-        public PostulationService(IPostulationRepository postulationRepository, IWebHostEnvironment webHostEnvironment)
+        public JobApplicationService(
+            IJobApplicationRepository applicationRepository,
+            IResumeStorage resumeStorage,
+            IResumeFactory resumeFactory)
         {
-            _postulationRepository = postulationRepository;
-            _env = webHostEnvironment;
+            _applicationRepository = applicationRepository;
+            _resumeStorage = resumeStorage;
+            _resumeFactory = resumeFactory;
         }
 
-        // Crea un currículum y lo guarda en el servidor
-        private async Task<int> CreateCurriculum(Candidate candidate, IFormFile CVFile)
+        private static void EnsurePdf(IFormFile file)
         {
-            try
+            var extension = Path.GetExtension(file.FileName);
+            if (!string.Equals(extension, ".pdf", StringComparison.OrdinalIgnoreCase))
             {
-                var path = await SaveCurriculum(CVFile);
-                var curriculum = CurriculumDataProcessor.CurriculumFormat(candidate, CVFile, path);
-
-                await SendCurriculum(curriculum);
-
-                return curriculum.ResumeId;
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error al crear el currículum");
-                throw new Exception("Ocurrió un error al crear el currículum. Por favor, inténtelo de nuevo más tarde.");
+                throw new AppValidationException("Only PDF files are allowed.");
             }
         }
 
-        // Guarda el archivo del currículum en el servidor y devuelve el nombre único del archivo
-        private async Task<string> SaveCurriculum(IFormFile CVFile)
+        // Creates a resume record and stores the file.
+        private async Task<int> CreateResumeAsync(Candidate candidate, IFormFile file)
         {
-            try
-            {
-                var folder = Path.Combine(_env.WebRootPath, "curriculums");
-
-                if (!Directory.Exists(folder))
-                {
-                    Directory.CreateDirectory(folder);
-                }
-
-                var uniqueName = $"{Guid.NewGuid()}{Path.GetExtension(CVFile.FileName)}";
-                var savePath = Path.Combine(folder, uniqueName);
-
-                using var stream = new FileStream(savePath, FileMode.Create);
-
-                await CVFile.CopyToAsync(stream);
-
-                return uniqueName;
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error al guardar el currículum");
-                throw new Exception("Ocurrió un error al guardar el currículum. Por favor, inténtelo de nuevo más tarde.");
-            }
+            EnsurePdf(file);
+            var storedFileName = await _resumeStorage.SaveAsync(file);
+            var resume = _resumeFactory.Create(candidate, file.FileName, storedFileName);
+            await _applicationRepository.AddResumeAsync(resume);
+            return resume.ResumeId;
         }
 
-        // Envía el currículum al repositorio para guardarlo en la base de datos
-        private async Task SendCurriculum(Resume curriculum)
+        // Creates a job application for an offer.
+        public async Task CreateApplicationAsync(int offerId, Candidate candidate, IFormFile file)
         {
-            try
+            var application = new JobApplication
             {
-                await _postulationRepository.AddCurriculumAsync(curriculum);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error al enviar el currículum");
-                throw new Exception("Ocurrió un error al enviar el currículum. Por favor, inténtelo de nuevo más tarde.");
-            }
+                JobOfferId = offerId,
+                CandidateId = candidate.CandidateId,
+                ResumeId = await CreateResumeAsync(candidate, file),
+                AppliedAt = DateOnly.FromDateTime(DateTime.UtcNow)
+            };
+
+            await _applicationRepository.AddApplicationAsync(application);
         }
 
-        // Crea una postulación para una oferta de empleo
-        public async Task CreatePostulation(int offerId, Candidate candidate, IFormFile CVFile)
+        // Retrieves recruiter applications.
+        public async Task<List<JobApplication>> GetApplicationsByRecruiterAsync(int recruiterUserId)
         {
-            try
-            {
-                var postulacion = new JobApplication
-                {
-                    JobOfferId = offerId,
-                    CandidateId = candidate.CandidateId,
-                    ResumeId = await CreateCurriculum(candidate, CVFile), // crea el currículum y obtiene su ID
-                    AppliedAt = DateOnly.FromDateTime(DateTime.UtcNow)
-                };
-
-                await _postulationRepository.AddPostulationAsync(postulacion);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error al crear la postulación");
-                throw new Exception("Ocurrió un error al crear la postulación. Por favor, inténtelo de nuevo más tarde.");
-            }
+            return await _applicationRepository.GetApplicationsByRecruiterUserIdAsync(recruiterUserId);
         }
 
-        // Obtiene todas las postulaciones de un reclutador por su ID
-        public async Task<List<JobApplication>> GetAllPostulationsAsync(int recruiterId)
+        // Retrieves a resume by id.
+        public async Task<Resume?> GetResumeByIdAsync(int resumeId)
         {
-            try
-            {
-                return await _postulationRepository.GetPostulationsByRecruiterIdAsync(recruiterId);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error al obtener las postulaciones del reclutador con ID {RecruiterId}", recruiterId);
-                throw new Exception("Ocurrió un error al obtener las postulaciones. Por favor, inténtelo de nuevo más tarde.");
-            }
+            return await _applicationRepository.GetResumeByIdAsync(resumeId);
         }
 
-        // Obtiene un currículum por su ID
-        public async Task<Resume?> GetCurriculumByIdAsync(int curriculumId)
+        // Builds the absolute path for a stored resume.
+        public string GetResumeFilePath(Resume resume)
         {
-            try
-            {
-                return await _postulationRepository.GetCurriculumByIdAsync(curriculumId);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error al obtener el currículum con ID {CurriculumId}", curriculumId);
-                throw new Exception("Ocurrió un error al obtener el currículum. Por favor, inténtelo de nuevo más tarde.");
-            }
+            var storedFileName = Path.GetFileName(resume.FilePath);
+            return _resumeStorage.GetAbsolutePath(storedFileName);
         }
 
-        // Obtiene la ruta del archivo del currículum en el servidor
-        public string FilePath(Resume curriculum)
+        // Downloads the resume from disk.
+        public async Task<FileResult> DownloadResumeAsync(Resume resume, string filePath)
         {
-            try
-            {
-                var filePath = Path.Combine(_env.WebRootPath, curriculum.FilePath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
+            var contentType = "application/pdf";
+            var fileName = resume.FileName;
+            var fileBytes = await System.IO.File.ReadAllBytesAsync(filePath);
 
-                return filePath;
-            }
-            catch (Exception ex)
+            return new FileContentResult(fileBytes, contentType)
             {
-                Log.Error(ex, "Error al obtener la ruta del archivo");
-                throw new Exception("Ocurrió un error al obtener la ruta del archivo. Por favor, inténtelo de nuevo más tarde.");
-            }
-        }
-
-        // Descarga el currículum desde el servidor
-        public async Task<FileResult> DownloadCurriculum(Resume curriculum, string filePath)
-        {
-            try
-            {
-                var contentType = "application/octet-stream";
-            var fileName = curriculum.FileName;
-                var fileBytes = await System.IO.File.ReadAllBytesAsync(filePath);
-
-                return new FileContentResult(fileBytes, contentType)
-                {
-                    FileDownloadName = fileName
-                };
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error al descargar el currículum");
-                throw new Exception("Ocurrió un error al descargar el currículum. Por favor, inténtelo de nuevo más tarde.");
-            }
+                FileDownloadName = fileName
+            };
         }
     }
 }

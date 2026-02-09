@@ -1,10 +1,8 @@
-using AppEmpleo.Interfaces;
 using AppEmpleo.Interfaces.Services;
 using AppEmpleo.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Serilog;
 
 namespace AppEmpleo.Pages.Application
 {
@@ -13,7 +11,7 @@ namespace AppEmpleo.Pages.Application
     {
         private readonly IUserService _userService;
         private readonly IOfferService _offerService;
-        private readonly IPostulationService _postulationService;
+        private readonly IJobApplicationService _applicationService;
 
         [BindProperty]
         public IFormFile? CVFile { get; set; }
@@ -21,7 +19,7 @@ namespace AppEmpleo.Pages.Application
         [BindProperty]
         public int JobOfferId { get; set; }
 
-        public UserAccount CurrentUser { get; set; } = null!;
+        public UserAccount CurrentUser { get; private set; } = null!;
 
         [BindProperty]
         public JobOffer Offer { get; set; } = new() { Country = string.Empty, Currency = string.Empty };
@@ -33,18 +31,17 @@ namespace AppEmpleo.Pages.Application
         public int TotalPages { get; set; }
         public int TotalOffers { get; set; }
 
-        public HomeModel(IUserService userService, IOfferService offerService, IPostulationService postulationService)
+        public HomeModel(IUserService userService, IOfferService offerService, IJobApplicationService applicationService)
         {
             _userService = userService;
             _offerService = offerService;
-            _postulationService = postulationService;
-
-            CurrentUser = _userService.GetUserClaims();
+            _applicationService = applicationService;
         }
 
-        // Obtiene las ofertas paginadas
+        // Retrieves paged offers.
         public async Task<IActionResult> OnGetAsync(int? pageNumber)
         {
+            LoadCurrentUser();
             CurrentPage = pageNumber ?? 1;
             await GetOffersPagedAsync();
             return Page();
@@ -58,9 +55,10 @@ namespace AppEmpleo.Pages.Application
             TotalPages = (int)Math.Ceiling(totalCount / (double)PageSize);
         }
 
-        // A�ade una oferta a la base de datos
+        // Creates a new job offer.
         public async Task<IActionResult> OnPostAsync()
         {
+            LoadCurrentUser();
             if (!ModelState.IsValid)
             {
                 await OnGetAsync(CurrentPage);
@@ -72,18 +70,25 @@ namespace AppEmpleo.Pages.Application
             return RedirectToPage(new { pageNumber = 1 });
         }
 
-        // Aplica a una oferta de empleo
+        // Applies to a job offer.
         public async Task<IActionResult> OnPostApplyAsync()
         {
-            if ((CVFile == null || CVFile.Length == 0) || await _userService.GetCandidateAsync(CurrentUser.UserId) == null)
+            LoadCurrentUser();
+            var candidate = await _userService.GetCandidateByUserIdAsync(CurrentUser.UserId);
+
+            if (CVFile == null || CVFile.Length == 0 || candidate == null)
             {
                 ModelState.AddModelError(string.Empty, "Debe subir un archivo de curr�culum y tener un candidato asociado.");
                 await OnGetAsync(CurrentPage);
                 return Page();
             }
-            var candidate = await _userService.GetCandidateAsync(CurrentUser.UserId);
-            await _postulationService.CreatePostulation(JobOfferId, candidate!, CVFile);
+            await _applicationService.CreateApplicationAsync(JobOfferId, candidate!, CVFile);
             return RedirectToPage(new { pageNumber = CurrentPage });
+        }
+
+        private void LoadCurrentUser()
+        {
+            CurrentUser = _userService.GetCurrentUserFromClaims();
         }
     }
 }

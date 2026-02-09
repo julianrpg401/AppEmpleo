@@ -4,9 +4,9 @@ namespace AppEmpleo.Interfaces.Services
 {
     public interface IUserService
     {
-        Task<UserAccount?> RegisterUser(UserAccount user);
-        Task<bool> Login(string email, string password);
-        UserAccount GetUserClaims();
-        Task<Candidate?> GetCandidateAsync(int userId);
+        Task<UserAccount?> RegisterUserAsync(UserAccount user);
+        Task<bool> LoginAsync(string email, string password);
+        UserAccount GetCurrentUserFromClaims();
+        Task<Candidate?> GetCandidateByUserIdAsync(int userId);
     }
 }

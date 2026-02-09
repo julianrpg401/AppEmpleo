@@ -1,10 +1,16 @@
 using AppEmpleo.Class.DataAccess;
+using AppEmpleo.Class.Middleware;
+using AppEmpleo.Class.Security;
 using AppEmpleo.Class.Services;
 using AppEmpleo.Class.Services.SessionServices;
-using AppEmpleo.Class.Middleware;
+using AppEmpleo.Class.Utilities.Normalization;
+using AppEmpleo.Class.Utilities.Storage;
 using AppEmpleo.Interfaces.Repositories;
+using AppEmpleo.Interfaces.Security;
 using AppEmpleo.Interfaces.Services;
 using AppEmpleo.Interfaces.Services.SessionServices;
+using AppEmpleo.Interfaces.Services.Storage;
+using AppEmpleo.Interfaces.Utilities;
 using AppEmpleo.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
@@ -16,42 +22,55 @@ namespace AppEmpleo
     {
         public static void Main(string[] args)
         {
-            // Configuración de Serilog
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
-                .WriteTo.File(@"C:\Users\Rpg40\source\repos\AppEmpleo\AppEmpleo\Logs\log.txt", rollingInterval: RollingInterval.Day)
-                .CreateLogger();
-
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Host.UseSerilog((context, services, configuration) =>
+            {
+                configuration
+                    .ReadFrom.Configuration(context.Configuration)
+                    .ReadFrom.Services(services)
+                    .Enrich.FromLogContext();
+            });
 
             // Add services to the container.
             builder.Services.AddRazorPages();
 
-            // Agregar la cadena de conexión (configuración de EF)
+            // Add the database connection (EF configuration).
             builder.Services.AddDbContext<AppEmpleoContext>(options
                 => options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection")));
 
-            // Autenticación con claims
+            // Authentication with claims.
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
-                    options.LoginPath = "/Login/Login"; // Página de inicio de sesión
-                    options.AccessDeniedPath = "/AccessDenied"; // Página de acceso denegado
+                    options.LoginPath = "/Login/Login";
+                    options.AccessDeniedPath = "/AccessDenied";
+                    options.Cookie.Name = "AppEmpleo.Auth";
+                    options.Cookie.HttpOnly = true;
+                    options.Cookie.SameSite = SameSiteMode.Lax;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                    options.SlidingExpiration = true;
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
                 });
 
-            // Registrar repositorios y servicios
+            // Register repositories and services.
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IOfferService, OfferService>();
-            builder.Services.AddScoped<IPostulationService, PostulationService>();
+            builder.Services.AddScoped<IJobApplicationService, JobApplicationService>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IClaimsService, ClaimsService>();
             builder.Services.AddScoped<IOfferRepository, OfferRepository>();
-            builder.Services.AddScoped<IPostulationRepository, PostulationRepository>();
+            builder.Services.AddScoped<IJobApplicationRepository, JobApplicationRepository>();
+            builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+            builder.Services.AddScoped<IUserNormalizer, UserNormalizer>();
+            builder.Services.AddScoped<IOfferNormalizer, OfferNormalizer>();
+            builder.Services.AddScoped<IResumeFactory, ResumeFactory>();
+            builder.Services.AddScoped<IResumeStorage, FileSystemResumeStorage>();
 
             var app = builder.Build();
 
-            // Middleware global de manejo de excepciones
+            // Global exception handling middleware.
             app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             // Configure the HTTP request pipeline.
@@ -68,24 +87,12 @@ namespace AppEmpleo
 
             app.UseRouting();
 
-            app.UseAuthentication(); // Habilita la autenticación
-            app.UseAuthorization(); // Habilita la autorización
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.MapRazorPages();
 
-            try
-            {
-                Log.Information("Starting up the application");
-                app.Run();
-            }
-            catch (Exception ex)
-            {
-                Log.Fatal(ex, "Error al iniciar la aplicación.");
-            }
-            finally
-            {
-                Log.CloseAndFlush();
-            }
+            app.Run();
         }
     }
 }

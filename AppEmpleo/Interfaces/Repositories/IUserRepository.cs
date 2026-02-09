@@ -4,10 +4,8 @@ namespace AppEmpleo.Interfaces.Repositories
 {
     public interface IUserRepository : IAddAsync<UserAccount>
     {
-        Task<UserAccount> GetUserAsync(UserAccount user);
-        Task<bool> ValidateExistingUserAsync(UserAccount user);
-        Task<UserAccount?> ValidateExistingUserAsync(string email);
+        Task<bool> EmailExistsAsync(string email);
+        Task<UserAccount?> GetByEmailAsync(string email);
         Task<Candidate?> GetCandidateByUserIdAsync(int userId);
-        Task<Recruiter?> GetRecruiterByUserIdAsync(int userId);
     }
 }
